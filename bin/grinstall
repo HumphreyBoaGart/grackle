@@ -99,6 +99,16 @@ base)
   # Close installer
 ;;
 
+### Rootless Docker install with 'grinstall docker'
+docker)
+  # Close installer
+;;
+
+### Incoming mail server install with 'grinstall mail'
+mail)
+  # Close installer
+;;
+
 ### Nginx install with 'grinstall nginx'
 nginx)
 
@@ -119,21 +129,17 @@ php)
   # Close installer
 ;;
 
-### Docker install with 'grinstall docker'
-docker)
-  # Close installer
-;;
-
 ### Basic web server install with 'grinstall web'
 web)
   sudo bash /opt/grackle/bin/grinstall base
   sudo bash /opt/grackle/bin/grinstall nginx
 ;;
 
-### Full suite install with 'grinstall full'
+### Full stack install with 'grinstall full'
 full)
   sudo bash /opt/grackle/bin/grinstall web
   sudo bash /opt/grackle/bin/grinstall php
+  sudo bash /opt/grackle/bin/grinstall mail
   sudo bash /opt/grackle/bin/grinstall docker
 ;;
 
