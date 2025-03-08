@@ -1,5 +1,5 @@
 # GRACKLE APT CONFIG - debian.list
-# Generated From: /skel/etc/apt/sources.list.d/debian.list
+# Generated From: /opt/grackle/skel/etc/apt/sources.list.d/debian.list
 # Saves To: /etc/apt/sources.list.d/debian.list
 #
 # Debian operating system repositories for apt package manager.
