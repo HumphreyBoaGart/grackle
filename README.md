@@ -1,6 +1,8 @@
 # Grackle
 Simple bash-based webserver management with minimal dependencies.
 
+Currently only tested to work in Debian.
+
 **This software is still in very early stages, and will probably not be useful to anyone but myself for a little bit. Check back later.**
 
 ## Installation
@@ -11,12 +13,12 @@ Simple bash-based webserver management with minimal dependencies.
 - Git
 
 ### Instructions
+Run the following commands to install Grackle on your machine:
 ```
 sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
 sudo chmod u+rwx,g-rwx,o-rwx /home/grackle/bin/grinstall
 sudo /home/grackle/bin/grinstall MODE
 ```
-
 Where "MODE" is any one of the following install types:
   * **base** (Bare minimum Grackle components)
   * **web** (Base package + Nginx web server)
