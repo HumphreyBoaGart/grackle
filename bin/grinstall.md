@@ -28,7 +28,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~Install btop and htop~~
 - ~~Install curl and tmux from backports~~
 - set up TPM and tmux theme for user & root skels
-- configure sshd
+- ~~configure sshd~~
 - ~~Install imagemagick~~
 - Install vsftpd, enable to start on boot, and configure
 - Install letsencrypt & certbot
