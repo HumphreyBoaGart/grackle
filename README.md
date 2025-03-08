@@ -3,11 +3,10 @@ Simple bash-based webserver management with minimal dependencies.
 
 **This software is still in very early stages, and will probably not be useful to anyone but myself for a little bit. Check back later.**
 
+## Requirements
 
-## Dependencies
-- Ideally a factory Debian install, no GUI
+- Factory Debian install, no GUI
 - Git
-
 
 ## Installation Instructions
 
