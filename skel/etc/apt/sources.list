@@ -1,5 +1,5 @@
 # GRACKLE APT CONFIG - sources.list
-# Generated From: /skel/etc/apt/sources.list
+# Generated From: /opt/grackle/skel/etc/apt/sources.list
 # Saves To: /etc/apt/sources.list
 #
 # Master sources file for apt package manager.
