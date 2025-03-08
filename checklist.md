@@ -73,3 +73,4 @@ A checklist of basic things that each installer module needs to eventually do:
 
 ## Patch Checklist
 - Move grackledir from /home to /opt
+- customization.md file detailing some of the ways you can tweak a Grackle-powered server
