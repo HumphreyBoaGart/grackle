@@ -9,7 +9,6 @@ Simple bash-based webserver management with minimal dependencies.
 - Git
 
 ## Installation Instructions
-
 ```
 sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
 sudo chmod u+rwx,g-rwx,o-rwx /home/grackle/bin/grinstall
@@ -25,3 +24,18 @@ Alternatively, "MODE" can be replaced with a la carte package names:
   * **docker** (Docker component)
   * **nginx** (Nginx component)
   * **php** (PHP component)
+
+## Updating
+Once installed, all system updates are performed via `apt`:
+```
+sudo apt update
+sudo apt ugrade
+```
+Occasionally I will be updating this repo. To update to the latest version of Grackle, just delete the old homedir and re-download:
+```
+sudo rm -rf /home/grackle
+sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
+sudo chmod u+rwx,g-rwx,o-rwx /home/grackle/bin/grinstall
+sudo /home/grackle/bin/grinstall update
+```
+Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up. (There will be a smoother way of doing updates in the future.)
