@@ -36,9 +36,6 @@ EOF
 ### Base install with 'grinstall base'
 base)
 
-  # Set more base environment settings
-  sudo useradd -D -s /sbin/nologin
-
   # Create usergroups
   sudo groupadd admin
   sudo groupadd user
@@ -92,6 +89,7 @@ base)
   # Additional configuration
   sudo rm -v /etc/adduser.conf
   sudo cp /home/grackle/skel/etc/adduser.conf /etc/adduser.conf
+  sudo useradd -D -s /sbin/nologin
 
   # Close installer
 ;;
