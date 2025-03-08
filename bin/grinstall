@@ -47,7 +47,7 @@ base)
   sudo chmod -v u=rwx,g=rx,o=rx /home/grackle /home/grackle/bin /home/grackle/bin/shortcuts
   sudo chmod -v u=rwx,g=rx /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
   sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
-  sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void
+  sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void /home/grackle/bin/*.md
 
   # Configure apt
   sudo cp -b /home/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
@@ -146,7 +146,7 @@ update)
   sudo chmod -v u=rwx,g=rx /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
   sudo chmod -v u=rwx /home/grackle/bin/grinstall
   sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
-  sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void
+  sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void /home/grackle/bin/*.md
 
   # Close updater
 ;;
