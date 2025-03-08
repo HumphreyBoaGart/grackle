@@ -1,5 +1,5 @@
 #!/bin/bash
-# commands - Grackle quick-help display
+# shortcuts - Grackle quick-help display
 # More info at https://github.com/HumphreyBoaGart/grackle
 
 cat <<EOF
