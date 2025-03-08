@@ -17,7 +17,7 @@ That's it. It is deliberately simple for the sake of performance on old & new ma
 
 ## Why You Want This
 
-Imagine self-hosting not only your own web sites, but any browser-based web application. This type of DIY software independence is one way of preserving your privacy and personal security, as well as potentially saving lots of money.
+Imagine self-hosting not only your own web sites, but any browser-based web application. This type of DIY software independence is one way of preserving your privacy and personal security, as well as potentially saving you lots of money.
 
 ## Installation
 
