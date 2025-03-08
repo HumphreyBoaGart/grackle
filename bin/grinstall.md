@@ -36,7 +36,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 #### Outgoing Mail
 - Install postfix and enable it to start on boot
 - Default config: outgoing only, localhost only
-- Install mailutils
+- Install mailutils and open outgoing firewall port
 
 #### Misc Configs
 - ~~Prepare usergroups~~
