@@ -2,7 +2,6 @@
 
 A checklist of basic things that each installer module needs to eventually do:
 
-
 ## 'base' Installer
 
 #### Firewall
@@ -38,19 +37,16 @@ A checklist of basic things that each installer module needs to eventually do:
 - Import .dotfiles to /root and applicable existing users
 - ~~Reset permissions on /home/grackle and all other applicable directories~~
 
-
 ## 'mail' Installer
 - Install postfix and enable it to start on boot
 - Default config: outgoing only, localhost only
 - Install mailutils
-
 
 ## 'nginx' Installer
 - Install nginx and enable it to start on boot
 - Configure nginx
 - Start nginx
 - ~~Open ports 80 & 443 in UFW, flush and reload~~
-
 
 ## 'php' Installer
 - Installs PHP to server and enable it to start on boot
@@ -59,7 +55,6 @@ A checklist of basic things that each installer module needs to eventually do:
 	- 'grapp' will configure PHP pool
 	- 'grapp' will enable nginx routing to PHP socket
 
-
 ## 'docker' Installer
 - Installs minimal Docker to server
 - Leftover per-account Docker configuration goes to 'grapp' command:
@@ -67,19 +62,14 @@ A checklist of basic things that each installer module needs to eventually do:
 	- 'grapp' will define app port (and check for conflicts)
 	- 'grapp' will enable nginx routing to app port
 
-
 ## 'web' Installer
 - Runs both the -base and -nginx installers
-
 
 ## 'full' Installer
 - Runs installers for all packages
 
-
-## Misc Pieces
-- ~~updater~~
-- Move grackledir from /home to /opt
-
-
 ## Updater
 - ~~Downloads clean fresh copy of Grackle from repo & resyncs permissions~~
+
+## Misc
+- Move grackledir from /home to /opt
