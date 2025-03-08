@@ -18,7 +18,7 @@ PS1="\[\033[1;34m\]\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[\[\033[1
 umask 0027
 
 # Set environment variables
-export PATH="/home/grackle/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin"
+export PATH="/opt/grackle/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_DIRS="$HOME/.local/share/applications:/usr/local/share/:/usr/share/"
 export XDG_DATA_HOME="$HOME/.local/share"
