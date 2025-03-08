@@ -52,9 +52,16 @@ base)
   sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
   sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void
 
+  # Configure apt
+  sudo cp -b /home/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
+  sudo cp -b /home/grackle/skel/etc/apt/sources.list.d/debian.list /etc/apt/sources.list.d/debian.list
+  sudo chmod -vR u+rwX,g+rX,o+rX /etc/apt/
+  sudo apt update
+
   # Install additional packages
   sudo apt purge -y ntp
-  sudo apt install -y btop chrony htop git ranger ufw
+  sudo apt install -y apt-transport-https btop chrony git htop imagemagick ranger logrotate rsyslog ufw wget
+  sudo apt install -y -t bookworm-backports curl tmux
   sudo systemctl enable chrony
   sudo systemctl enable ufw
 
@@ -70,6 +77,21 @@ base)
   sudo ufw allow out 123/udp
   sudo ufw allow out 443/tcp
   sudo ufw enable
+
+  # Configure syslog
+  sudo cp -R /home/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
+  sudo rm /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
+  sudo cp /home/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
+  sudo cp /home/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
+  sudo cp /home/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
+  sudo systemctl enable rsyslog
+  sudo systemctl restart rsyslog
+  sudo systemctl restart systemd-journald
+  sudo rm -rf /var/log/journal
+
+  # Additional configuration
+  sudo rm /etc/adduser.conf
+  sudo cp /home/grackle/skel/etc/adduser.conf /etc/adduser.conf
 
   # Close Installer
 ;;
@@ -87,7 +109,10 @@ nginx)
 
 ### Backend PHP Install with 'grinstall php'
 php)
-  sudo echo 'php module test'
+
+  # Configure syslog
+  sudo cp /home/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
+
   # Close Installer
 ;;
 
@@ -99,8 +124,8 @@ docker)
 
 ### Full Web Server Install with 'grinstall web'
 web)
-  grinstall base
-  grinstall nginx
+  /home/grackle/bin/grinstall base
+  /home/grackle/bin/grinstall nginx
 ;;
 
 ### Full Install with 'grinstall full'
