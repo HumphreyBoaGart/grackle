@@ -77,7 +77,7 @@ Use the `grackle help` command to bring up the built-in documentation index.
 Use the `shortcuts` command to bring up a quick cheat-sheet of keyboard shortcuts for bash & tmux.
 
 
-## Updating
+## Updating A Grackle System
 Once installed, all system updates are performed as normally via `apt`:
 ```
 sudo apt update
