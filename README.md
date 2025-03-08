@@ -70,6 +70,8 @@ A detailed explanation of this layering is included in [bin/README.md](bin/READM
 If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command *(unless you are manually adding system services)* or they may end up "missing" features. **There is no function to convert pre-existing accounts, nor will there be.** If you used a temporary sudo user to run the installer, just use `gruser` to create a new permanent account, and delete the temp.
 
 ## Usage
+Once this system is set up and configured, ongoing usage is a relative breeze:
+
 Use the `grackle help` command to bring up the built-in documentation index.
 
 Use the `shortcuts` command to bring up a quick cheat-sheet of keyboard shortcuts for bash & tmux.
