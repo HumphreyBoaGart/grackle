@@ -53,6 +53,8 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~Open ports 80 & 443 in UFW, flush and reload~~
 
 ## `grinstall php`
+***Requires Nginx***
+- First checks to see if Nginx is installed and issues y/n warning if not
 - Installs PHP to server and enable it to start on boot
 - ~~Installs php-fpm syslog component~~
 - Leftover per-account PHP configuration goes to 'grapp' command:
@@ -60,6 +62,8 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 	- 'grapp' will enable nginx routing to PHP socket
 
 ## `grinstall docker`
+***Requires Nginx***
+- First checks to see if Nginx is installed and issues y/n warning if not
 - Installs minimal Docker to server
 - Leftover per-account Docker configuration goes to 'grapp' command:
 	- 'grapp' will configure rootless Docker
