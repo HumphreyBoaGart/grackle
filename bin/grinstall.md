@@ -32,6 +32,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~Install imagemagick~~
 - Install vsftpd, enable to start on boot, and configure
 - Install letsencrypt & certbot
+- Install & configure fail2ban
 
 #### Outgoing Mail
 - Install postfix and enable it to start on boot
