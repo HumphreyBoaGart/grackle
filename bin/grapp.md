@@ -1,5 +1,5 @@
-# Grackle User Management Roadmap
+# Grackle App Management Roadmap
 
-A checklist of basic things that the User Management utility needs to eventually do:
+A checklist of basic things that the App Management utility needs to eventually do:
 
 ## `grapp`
