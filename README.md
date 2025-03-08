@@ -26,7 +26,7 @@ Alternatively, "MODE" can be replaced with a la carte package names:
   * **php** (PHP component)
 
 ## Updating
-Once installed, all system updates are performed via `apt`:
+Once installed, all system updates are performed as normally via `apt`:
 ```
 sudo apt update
 sudo apt ugrade
@@ -35,4 +35,4 @@ Occasionally I will be updating this repo. To update to the latest version of Gr
 ```
 sudo grinstall update
 ```
-This command simply deletes `/home/grackle`, redownloads a fresh copy of this repo, and resets permissions. (Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up.)
+This command simply deletes `/home/grackle`, redownloads a fresh copy of this repo, and resets permissions. (Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up first.)
