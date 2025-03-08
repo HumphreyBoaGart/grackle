@@ -48,12 +48,14 @@ sudo gruser admin-on USERNAME
 ```
 The flags `shell-off` and `admin-off` will revoke shell and admin access, respectively.
 
+##### Layered Admin Permissions
 Keep in mind that all Grackle commands are just **stacks of shell commands**, or **macros**. Some of these commands still require root/sudo to function. **If your admin user does not have sudo powers, it will only have "partial" admin access!** To fix this, you will have to edit your sudo config with `visudo` and add your user there as well at the bottom:
 ```
 USERNAME    ALL=(ALL:ALL) ALL
 ```
 
-**Do not manually use the `useradd` command to create new users, admin or otherwise!!!** If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command, or they may end up "missing" features!
+##### Forget `useradd` Exists!
+***Do not manually use the `useradd` command to create new users, admin or otherwise!!!*** If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command, or they may end up "missing" features!
 
 ## Usage
 Use the `grackle help` command to bring up the built-in documentation index.
