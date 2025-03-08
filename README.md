@@ -3,7 +3,7 @@ Simple terminal-based webserver management with minimal dependencies.
 
 Currently only tested to work in Debian.
 
-***This software is still in very early stages, and will probably not be useful to anyone but myself for a little bit. Check back later.***
+***This software is still in very early stages, and will probably not be useful to anyone but myself for a little bit. Check back later, or look at the [checklist](checklist.md) for more info.***
 
 ## How It Works
 
