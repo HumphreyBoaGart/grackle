@@ -1,3 +1,9 @@
+# GRACKLE APT CONFIG - debian.list
+# Generated From: /skel/etc/apt/sources.list.d/debian.list
+# Saves To: /etc/apt/sources.list.d/debian.list
+#
+# Debian operating system repositories for apt package manager.
+
 # default SSL-enabled bookworm and bookworm-security repos for OS kernel & core;
 deb https://deb.debian.org/debian bookworm main contrib non-free-firmware
 #deb-src https://deb.debian.org/debian bookworm main contrib non-free-firmware
