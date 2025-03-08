@@ -3,6 +3,8 @@
 A checklist of basic things that each installer module needs to eventually do:
 
 ## `grinstall base`
+Minimum installer package, grabbing the barest dependencies for Grackle to function.
+
 #### Firewall
 - ~~Install UFW and enable it to start on boot~~
 - ~~Deny all incoming & outgoing connections~~
@@ -18,7 +20,7 @@ A checklist of basic things that each installer module needs to eventually do:
 - Install & configure logrotate
 - trim up logging based on prototype server results
 
-#### Other Packages
+#### More Packages
 - ~~Prepare APT repos and config~~
 - ~~Install ranger & copy config~~
 - ~~Purge ntp and install chrony~~
@@ -31,15 +33,18 @@ A checklist of basic things that each installer module needs to eventually do:
 - Install vsftpd, enable to start on boot, and configure
 - Install letsencrypt & certbot
 
+#### Outgoing Mail
+- Install postfix and enable it to start on boot
+- Default config: outgoing only, localhost only
+- Install mailutils
+
 #### Misc Configs
 - ~~Prepare usergroups~~
 - Import .dotfiles to /root
 - ~~Reset permissions on /home/grackle and all other applicable directories~~
 
 ## `grinstall mail`
-- Install postfix and enable it to start on boot
-- Default config: outgoing only, localhost only
-- Install mailutils
+- Incoming mail server; figure out later
 
 ## `grinstall nginx`
 - Install nginx and enable it to start on boot
