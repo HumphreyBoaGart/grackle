@@ -12,10 +12,9 @@ Simple bash-based webserver management with minimal dependencies.
 ## Installation Instructions
 
 ```
-cd /home
-sudo git clone https://github.com/HumphreyBoaGart/grackle grackle
-sudo chmod u+rwx,g-rwx,o-rwx grackle/bin/grinstall
-sudo grackle/bin/grinstall MODE
+sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
+sudo chmod u+rwx,g-rwx,o-rwx /home/grackle/bin/grinstall
+sudo /home/grackle/bin/grinstall MODE
 ```
 
 Where "MODE" is any one of the following install types:
