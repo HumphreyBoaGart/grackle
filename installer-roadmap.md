@@ -1,6 +1,6 @@
 # Grackle Installer Roadmap
 
-A list of things that each installer module needs to eventually do:
+A checklist of basic things that each installer module needs to eventually do:
 
 
 ## 'base' Installer
