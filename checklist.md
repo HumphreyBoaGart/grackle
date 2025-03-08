@@ -62,7 +62,7 @@ A checklist of basic things that each installer module needs to eventually do:
 	- 'grapp' will enable nginx routing to app port
 
 ## `grinstall web`
-- Runs both the -base and -nginx installers
+- Runs both the `base` and `nginx` installers
 
 ## `grinstall full`
 - Runs installers for all packages
