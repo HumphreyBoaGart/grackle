@@ -1,0 +1,103 @@
+#!/bin/bash
+# grackle - Simple web server management for the people!
+# More info at https://github.com/HumphreyBoaGart/grackle
+
+### All script functions are thrown in a simple case statement
+case $1 in
+
+### Script documentation with 'grinstall help'
+help | -h | --help)
+exec cat <<EOF
+  ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
+ ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
+ ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
+ ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
+ ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
+ $(tput setaf 4 bold)INSTALLER UTILITY:$(tput sgr0)
+
+  $(tput setaf 3 bold)To install Grackle base components w/ Nginx:$(tput sgr0)
+    $(tput setaf 6)sudo grinstall web$(tput sgr0)
+
+  $(tput setaf 3 bold)To install Grackle and all optional components:$(tput sgr0)
+    $(tput setaf 6)sudo grinstall full$(tput sgr0)
+
+  $(tput setaf 3 bold)To install Grackle components a la carte:$(tput sgr0)
+    $(tput bold)Base:$(tput sgr0) $(tput setaf 6)sudo grinstall base$(tput sgr0)
+    $(tput bold)Docker:$(tput sgr0) $(tput setaf 6)sudo grinstall docker$(tput sgr0)
+    $(tput bold)Nginx:$(tput sgr0) $(tput setaf 6)sudo grinstall nginx$(tput sgr0)
+    $(tput bold)PHP:$(tput sgr0) $(tput setaf 6)sudo grinstall php$(tput sgr0)
+
+  $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
+    $(tput setaf 6)grackle help$(tput sgr0)
+
+EOF
+;;
+
+### Base Install with 'grinstall base'
+base)
+
+  # Set more base environment settings:
+  sudo useradd -D -s /sbin/nologin
+
+  # Create usergroups:
+  sudo groupadd admin
+  sudo groupadd user
+  sudo groupadd app
+
+  # Clean up homedir permissions:
+  sudo chown -vR root:root /home/grackle
+  sudo chmod -vR u+rwX,g-rwx,o-rwx /home/grackle
+  sudo chmod -v u=rwx,g=rx,o=rx /home/grackle /home/grackle/bin
+  sudo chmod -v g+rx /home/grackle/bin/grackle /home/grackle/bin/grsites /home/grackle/bin/grusers
+  sudo chmod -v g+rx,o+rx /home/grackle/bin/sass /home/grackle/bin/src/ /home/grackle/bin/src/dart
+  sudo chmod -v g+r,o+r /home/grackle/bin/src/LICENSE /home/grackle/bin/src/sass.snapshot
+  sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grsites /home/grackle/bin/grusers
+  sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void
+
+  # Close Installer
+;;
+
+### Nginx Install with 'grinstall nginx'
+nginx)
+  sudo echo 'www module test'
+  # Close Installer
+;;
+
+### Backend PHP Install with 'grinstall php'
+php)
+  sudo echo 'php module test'
+  # Close Installer
+;;
+
+### Rootless Docker Engine Install with 'grinstall docker'
+docker)
+  sudo echo 'docker module test'
+  # Close Installer
+;;
+
+### Full Web Server Install with 'grinstall web'
+web)
+  grinstall base
+  grinstall nginx
+;;
+
+### Full Install with 'grinstall full'
+full)
+  /home/grackle/bin/grinstall web
+  /home/grackle/bin/grinstall php
+  /home/grackle/bin/grinstall docker
+;;
+
+### Output error for any input not explicitly defined
+*)
+exec cat <<EOF
+
+  $(tput setaf 1 bold)GRACKLE INSTALLER ERROR: No valid install mode specified!$(tput sgr0)
+
+   Run $(tput setaf 6 bold)grinstall help$(tput sgr0) for a full list of Installer options.
+
+EOF
+;;
+
+### Close initial case statement and move on with our life
+esac
