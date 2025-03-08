@@ -36,3 +36,8 @@ Occasionally I will be updating this repo. To update to the latest version of Gr
 sudo grinstall update
 ```
 This command simply deletes `/home/grackle`, redownloads a fresh copy of this repo, and resets permissions. (Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up first.)
+
+## Usage
+Use the `grackle help` command to bring up the built-in documentation index.
+
+Use the `shortcuts` command to bring up a quick cheat-sheet of keyboard shortcuts for bash & tmux.
