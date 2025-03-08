@@ -29,6 +29,20 @@ Alternatively, "MODE" can be replaced with a la carte package names:
   * **nginx** (Nginx component)
   * **php** (PHP component)
 
+### First-Time Configuration
+
+#### Admin User Account
+While the installer is designed to only be used as root (or via sudo), it creates an `admin` usergroup on your system so anyone within the group can run Grackle commands. This is to minimize the need for dangerous things like remote root access.
+
+To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
+```
+sudo gruser new USERNAME
+sudo gruser shell-on USERNAME
+sudo gruser admin-on USERNAME
+```
+The flags `shell-off` and `admin-off` will revoke shell and admin access, respectively.
+
+**Do not manually use the `useradd` command to create new users, admin or otherwise!!!** If you are installing this on a fresh system like I told you too, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command, or they may end up "missing" features!
 
 ## Usage
 Use the `grackle help` command to bring up the built-in documentation index.
@@ -46,4 +60,4 @@ Occasionally I will be updating this repo. To update to the latest version of Gr
 ```
 sudo grinstall update
 ```
-This command simply deletes `/home/grackle`, redownloads a fresh copy of this repo, and resets permissions. (Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up first.)
+This command simply deletes `/home/grackle`, redownloads a fresh copy of this repo, and resets permissions. (Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up first!)
