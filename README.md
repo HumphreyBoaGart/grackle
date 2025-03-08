@@ -6,13 +6,14 @@ Simple bash-based webserver management with minimal dependencies.
 
 ## Dependencies
 - Ideally a factory Debian install, no GUI
+- Git
 
 
 ## Installation Instructions
 
 ```
 cd /home
-sudo git clone https://repository.url grackle
+sudo git clone https://github.com/HumphreyBoaGart/grackle grackle
 sudo chmod u+rwx,g-rwx,o-rwx grackle/bin/grinstall
 sudo grackle/bin/grinstall MODE
 ```
