@@ -36,15 +36,15 @@ EOF
 ### Base install with 'grinstall base'
 base)
 
-  # Set more base environment settings:
+  # Set more base environment settings
   sudo useradd -D -s /sbin/nologin
 
-  # Create usergroups:
+  # Create usergroups
   sudo groupadd admin
   sudo groupadd user
   sudo groupadd app
 
-  # Clean up homedir permissions:
+  # Clean up homedir permissions
   sudo chown -vR root:root /home/grackle
   sudo chmod -vR u+rwX,g-rwx,o-rwx /home/grackle
   sudo chmod -v u=rwx,g=rx,o=rx /home/grackle /home/grackle/bin /home/grackle/bin/shortcuts
@@ -137,11 +137,16 @@ full)
 ### Update Grackle with 'grinstall update'
 update)
 
-  # Clean up homedir permissions:
+  # Download latest package from repo
+  sudo rm -rf /home/grackle
+  sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
+
+  # Clean up homedir permissions
   sudo chown -vR root:root /home/grackle
   sudo chmod -vR u+rwX,g-rwx,o-rwx /home/grackle
   sudo chmod -v u=rwx,g=rx,o=rx /home/grackle /home/grackle/bin /home/grackle/bin/shortcuts
   sudo chmod -v u=rwx,g=rx /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
+  sudo chmod -v u=rwx /home/grackle/bin/grinstall
   sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
   sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void
 
