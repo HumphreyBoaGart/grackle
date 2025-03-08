@@ -33,7 +33,7 @@ A checklist of basic things that each installer module needs to eventually do:
 
 #### Misc Configs
 - ~~Prepare usergroups~~
-- Import .dotfiles to /root and applicable existing users
+- Import .dotfiles to /root
 - ~~Reset permissions on /home/grackle and all other applicable directories~~
 
 ## `grinstall mail`
@@ -71,5 +71,5 @@ A checklist of basic things that each installer module needs to eventually do:
 - ~~Downloads clean fresh copy of Grackle from repo & resyncs permissions~~
 
 ## Patch Checklist
-- Move grackledir from /home to /opt
+- ~~Move grackledir from /home to /opt~~
 - customization.md file detailing some of the ways you can tweak a Grackle-powered server
