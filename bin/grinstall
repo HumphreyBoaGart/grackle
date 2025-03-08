@@ -47,11 +47,9 @@ base)
   # Clean up homedir permissions:
   sudo chown -vR root:root /home/grackle
   sudo chmod -vR u+rwX,g-rwx,o-rwx /home/grackle
-  sudo chmod -v u=rwx,g=rx,o=rx /home/grackle /home/grackle/bin
-  sudo chmod -v g+rx /home/grackle/bin/grackle /home/grackle/bin/grsites /home/grackle/bin/grusers
-  sudo chmod -v g+rx,o+rx /home/grackle/bin/sass /home/grackle/bin/src/ /home/grackle/bin/src/dart
-  sudo chmod -v g+r,o+r /home/grackle/bin/src/LICENSE /home/grackle/bin/src/sass.snapshot
-  sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grsites /home/grackle/bin/grusers
+  sudo chmod -v u=rwx,g=rx,o=rx /home/grackle /home/grackle/bin /home/grackle/bin/shortcuts
+  sudo chmod -v u=rwx,g=rx /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
+  sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
   sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void
 
   # Close Installer
