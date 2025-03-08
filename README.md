@@ -89,7 +89,7 @@ sudo grinstall update
 ```
 This command simply deletes `/opt/grackle`, redownloads a fresh copy of this repo, and resets permissions. *(Of course, if you have made any changes to the files in `/opt/grackle` they will be lost, so make sure to back them up first!)*
 
-If you need to update existing files in `/etc/` with versions from the newest Grackle release, in most cases you can just rerun the installer, but be forewarned it might require a manual touch if these two commands do not work:
+If you need to update existing files in `/etc/` with versions from the newest Grackle release, in most cases you can just rerun the installer. However, be forewarned it might require a manual touch if these two commands do not work:
 ```
 sudo grinstall update
 sudo grinstall MODE
