@@ -27,7 +27,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - Set timezone and metadata
 - ~~Install btop and htop~~
 - ~~Install curl and tmux from backports~~
-- set up TPM and tmux theme
+- set up TPM and tmux theme for user & root skels
 - configure sshd
 - ~~Install imagemagick~~
 - Install vsftpd, enable to start on boot, and configure
@@ -40,7 +40,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 
 #### Misc Configs
 - ~~Prepare usergroups~~
-- Import .dotfiles to /root
+- ~~Import .dotfiles to /root~~
 - ~~Reset permissions on /home/grackle and all other applicable directories~~
 
 ## `grinstall mail`
