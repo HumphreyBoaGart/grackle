@@ -36,7 +36,11 @@ EOF
 ### Base install with 'grinstall base'
 base)
 
-  # Create usergroups
+  # Create usergroups and import new root .dotfiles
+  sudo cp -bv /opt/grackle/skel/root/.bashrc /root/.bashrc
+  sudo cp -bv /opt/grackle/skel/root/.profile /root/.profile
+  sudo mkdir -pv /root/.config/ranger
+  sudo cp -bv /opt/grackle/skel/root/.config/ranger/rc.conf /root/.config/ranger/rc.conf
   sudo groupadd admin
   sudo groupadd user
   sudo groupadd app
@@ -51,8 +55,8 @@ base)
   sudo chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Configure apt
-  sudo cp -b /opt/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
-  sudo cp -b /opt/grackle/skel/etc/apt/sources.list.d/debian.list /etc/apt/sources.list.d/debian.list
+  sudo cp -bv /opt/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
+  sudo cp -bv /opt/grackle/skel/etc/apt/sources.list.d/debian.list /etc/apt/sources.list.d/debian.list
   sudo chmod -vR u+rwX,g+rX,o+rX /etc/apt/
   sudo apt update
 
@@ -77,11 +81,11 @@ base)
   sudo ufw enable
 
   # Configure syslog
-  sudo cp -R /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
+  sudo cp -Rv /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
   sudo rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
-  sudo cp /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
-  sudo cp /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
-  sudo cp /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
+  sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
+  sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
+  sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
   sudo systemctl enable rsyslog
   sudo systemctl restart rsyslog
   sudo systemctl restart systemd-journald
@@ -89,7 +93,7 @@ base)
 
   # Additional configuration
   sudo rm -v /etc/adduser.conf
-  sudo cp /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
+  sudo cp -v /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
   sudo useradd -D -s /sbin/nologin
 
   # Close installer
@@ -110,7 +114,7 @@ nginx)
 php)
 
   # Configure syslog
-  sudo cp /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
+  sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
 
   # Close installer
 ;;
