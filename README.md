@@ -24,6 +24,7 @@ Imagine self-hosting not only your own web sites, but any browser-based web appl
 ### Requirements
 
 - Factory Debian 12 (Bookworm) install, no GUI
+- A root user account *(or temporary sudo user)*
 - Git
 
 ### Instructions
@@ -46,6 +47,8 @@ Alternatively, "MODE" can be replaced with a la carte package names:
 ### First-Time Configuration
 
 #### Admin User Account(s)
+***Do not log out of the terminal after running the installer, because you may be locked out!*** You need to create an administrative user for yourself first to manage the system, as root logins are disabled.
+
 While the installer is designed to only be used as root/sudo, it creates an `admin` usergroup on your system so anyone within the group can run the other Grackle commands. This is to minimize the need for dangerous things like remote root access. To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
 ```
 sudo gruser new USERNAME
@@ -62,7 +65,7 @@ USERNAME    ALL=(ALL:ALL) ALL
 A detailed explanation of this layering is included in [bin/README.md](bin/README.md).
 
 #### On Pre-Existing Accounts
-If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command *(unless you are manually adding system services)* or they may end up "missing" features. **There is no function to convert pre-existing accounts, nor will there be.**
+If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command *(unless you are manually adding system services)* or they may end up "missing" features. **There is no function to convert pre-existing accounts, nor will there be.** If you used a temporary sudo user to run the installer, just use `gruser` to create a new permanent account, and delete the temp.
 
 ## Usage
 Use the `grackle help` command to bring up the built-in documentation index.
