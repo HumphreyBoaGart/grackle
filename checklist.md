@@ -71,5 +71,5 @@ A checklist of basic things that each installer module needs to eventually do:
 ## Updater
 - ~~Downloads clean fresh copy of Grackle from repo & resyncs permissions~~
 
-## Misc
+## Patch Checklist
 - Move grackledir from /home to /opt
