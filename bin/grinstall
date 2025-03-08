@@ -135,7 +135,7 @@ full)
 ### Update Grackle with 'grinstall update'
 update)
 
-  # Download latest package from repo
+  # Delete old homedir contents and resync to repo
   sudo rm -rfv /home/grackle
   sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
 
