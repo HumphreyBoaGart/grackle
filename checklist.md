@@ -16,7 +16,7 @@ A checklist of basic things that each installer module needs to eventually do:
 - consolidate all user logs to ~/logs
 - ~~consolidate all system logs to /var/log~~
 - ~~have option to consolidate all system logs to /tmp/log~~
-- configure logrotate
+- Install & configure logrotate
 - trim up logging based on prototype server results
 
 #### Other Packages
