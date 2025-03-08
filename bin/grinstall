@@ -122,15 +122,15 @@ docker)
 
 ### Basic web server install with 'grinstall web'
 web)
-  /home/grackle/bin/grinstall base
-  /home/grackle/bin/grinstall nginx
+  sudo bash /home/grackle/bin/grinstall base
+  sudo bash /home/grackle/bin/grinstall nginx
 ;;
 
 ### Full suite install with 'grinstall full'
 full)
-  /home/grackle/bin/grinstall web
-  /home/grackle/bin/grinstall php
-  /home/grackle/bin/grinstall docker
+  sudo bash /home/grackle/bin/grinstall web
+  sudo bash /home/grackle/bin/grinstall php
+  sudo bash /home/grackle/bin/grinstall docker
 ;;
 
 ### Update Grackle with 'grinstall update'
