@@ -54,8 +54,8 @@ Keep in mind that all Grackle commands are just **stacks of shell commands**, or
 USERNAME    ALL=(ALL:ALL) ALL
 ```
 
-##### Forget `useradd` Exists!
-***Do not manually use the `useradd` command to create new users, admin or otherwise!!!*** If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command, or they may end up "missing" features. **There is no function to convert pre-existing accounts, nor will there be.**
+##### On Pre-Existing Accounts
+If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command *(unless you are manually adding system services)* or they may end up "missing" features. **There is no function to convert pre-existing accounts, nor will there be.**
 
 ## Usage
 Use the `grackle help` command to bring up the built-in documentation index.
