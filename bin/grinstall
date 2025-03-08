@@ -80,17 +80,17 @@ base)
 
   # Configure syslog
   sudo cp -R /home/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
-  sudo rm /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
+  sudo rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
   sudo cp /home/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
   sudo cp /home/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
   sudo cp /home/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
   sudo systemctl enable rsyslog
   sudo systemctl restart rsyslog
   sudo systemctl restart systemd-journald
-  sudo rm -rf /var/log/journal
+  sudo rm -rfv /var/log/journal
 
   # Additional configuration
-  sudo rm /etc/adduser.conf
+  sudo rm -v /etc/adduser.conf
   sudo cp /home/grackle/skel/etc/adduser.conf /etc/adduser.conf
 
   # Close installer
@@ -138,7 +138,7 @@ full)
 update)
 
   # Download latest package from repo
-  sudo rm -rf /home/grackle
+  sudo rm -rfv /home/grackle
   sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
 
   # Clean up homedir permissions
