@@ -52,12 +52,36 @@ base)
   sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
   sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void
 
+  # Install additional packages
+  sudo apt purge -y ntp
+  sudo apt install -y btop chrony htop git ranger ufw
+  sudo systemctl enable chrony
+  sudo systemctl enable ufw
+
+  # Configure firewall
+  sudo ufw reset
+  sudo ufw default deny incoming
+  sudo ufw default deny outgoing
+  sudo ufw allow 22/tcp
+  sudo ufw allow out 22/tcp
+  sudo ufw allow out 53/tcp
+  sudo ufw allow out 53/udp
+  sudo ufw allow out 80/tcp
+  sudo ufw allow out 123/udp
+  sudo ufw allow out 443/tcp
+  sudo ufw enable
+
   # Close Installer
 ;;
 
 ### Nginx Install with 'grinstall nginx'
 nginx)
-  sudo echo 'www module test'
+
+  # Update firewall rules
+  sudo ufw allow 80/tcp
+  sudo ufw allow 443/tcp
+  sudo ufw reload
+
   # Close Installer
 ;;
 
