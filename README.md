@@ -3,7 +3,15 @@ Simple bash-based webserver management with minimal dependencies.
 
 Currently only tested to work in Debian.
 
-**This software is still in very early stages, and will probably not be useful to anyone but myself for a little bit. Check back later.**
+***This software is still in very early stages, and will probably not be useful to anyone but myself for a little bit. Check back later.***
+
+## How It Works
+
+Grackle is an incredibly simple package of shell scripts, designed to work as seamlessly as possible with *"traditional"* Linux commands. Virtually everything piggybacks off of a common off-the-shelf Linux components, with a bias towards packages with minimal dependencies. All configuration files, account data, hosted web sites, apps, etc, are stored in their respective stock directories elsewhere on the system. It stores very little local data itself beyond the shell scripts and skeleton directories. There is no database or any sort of internal tracking of accounts, as these things are already being performed by the operating system.
+
+There are two types of accounts in a Grackle system, **user accounts** and **app accounts**. Users are the people who log into your system directly to do whatever on it. App accounts are for any application or site you are hosting. Both types of accounts are simply Linux users sorted into groups, and whom have differently configured /home/ directories to match their varying needs. When you create a new account with Grackle *(whether it be a user or app account)* it pulls a skeleton directory from `skel/home/`, and Linux handles the rest of it from there.
+
+That's it, that's all there is to it. There's some extra installer packages going into this *(so there is the option for lightweight a-la-carte server builds)* that simply run `apt install` and copies some files to `/etc/`. It's deliberately simple, mainly for performance sake but also to make it easy to modify and build off of.
 
 ## Installation
 
@@ -31,16 +39,19 @@ Alternatively, "MODE" can be replaced with a la carte package names:
 
 ### First-Time Configuration
 
-#### Admin User Account
-While the installer is designed to only be used as root (or via sudo), it creates an `admin` usergroup on your system so anyone within the group can run Grackle commands. This is to minimize the need for dangerous things like remote root access.
-
-To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
+#### Admin User Account(s)
+While the installer is designed to only be used as root/sudo, it creates an `admin` usergroup on your system so anyone within the group can run Grackle commands. This is to minimize the need for dangerous things like remote root access. To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
 ```
 sudo gruser new USERNAME
 sudo gruser shell-on USERNAME
 sudo gruser admin-on USERNAME
 ```
 The flags `shell-off` and `admin-off` will revoke shell and admin access, respectively.
+
+Keep in mind that all Grackle commands are just **stacks of shell commands**, or **macros**. Some of these commands still require root/sudo to function. **If your admin user does not have sudo powers, it will only have "partial" admin access!** To fix this, you will have to edit your sudo config with `visudo` and add your user there as well at the bottom:
+```
+USERNAME    ALL=(ALL:ALL) ALL
+```
 
 **Do not manually use the `useradd` command to create new users, admin or otherwise!!!** If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command, or they may end up "missing" features!
 
@@ -60,4 +71,4 @@ Occasionally I will be updating this repo. To update to the latest version of Gr
 ```
 sudo grinstall update
 ```
-This command simply deletes `/home/grackle`, redownloads a fresh copy of this repo, and resets permissions. (Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up first!)
+This command simply deletes `/home/grackle`, redownloads a fresh copy of this repo, and resets permissions. *(Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up first!)*
