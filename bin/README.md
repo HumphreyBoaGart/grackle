@@ -14,15 +14,15 @@ The root `grackle` command mainly serves as the documentation index in the termi
 
 ### [grapp](grapp)
 
-The `grapp` command is for the management of app accounts. It is only executable by administrators & root.
+The `grapp` command is for the management of app accounts. It is only executable by administrators & root. ([Dev Checklist](grapp.md))
 
 ### [grinstall](grinstall)
 
-The installer and updater resides at `grinstall`, and it is how various Grackle components are added to the system. It is only executable by root.
+The installer and updater resides at `grinstall`, and it is how various Grackle components are added to the system. It is only executable by root. ([Dev Checklist](grinstall.md))
 
 ### [gruser](gruser)
 
-The `gruser` command is for the management of user accounts. It is only executable by administrators & root.
+The `gruser` command is for the management of user accounts. It is only executable by administrators & root. ([Dev Checklist](gruser.md))
 
 ### [shortcuts](shortcuts)
 
