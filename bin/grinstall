@@ -42,17 +42,17 @@ base)
   sudo groupadd app
 
   # Clean up homedir permissions
-  sudo chown -vR root:root /home/grackle
-  sudo chmod -vR u+rwX,g-rwx,o-rwx /home/grackle
-  sudo chmod -v u=rwx,g=rx,o=rx /home/grackle /home/grackle/bin /home/grackle/bin/shortcuts
-  sudo chmod -v u=rwx,g=rx /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
-  sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
-  sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void /home/grackle/bin/README.md
-  sudo chmod -vR g+r,o+r /home/grackle/bin/grapp.md /home/grackle/bin/grinstall.md /home/grackle/bin/gruser.md
+  sudo chown -vR root:root /opt/grackle
+  sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  sudo chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  sudo chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  sudo chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  sudo chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Configure apt
-  sudo cp -b /home/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
-  sudo cp -b /home/grackle/skel/etc/apt/sources.list.d/debian.list /etc/apt/sources.list.d/debian.list
+  sudo cp -b /opt/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
+  sudo cp -b /opt/grackle/skel/etc/apt/sources.list.d/debian.list /etc/apt/sources.list.d/debian.list
   sudo chmod -vR u+rwX,g+rX,o+rX /etc/apt/
   sudo apt update
 
@@ -77,11 +77,11 @@ base)
   sudo ufw enable
 
   # Configure syslog
-  sudo cp -R /home/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
+  sudo cp -R /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
   sudo rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
-  sudo cp /home/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
-  sudo cp /home/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
-  sudo cp /home/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
+  sudo cp /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
+  sudo cp /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
+  sudo cp /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
   sudo systemctl enable rsyslog
   sudo systemctl restart rsyslog
   sudo systemctl restart systemd-journald
@@ -89,7 +89,7 @@ base)
 
   # Additional configuration
   sudo rm -v /etc/adduser.conf
-  sudo cp /home/grackle/skel/etc/adduser.conf /etc/adduser.conf
+  sudo cp /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
   sudo useradd -D -s /sbin/nologin
 
   # Close installer
@@ -110,7 +110,7 @@ nginx)
 php)
 
   # Configure syslog
-  sudo cp /home/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
+  sudo cp /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
 
   # Close installer
 ;;
@@ -122,33 +122,33 @@ docker)
 
 ### Basic web server install with 'grinstall web'
 web)
-  sudo bash /home/grackle/bin/grinstall base
-  sudo bash /home/grackle/bin/grinstall nginx
+  sudo bash /opt/grackle/bin/grinstall base
+  sudo bash /opt/grackle/bin/grinstall nginx
 ;;
 
 ### Full suite install with 'grinstall full'
 full)
-  sudo bash /home/grackle/bin/grinstall web
-  sudo bash /home/grackle/bin/grinstall php
-  sudo bash /home/grackle/bin/grinstall docker
+  sudo bash /opt/grackle/bin/grinstall web
+  sudo bash /opt/grackle/bin/grinstall php
+  sudo bash /opt/grackle/bin/grinstall docker
 ;;
 
 ### Update Grackle with 'grinstall update'
 update)
 
   # Delete old homedir contents and resync to repo
-  sudo rm -rfv /home/grackle
-  sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
+  sudo rm -rfv /opt/grackle
+  sudo git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
   # Clean up homedir permissions
-  sudo chown -vR root:root /home/grackle
-  sudo chmod -vR u+rwX,g-rwx,o-rwx /home/grackle
-  sudo chmod -v u=rwx,g=rx,o=rx /home/grackle /home/grackle/bin /home/grackle/bin/shortcuts
-  sudo chmod -v u=rwx,g=rx /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
-  sudo chmod -v u=rwx /home/grackle/bin/grinstall
-  sudo chgrp -v admin /home/grackle/bin/grackle /home/grackle/bin/grapp /home/grackle/bin/gruser
-  sudo chmod -vR g+rX,o+rX /home/grackle/errors /home/grackle/void /home/grackle/bin/README.md
-  sudo chmod -vR g+r,o+r /home/grackle/bin/grapp.md /home/grackle/bin/grinstall.md /home/grackle/bin/gruser.md
+  sudo chown -vR root:root /opt/grackle
+  sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  sudo chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  sudo chmod -v u=rwx /opt/grackle/bin/grinstall
+  sudo chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  sudo chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  sudo chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Close updater
 ;;
