@@ -7,7 +7,9 @@ A list of things that each installer module needs to eventually do:
 
 #### Firewall
 - ~~Install UFW and enable it to start on boot~~
-- ~~Deny all incoming connections, flush and reload~~
+- ~~Deny all incoming & outgoing connections~~
+- ~~Open base ports~~
+- ~~flush and reload~~
 
 #### Logging
 - ~~Neuter journald~~
@@ -20,8 +22,14 @@ A list of things that each installer module needs to eventually do:
 
 #### Other Packages
 - ~~Prepare APT repos and config~~
-- ~~Install curl from backports~~
-- ~~Install btop, ranger, tmux, chrony~~
+- ~~Install ranger & copy config~~
+- ~~Purge ntp and install chrony~~
+- Set timezone and metadata
+- ~~Install btop and htop~~
+- ~~Install curl and tmux from backports~~
+- set up TPM and tmux theme
+- configure sshd
+- ~~Install imagemagick~~
 - Install vsftpd, enable to start on boot, and configure
 - Install letsencrypt & certbot
 
@@ -46,6 +54,7 @@ A list of things that each installer module needs to eventually do:
 
 ## 'php' Installer
 - Installs PHP to server and enable it to start on boot
+- ~~Installs php-fpm syslog component~~
 - Leftover per-account PHP configuration goes to 'grapp' command:
 	- 'grapp' will configure PHP pool
 	- 'grapp' will enable nginx routing to PHP socket
@@ -68,4 +77,4 @@ A list of things that each installer module needs to eventually do:
 
 
 ## Updater
-- ~~Downloads clean fresh copy of Grackle from repo~~
+- ~~Downloads clean fresh copy of Grackle from repo & resyncs permissions~~
