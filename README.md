@@ -7,11 +7,11 @@ Currently only tested to work in Debian.
 
 ## How It Works
 
-Grackle is an incredibly simple package of shell scripts, designed to work as seamlessly as possible with *"traditional"* Linux commands. Virtually everything piggybacks off of a common off-the-shelf Linux components, with a bias towards packages with minimal dependencies. All configuration files, account data, hosted web sites, apps, etc, are stored in their respective stock directories elsewhere on the system. It stores very little local data itself beyond the shell scripts and skeleton directories. There is no database or any sort of internal tracking of accounts, as these things are already being performed by the operating system.
+Grackle is an incredibly simple package of shell scripts, designed to work as seamlessly as possible with *"traditional"* Linux commands. Virtually everything piggybacks on common off-the-shelf Linux components, with a bias towards packages with minimal dependencies. All your configuration files, account data, hosted web sites, apps, etc, are stored in their respective stock directories elsewhere on the system. It stores very little local data itself beyond the shell scripts and skeleton directories. There is no database or any sort of internal account tracking *(such as in cPanel)* as these things are already being performed by your operating system.
 
-There are two types of accounts in a Grackle system, **user accounts** and **app accounts**. Users are the people who log into your system directly to do whatever on it. App accounts are for any application or site you are hosting. Both types of accounts are simply Linux users sorted into groups, and whom have differently configured /home/ directories to match their varying needs. When you create a new account with Grackle *(whether it be a user or app account)* it pulls a skeleton directory from `skel/home/`, and Linux handles the rest of it from there.
+There are two types of accounts in a Grackle system, **user accounts** and **app accounts**. Users are the people who log into your system directly to do whatever on it. Apps are for any application or site you are hosting. Both types of accounts are simply normal Linux users sorted into groups, and whom have uniquely configured /home/ directories to match their differing needs. When you create a new account with Grackle *(whether it be user or app account)* it pulls a skeleton from `skel/home/` and it's ready to go.
 
-That's it, that's all there is to it. There's some extra installer packages going into this *(so there is the option for lightweight a-la-carte server builds)* that simply run `apt install` and copies some files to `/etc/`. It's deliberately simple, mainly for performance sake but also to make it easy to modify and build off of.
+The management interface? You have one already, it's called bash and SSH. To make the shell less daunting, I've packaged a bunch of aliases and styling tricks, along with Tmux. That is your account portal. As far as the services Grackle sets up *(nginx, php, rsyslog, etc)*, the script is just running `apt install` and then copying some files to `/etc/` from `skel/etc`. That's it. It's deliberately simple.
 
 ## Installation
 
@@ -35,12 +35,12 @@ Where "MODE" is any one of the following install types:
 Alternatively, "MODE" can be replaced with a la carte package names:
   * **docker** (Docker component)
   * **nginx** (Nginx component)
-  * **php** (PHP component)
+  * **php** (PHP-FPM component)
 
 ### First-Time Configuration
 
 #### Admin User Account(s)
-While the installer is designed to only be used as root/sudo, it creates an `admin` usergroup on your system so anyone within the group can run Grackle commands. This is to minimize the need for dangerous things like remote root access. To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
+While the installer is designed to only be used as root/sudo, it creates an `admin` usergroup on your system so anyone within the group can run the other Grackle commands. This is to minimize the need for dangerous things like remote root access. To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
 ```
 sudo gruser new USERNAME
 sudo gruser shell-on USERNAME
