@@ -47,7 +47,7 @@ Alternatively, "MODE" can be replaced with a la carte package names:
 ### First-Time Configuration
 
 #### Admin User Account(s)
-***Do not log out of the terminal after running the installer, because you may be locked out!*** You need to create an administrative user for yourself first to manage the system, as root logins are disabled.
+***Do not log out of the terminal after running the installer, because you may be locked out!*** You need to create an administrative user for yourself first to manage the system, as root logins are disabled at this point in the install process.
 
 While the installer is designed to only be used as root/sudo, it creates an `admin` usergroup on your system so anyone within the group can run the other Grackle commands. This is to minimize the need for dangerous things like remote root access. To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
 ```
