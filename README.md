@@ -48,13 +48,14 @@ sudo gruser admin-on USERNAME
 ```
 The flags `shell-off` and `admin-off` will revoke shell and admin access, respectively.
 
-##### Layered Admin Permissions
+#### Layered Admin Permissions
 Keep in mind that all Grackle commands are just **stacks of shell commands**, or **macros**. Some of these commands still require root/sudo to function. **If your admin user does not have sudo powers, it will only have "partial" admin access!** To fix this, you will have to edit your sudo config with `visudo` and add your user there as well at the bottom:
 ```
 USERNAME    ALL=(ALL:ALL) ALL
 ```
+A detailed explanation of this layering is included in [bin/README.md](bin/README.md).
 
-##### On Pre-Existing Accounts
+#### On Pre-Existing Accounts
 If you are installing this on a fresh system like I told you to, root should be the only account on the system when you run the installer for the first time. All other users on a Grackle system should be created with `gruser` command *(unless you are manually adding system services)* or they may end up "missing" features. **There is no function to convert pre-existing accounts, nor will there be.**
 
 ## Usage
