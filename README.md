@@ -5,7 +5,7 @@ Simple bash-based webserver management with minimal dependencies.
 
 ## Requirements
 
-- Factory Debian install, no GUI
+- Factory Debian 12 (Bookworm) install, no GUI
 - Git
 
 ## Installation Instructions
