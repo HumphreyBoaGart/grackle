@@ -23,9 +23,9 @@ The management interface? You have one already, it's called [bash](https://bestp
 ### Instructions
 Run the following commands to install Grackle on your machine:
 ```
-sudo git clone https://github.com/HumphreyBoaGart/grackle /home/grackle
-sudo chmod u+rwx,g-rwx,o-rwx /home/grackle/bin/grinstall
-sudo /home/grackle/bin/grinstall MODE
+sudo git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
+sudo chmod u+rwx,g-rwx,o-rwx /opt/grackle/bin/grinstall
+sudo /opt/grackle/bin/grinstall MODE
 ```
 Where "MODE" is any one of the following install types:
   * **base** (Bare minimum Grackle components)
@@ -74,4 +74,4 @@ Occasionally I will be updating this repo. To update to the latest version of Gr
 ```
 sudo grinstall update
 ```
-This command simply deletes `/home/grackle`, redownloads a fresh copy of this repo, and resets permissions. *(Of course, if you have made any changes to the files in `/home/grackle` they will be lost, so make sure to back them up first!)*
+This command simply deletes `/opt/grackle`, redownloads a fresh copy of this repo, and resets permissions. *(Of course, if you have made any changes to the files in `/opt/grackle` they will be lost, so make sure to back them up first!)*
