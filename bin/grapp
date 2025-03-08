@@ -106,7 +106,7 @@ new)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    useradd $name -Um --skel /home/grackle/skel/app --shell /sbin/nologin
+    useradd $name -Um --skel /opt/grackle/skel/app --shell /sbin/nologin
     usermod -aG app $name
     usermod -aG $name nginx
     # Use sed to insert variables into config files
