@@ -1,6 +1,6 @@
 # GRACKLE BASH CONFIG - ~/.bash_logout
-# Generated From: /opt/grackle/skel/home/user/.profile
-# Saves To: /home/USER/.profile
+# Generated From: /opt/grackle/skel/home/user/.bash_logout
+# Saves To: /home/USER/.bash_logout
 #
 # Executed by bash(1) when login shell exits.
 
