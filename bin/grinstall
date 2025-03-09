@@ -62,9 +62,11 @@ base)
   sudo apt update
 
   # Install additional packages
-  sudo apt purge -y ntp
-  sudo apt install -y apt-transport-https btop ca-certificates chrony debian-archive-keyring git gnupg2 htop imagemagick lsb-release ranger logrotate rsyslog ufw wget
+  sudo apt install -y apt-transport-https ca-certificates debian-archive-keyring gnupg2 lsb-release
+  sudo apt install -y bzip2 gzip imagemagick tar
   sudo apt install -y -t bookworm-backports curl tmux
+  sudo apt purge -y ntp
+  sudo apt install -y btop chrony git htop logrotate ranger rsyslog ufw wget
   sudo systemctl enable chrony
   sudo systemctl enable ufw
 
@@ -130,9 +132,9 @@ nginx)
     | sudo tee /etc/apt/preferences.d/99nginx
   sudo chmod a+r /etc/apt/preferences.d/99nginx
 
-  # Install Nginx and dependencies
+  # Install Nginx
   sudo apt update
-  sudo apt install -y nginx gzip
+  sudo apt install -y nginx
   sudo nginx
   sudo systemctl enable nginx
 
