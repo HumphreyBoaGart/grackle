@@ -145,6 +145,9 @@ nginx)
   sudo cp -Rv /opt/grackle/skel/etc/nginx/includes/util.conf /etc/nginx/includes/util.conf
   sudo chgrp -Rv nginx /etc/nginx
   sudo chmod -Rv g+rX /etc/nginx
+  sudo mkdir -pv /var/log/nginx
+  sudo chown -Rv nginx:nginx /var/log/nginx
+  sudo chmod -Rv u+rwX,g+rX,o-rwX
 
   # Update firewall rules and reload Nginx
   sudo ufw allow 80/tcp
