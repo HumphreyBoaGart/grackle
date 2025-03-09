@@ -37,6 +37,7 @@ EOF
 base)
 
   # Create usergroups and import new root .dotfiles
+  sudo cp -bv /opt/grackle/skel/root/.bash_logout /root/.bash_logout
   sudo cp -bv /opt/grackle/skel/root/.bashrc /root/.bashrc
   sudo cp -bv /opt/grackle/skel/root/.profile /root/.profile
   sudo mkdir -pv /root/.config/ranger
