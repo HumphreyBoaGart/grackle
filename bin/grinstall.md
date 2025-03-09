@@ -48,7 +48,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - Incoming mail server; figure out later
 
 ## `grinstall nginx`
-- Install nginx and enable it to start on boot
+- ~~Install nginx and enable it to start on boot~~
 - Configure nginx and default zones, reload & restart
 - ~~Open ports 80 & 443 in UFW, flush & reload~~
 - Leftover per-account Nginx configuration goes to `grapp` command:
