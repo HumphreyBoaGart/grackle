@@ -83,3 +83,5 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 ## Patch Checklist
 - ~~Move grackledir from /home to /opt~~
 - customization.md file detailing some of the ways you can tweak a Grackle-powered server
+- merge `.bash_aliases` & `.bashrc` for users in /skel/home/, similar to the setup for root user.
+- backport `.bashrc` updates from above to the `.bashrc` in root skel
