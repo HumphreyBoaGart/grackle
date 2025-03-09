@@ -85,7 +85,7 @@ base)
   sudo cp -Rv /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
   sudo rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
   sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
-  sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
+  sudo cp -Rv /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
   sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
   sudo systemctl enable rsyslog
   sudo systemctl restart rsyslog
