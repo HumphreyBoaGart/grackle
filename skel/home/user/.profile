@@ -1,4 +1,4 @@
-# GRACKLE BASH CONFIG - .profile
+# GRACKLE BASH CONFIG - ~/.profile
 # Generated From: /opt/grackle/skel/home/user/.profile
 # Saves To: /home/USER/.profile
 #
