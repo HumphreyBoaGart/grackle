@@ -136,6 +136,11 @@ nginx)
   sudo nginx
   sudo systemctl enable nginx
 
+  # Configure Nginx
+  sudo mkdir -pv /etc/nginx/active /etc/nginx/available /etc/nginx/gates /etc/nginx/includes
+  sudo rm /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf
+  sudo cp -v /opt/grackle/skel/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+
   # Update firewall rules
   sudo ufw allow 80/tcp
   sudo ufw allow 443/tcp
