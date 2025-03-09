@@ -3,4 +3,5 @@
 A checklist of basic things that the User Management utility needs to eventually do:
 
 ## `gruser new`
-- Populate homedir with skeleton dir
+- ~~Populate homedir with skeleton dir~~
+- Fix permissions on homedir
