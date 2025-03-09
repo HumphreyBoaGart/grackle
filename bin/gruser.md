@@ -2,4 +2,5 @@
 
 A checklist of basic things that the User Management utility needs to eventually do:
 
-## `gruser`
+## `gruser new`
+- Populate homedir with skeleton dir
