@@ -54,7 +54,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~Open ports 80 & 443 in UFW, flush and reload~~
 - Leftover per-account Nginx configuration goes to `grapp` command:
 	- `grapp` will configure Nginx zone
-        - `grapp` will grant Nginx user access to app groups
+	- `grapp` will grant Nginx user access to app groups
 
 ## `grinstall php`
 ***Requires Nginx***
