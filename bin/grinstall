@@ -93,8 +93,8 @@ base)
   sudo rm -rfv /var/log/journal
 
   # Configure environment
-  git clone https://github.com/tmux-plugins/tpm /opt/grackle/skel/home/app/tmux/plugins/tpm
-  git clone https://github.com/tmux-plugins/tpm /opt/grackle/skel/home/user/tmux/plugins/tpm
+  git clone https://github.com/tmux-plugins/tpm /opt/grackle/skel/home/app/.config/tmux/plugins/tpm
+  git clone https://github.com/tmux-plugins/tpm /opt/grackle/skel/home/user/.config/tmux/plugins/tpm
 
   # Additional configuration
   sudo rm -v /etc/adduser.conf
