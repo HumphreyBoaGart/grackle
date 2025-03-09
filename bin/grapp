@@ -33,6 +33,70 @@ exec cat <<EOF
 EOF
 ;;
 
+### Generate new application account with 'grapp new'
+new)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username for your new application:$(tput sgr0)"
+    sudo echo -n "  (alphanumeric only) "
+    sudo read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
+    sudo usermod -aG app $name
+    sudo usermod -aG $name nginx
+    # Use sed to insert variables into config files
+    #sed -i -e 's/{{MASKNAME}}/'$name'/g' $HOME/.config/dmask/data/$name/compose.yaml
+    #sed -i -e 's/{{HOMEUSER}}/'$USER'/g' $HOME/.config/dmask/data/$name/compose.yaml
+    grapp fix-perms-deep $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a name for your application!$(tput sgr0)"
+  fi
+;;
+
+### Delete application account, preserving data with 'grapp delete'
+delete)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG $name nginx
+    sudo userdel -f $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
+### Nuke application account and all data with 'grapp purge'
+purge)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Which application shall we purge?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG $name nginx
+    sudo userdel -rf $name
+    sudo rm -rf /home/$name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
 ### Permissions-Fixing Utilities with 'grapp fix-perms'
 fix-perms)
   if [[ $2 != '' ]]; then
@@ -90,69 +154,6 @@ fix-perms-deep)
     sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_history /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Generate new application account with 'grapp new'
-new)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    sudo echo " $(tput setaf 6 bold)Please enter a username for your new application:$(tput sgr0)"
-    sudo echo -n "  (alphanumeric only) "
-    sudo read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
-    sudo usermod -aG app $name
-    sudo usermod -aG $name nginx
-    # Use sed to insert variables into config files
-    #sed -i -e 's/{{MASKNAME}}/'$name'/g' $HOME/.config/dmask/data/$name/compose.yaml
-    #sed -i -e 's/{{HOMEUSER}}/'$USER'/g' $HOME/.config/dmask/data/$name/compose.yaml
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a name for your application!$(tput sgr0)"
-  fi
-;;
-
-### Delete application account, preserving data with 'grapp delete'
-delete)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    sudo echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    sudo usermod -rG $name nginx
-    sudo userdel -f $name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
-  fi
-;;
-
-### Nuke application account and all data with 'grapp purge'
-purge)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    sudo echo " $(tput setaf 6 bold)Which application shall we purge?$(tput sgr0)"
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    sudo usermod -rG $name nginx
-    sudo userdel -rf $name
-    sudo rm -rf /home/$name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
 ;;
 
