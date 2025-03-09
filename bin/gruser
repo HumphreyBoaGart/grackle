@@ -50,7 +50,7 @@ new)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username for your new account:$(tput sgr0)"
+    sudo echo " $(tput setaf 6 bold)Please enter a username for your new user:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
