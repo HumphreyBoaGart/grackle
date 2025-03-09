@@ -1,7 +1,8 @@
+# GRACKLE BASH CONFIG - ~/.bashrc
+# Generated From: /opt/grackle/skel/root/.bashrc
+# Saves To: /root/.bashrc
 #
-# ~/.bashrc
-#
-# executed by bash(1) for non-login shells.
+# Executed by bash(1) for non-login shells.
 
 # Styled Prompt & Hostname
 # Single-Line Prompt
