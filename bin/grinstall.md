@@ -87,4 +87,4 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - customization.md file detailing some of the ways you can tweak a Grackle-powered server
 - merge `.bash_aliases` & `.bashrc` for users in /skel/home/, similar to the setup for root user.
 - backport `.bashrc` updates from above to the `.bashrc` in root skel
-- verify patch for tmux/tpm first-time initialization bug
+- patch tmux/tpm first-time initialization bug
