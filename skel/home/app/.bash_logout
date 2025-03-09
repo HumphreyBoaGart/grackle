@@ -1,7 +1,10 @@
-# ~/.bash_logout: executed by bash(1) when login shell exits.
+# GRACKLE BASH CONFIG - ~/.bash_logout
+# Generated From: /opt/grackle/skel/home/app/.bash_logout
+# Saves To: /home/APP/.bash_logout
+#
+# Executed by bash(1) when login shell exits.
 
-# when leaving the console clear the screen to increase privacy
-
+# Clear screen when leaving console to increase privacy
 if [ "$SHLVL" = 1 ]; then
     [ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
 fi
