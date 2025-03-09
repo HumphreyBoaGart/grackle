@@ -52,24 +52,27 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - Configure nginx
 - Start nginx
 - ~~Open ports 80 & 443 in UFW, flush and reload~~
+- Leftover per-account Nginx configuration goes to `grapp` command:
+	- `grapp` will configure Nginx zone
+        - `grapp` will grant Nginx user access to app groups
 
 ## `grinstall php`
 ***Requires Nginx***
 - First checks to see if Nginx is installed and issues y/n warning if not
 - Installs PHP to server and enable it to start on boot
 - ~~Installs php-fpm syslog component~~
-- Leftover per-account PHP configuration goes to 'grapp' command:
-	- 'grapp' will configure PHP pool
-	- 'grapp' will enable nginx routing to PHP socket
+- Leftover per-account PHP configuration goes to `grapp` command:
+	- `grapp` will configure PHP pool
+	- `grapp` will enable nginx routing to PHP socket
 
 ## `grinstall docker`
 ***Requires Nginx***
 - First checks to see if Nginx is installed and issues y/n warning if not
 - Installs minimal Docker to server
-- Leftover per-account Docker configuration goes to 'grapp' command:
-	- 'grapp' will configure rootless Docker
-	- 'grapp' will define app port (and check for conflicts)
-	- 'grapp' will enable nginx routing to app port
+- Leftover per-account Docker configuration goes to `grapp` command:
+	- `grapp` will configure rootless Docker
+	- `grapp` will define app port (and check for conflicts)
+	- `grapp` will enable nginx routing to app port
 
 ## `grinstall web`
 - ~~Runs both the `base` and `nginx` installers~~
