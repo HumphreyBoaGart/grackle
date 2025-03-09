@@ -96,8 +96,6 @@ base)
 
   # Configure environment
   sudo apt install -y tmux-plugin-manager
-  #git clone https://github.com/tmux-plugins/tpm /opt/grackle/skel/home/app/.config/tmux/plugins/tpm
-  #git clone https://github.com/tmux-plugins/tpm /opt/grackle/skel/home/user/.config/tmux/plugins/tpm
 
   # Additional configuration
   sudo rm -v /etc/adduser.conf
