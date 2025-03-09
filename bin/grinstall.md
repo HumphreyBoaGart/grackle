@@ -27,7 +27,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - Set timezone and metadata
 - ~~Install btop and htop~~
 - ~~Install curl and tmux from backports~~
-- set up TPM and tmux theme for user & app skels
+- ~~set up TPM and tmux theme for user & app skels~~
 - ~~configure sshd~~
 - ~~Install imagemagick~~
 - Install vsftpd, enable to start on boot, and configure
@@ -85,3 +85,4 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - customization.md file detailing some of the ways you can tweak a Grackle-powered server
 - merge `.bash_aliases` & `.bashrc` for users in /skel/home/, similar to the setup for root user.
 - backport `.bashrc` updates from above to the `.bashrc` in root skel
+- fix tmux/tpm first-time initialization bug
