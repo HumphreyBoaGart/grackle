@@ -149,7 +149,7 @@ nginx)
   sudo chmod -Rv g+rX /etc/nginx
   sudo mkdir -pv /var/log/nginx
   sudo chown -Rv nginx:nginx /var/log/nginx
-  sudo chmod -Rv u+rwX,g+rX,o-rwX
+  sudo chmod -Rv u+rwX,g+rX,o-rwX /var/log/nginx
 
   # Update firewall rules and reload Nginx
   sudo ufw allow 80/tcp
