@@ -63,7 +63,7 @@ base)
 
   # Install additional packages
   sudo apt purge -y ntp
-  sudo apt install -y apt-transport-https btop chrony git htop imagemagick ranger logrotate rsyslog ufw wget
+  sudo apt install -y apt-transport-https btop ca-certificates chrony debian-archive-keyring git gnupg2 htop imagemagick lsb-release ranger logrotate rsyslog ufw wget
   sudo apt install -y -t bookworm-backports curl tmux
   sudo systemctl enable chrony
   sudo systemctl enable ufw
@@ -117,6 +117,24 @@ mail)
 
 ### Nginx install with 'grinstall nginx'
 nginx)
+
+  # Configure official Nginx repo
+  sudo curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+    | sudo tee /etc/apt/keyrings/nginx-archive-keyring.gpg >/dev/null
+  sudo chmod a+r /etc/apt/keyrings/nginx-archive-keyring.gpg
+  sudo echo "deb [signed-by=/etc/apt/keyrings/nginx-archive-keyring.gpg] \
+    http://nginx.org/packages/debian `lsb_release -cs` nginx" \
+    | sudo tee /etc/apt/sources.list.d/nginx.list
+  sudo chmod a+r /etc/apt/sources.list.d/nginx.list
+  echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
+    | sudo tee /etc/apt/preferences.d/99nginx
+  sudo chmod a+r /etc/apt/preferences.d/99nginx
+
+  # Install Nginx
+  sudo apt update
+  sudo apt install -y nginx
+  sudo nginx
+  sudo systemctl enable nginx
 
   # Update firewall rules
   sudo ufw allow 80/tcp
