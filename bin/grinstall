@@ -144,10 +144,12 @@ nginx)
   sudo cp -Rv /opt/grackle/skel/etc/nginx/includes/ssl.conf /etc/nginx/includes/ssl.conf
   sudo cp -Rv /opt/grackle/skel/etc/nginx/includes/util.conf /etc/nginx/includes/util.conf
 
-  # Update firewall rules
+  # Update firewall rules and reload Nginx
   sudo ufw allow 80/tcp
   sudo ufw allow 443/tcp
   sudo ufw reload
+  sudo systemctl reload nginx
+  sudo systemctl restart nginx
 
   # Close installer
 ;;
@@ -161,7 +163,7 @@ php)
   # Close installer
 ;;
 
-### Basic web server install with 'grinstall web'
+### Basic web server stack with 'grinstall web'
 web)
   sudo bash /opt/grackle/bin/grinstall base
   sudo bash /opt/grackle/bin/grinstall nginx
