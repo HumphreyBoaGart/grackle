@@ -4,4 +4,10 @@ A checklist of basic things that the User Management utility needs to eventually
 
 ## `gruser new`
 - ~~Populate homedir with skeleton dir~~
-- Fix permissions on homedir
+- Fix permissions on new homedir
+
+## `gruser shell-on|shell-off`
+- ~~Toggles shell access for user account~~
+
+## `gruser admin-on|admin-off`
+- ~~Toggles admin access for user account~~
