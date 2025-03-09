@@ -90,7 +90,7 @@ base)
   sudo systemctl enable rsyslog
   sudo systemctl restart rsyslog
   sudo systemctl restart systemd-journald
-  sudo rm -rfv /var/log/journal
+  sudo rm -rfv /var/log/journal /var/log/syslog
 
   # Configure environment
   git clone https://github.com/tmux-plugins/tpm /opt/grackle/skel/home/app/.config/tmux/plugins/tpm
