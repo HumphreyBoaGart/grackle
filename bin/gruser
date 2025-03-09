@@ -59,6 +59,7 @@ new)
   if [[ $name != '' ]]; then
     sudo useradd $name -Um --skel /opt/grackle/skel/home/user --shell /sbin/nologin
     sudo usermod -aG user $name
+    sudo chmod -Rv u+rwX,g-rwx,o-rwx /home/$name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
