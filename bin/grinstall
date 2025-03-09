@@ -130,9 +130,9 @@ nginx)
     | sudo tee /etc/apt/preferences.d/99nginx
   sudo chmod a+r /etc/apt/preferences.d/99nginx
 
-  # Install Nginx
+  # Install Nginx and dependencies
   sudo apt update
-  sudo apt install -y nginx
+  sudo apt install -y nginx gzip
   sudo nginx
   sudo systemctl enable nginx
 
