@@ -28,3 +28,12 @@ alias la='ls -A --color=auto'
 alias ll='ls -alF --color=auto'
 alias ls='ls -lhaF --color=auto'
 alias vdir='vdir --color=auto'
+
+# Extra Alias Definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly, if you want
+# them to easily survive updates.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
