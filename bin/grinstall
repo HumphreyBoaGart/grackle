@@ -129,6 +129,7 @@ ftp)
   sudo ufw allow 990/tcp
   sudo ufw allow out 990/tcp
   sudo ufw allow 40000:50000/tcp
+  sudo ufw allow out 40000:50000/tcp
   sudo ufw reload
 
   # Close installer
