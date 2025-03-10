@@ -181,8 +181,7 @@ nginx)
   sudo ufw allow 80/tcp
   sudo ufw allow 443/tcp
   sudo ufw reload
-  sudo systemctl reload nginx
-  sudo systemctl restart nginx
+  grackle reset-web
 
   # Close installer
 ;;
@@ -201,9 +200,12 @@ php)
 
   # Install PHP 8.3 & PHP-FPM from Sury
   sudo apt install -y php8.3 php8.3-fpm php8.3-{bz2,cli,curl,gd,imagick,intl,mbstring,opcache,readline,xml,zip}
+  sudo systemctl enable php8.3-fpm
 
-  # Configure syslog
+  # Configure PHP-FPM
+  sudo rm /etc/php/8.3/fpm/pool.d/www.conf
   sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
+  grackle reset-php
 
   # Close installer
 ;;
