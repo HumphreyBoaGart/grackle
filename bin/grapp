@@ -68,8 +68,7 @@ new)
       grapp fix-perms-deep $name
       sudo chown -Rv root:nginx /etc/nginx
       sudo chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
-      sudo systemctl reload nginx
-      sudo systemctl restart nginx
+      grackle reset-web
     else
       exec echo " $(tput setaf 1 bold)ERROR: You did not enter an address for your application!$(tput sgr0)"
     fi
@@ -93,8 +92,7 @@ delete)
     sudo usermod -rG $name nginx
     sudo userdel -f $name
     sudo rm -rf /etc/nginx/active/$name.conf
-    sudo systemctl reload nginx
-    sudo systemctl restart nginx
+    grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
@@ -114,8 +112,7 @@ web-off)
   fi
   if [[ $name != '' ]]; then
     sudo rm /etc/nginx/active/$name.conf
-    sudo systemctl reload nginx
-    sudo systemctl restart nginx
+    grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
   fi
@@ -135,8 +132,7 @@ web-on)
   fi
   if [[ $name != '' ]]; then
     sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
-    sudo systemctl reload nginx
-    sudo systemctl restart nginx
+    grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
   fi
@@ -157,8 +153,7 @@ purge)
     sudo usermod -rG $name nginx
     sudo userdel -rf $name
     sudo rm -rf /home/$name /etc/nginx/active/$name.conf /etc/nginx/available/$name.conf
-    sudo systemctl reload nginx
-    sudo systemctl restart nginx
+    grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
