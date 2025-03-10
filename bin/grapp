@@ -100,6 +100,48 @@ delete)
   fi
 ;;
 
+### Revoke web access to app with 'grapp web-off'
+web-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to revoke web access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo rm /etc/nginx/active/$name.conf
+    sudo systemctl reload nginx
+    sudo systemctl restart nginx
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+### Grant user shell access with 'grapp web-on'
+web-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to restore web access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+    sudo systemctl reload nginx
+    sudo systemctl restart nginx
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
 ### Nuke application account and all data with 'grapp purge'
 purge)
   if [[ $2 != '' ]]; then
