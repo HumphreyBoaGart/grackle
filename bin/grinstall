@@ -111,6 +111,17 @@ docker)
   # Close installer
 ;;
 
+### FTP server install with 'grinstall ftp'
+ftp)
+
+  # Install vsftp
+  sudo apt install -y vsftpd
+  sudo systemctl enable vsftpd
+
+
+  # Close installer
+;;
+
 ### Incoming mail server install with 'grinstall mail'
 mail)
   # Close installer
