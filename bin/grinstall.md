@@ -1,8 +1,10 @@
 # Grackle Installer Roadmap
 
-A checklist of basic things that each installer module needs to eventually do:
+A checklist of basic things that each installer module needs to eventually do, and related things that need to be fixed.
 
-## `grinstall base`
+## Commands
+
+### `grinstall base`
 Minimum installer package, grabbing the barest dependencies for Grackle to function.
 
 #### Firewall
@@ -44,18 +46,18 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~Import .dotfiles to /root~~
 - ~~Reset permissions on /home/grackle and all other applicable directories~~
 
-## `grinstall mail`
+### `grinstall mail`
 - Incoming mail server; figure out later
 
-## `grinstall nginx`
+### `grinstall nginx`
 - ~~Install nginx and enable it to start on boot~~
 - ~~Configure nginx and default zones, reload & restart~~
 - ~~Open ports 80 & 443 in UFW, flush & reload~~
 - Leftover per-account Nginx configuration goes to `grapp` command:
 	- `grapp` will configure per-app Nginx zones
-	- `grapp` will grant Nginx user access to app groups
+	- ~~`grapp` will grant Nginx user access to app groups~~
 
-## `grinstall php`
+### `grinstall php`
 ***Requires Nginx***
 - First checks to see if Nginx is installed and issues y/n warning if not
 - Installs PHP to server and enable it to start on boot
@@ -64,7 +66,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 	- `grapp` will configure PHP pool
 	- `grapp` will enable nginx routing to PHP socket
 
-## `grinstall docker`
+### `grinstall docker`
 ***Requires Nginx***
 - First checks to see if Nginx is installed and issues y/n warning if not
 - Installs minimal Docker to server
@@ -73,16 +75,16 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 	- `grapp` will define app port (and check for conflicts)
 	- `grapp` will enable nginx routing to app port
 
-## `grinstall web`
+### `grinstall web`
 - ~~Runs both the `base` and `nginx` installers~~
 
-## `grinstall full`
+### `grinstall full`
 - ~~Runs installers for all packages~~
 
-## `grinstall update`
+### `grinstall update`
 - ~~Downloads clean fresh copy of Grackle from repo & resyncs permissions~~
 
-## Patch Checklist
+## Misc Patches
 - ~~Move grackledir from /home to /opt~~
 - customization.md file detailing some of the ways you can tweak a Grackle-powered server
 - merge `.bash_aliases` & `.bashrc` for users in /skel/home/, similar to the setup for root user.
