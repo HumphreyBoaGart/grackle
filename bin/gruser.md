@@ -1,6 +1,6 @@
 # Grackle User Management Roadmap
 
-A checklist of basic things that the User Management utility needs to eventually do, and related things that need to be fixed:
+A checklist of basic things that the User Management utility needs to eventually do, and related things that need to be fixed.
 
 ## Commands 
 
