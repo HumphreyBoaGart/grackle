@@ -73,16 +73,17 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - Leftover per-account Nginx configuration goes to `grapp` command:
 	- ~~`grapp` will configure per-app Nginx zones~~
 	- ~~`grapp` will grant Nginx user access to app groups~~
-        - `grapp` will configure per-app SSL certs
+	- `grapp` will configure per-app SSL certs
 
 ### `grinstall php`
 ***Requires Nginx***
 - First checks to see if Nginx is installed and issues y/n warning if not
-- Installs PHP to server and enable it to start on boot
+- ~~Installs PHP to server and enable it to start on boot~~
 - ~~Installs php-fpm syslog component~~
 - Leftover per-account PHP configuration goes to `grapp` command:
-	- `grapp` will configure PHP pool
-	- `grapp` will enable nginx routing to PHP socket
+	- ~~`grapp` will configure PHP pool~~
+	- ~~`grapp` will enable nginx routing to PHP socket~~
+	- `grapp php-setup` will do a better job slipping PHP powers to accounts
 
 ## Metapackages
 
