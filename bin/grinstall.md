@@ -71,8 +71,9 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~Open ports 80 & 443 in UFW, flush & reload~~
 - ~~Install Certbot~~
 - Leftover per-account Nginx configuration goes to `grapp` command:
-	- `grapp` will configure per-app Nginx zones
+	- ~~`grapp` will configure per-app Nginx zones~~
 	- ~~`grapp` will grant Nginx user access to app groups~~
+        - `grapp` will configure per-app SSL certs
 
 ### `grinstall php`
 ***Requires Nginx***
