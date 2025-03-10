@@ -150,6 +150,9 @@ nginx)
   sudo chown -Rv nginx:admin /var/log/nginx
   sudo chmod -Rv u+rwX,g+rX,o-rwX /var/log/nginx
 
+  # Install Certbot
+  sudo apt install -y certbot python3-certbot-nginx
+
   # Update firewall rules and reload Nginx
   sudo ufw allow 80/tcp
   sudo ufw allow 443/tcp
