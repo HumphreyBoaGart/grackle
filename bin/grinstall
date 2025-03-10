@@ -199,6 +199,9 @@ php)
   sudo chmod a+r /etc/apt/sources.list.d/php.list
   sudo apt update
 
+  # Install PHP 8.3 & PHP-FPM from Sury
+  sudo apt install -y php8.3 php8.3-fpm php8.3-{bz2,cli,curl,gd,imagick,intl,mbstring,opcache,readline,xml,zip}
+
   # Configure syslog
   sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
 
