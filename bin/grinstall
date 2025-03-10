@@ -145,9 +145,9 @@ nginx)
 
   # Configure official Nginx repo
   sudo curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
-    | sudo tee /etc/apt/keyrings/nginx-archive-keyring.gpg >/dev/null
-  sudo chmod a+r /etc/apt/keyrings/nginx-archive-keyring.gpg
-  sudo echo "deb [signed-by=/etc/apt/keyrings/nginx-archive-keyring.gpg] \
+    | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+  sudo chmod a+r /usr/share/keyrings/nginx-archive-keyring.gpg
+  sudo echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
     http://nginx.org/packages/debian `lsb_release -cs` nginx" \
     | sudo tee /etc/apt/sources.list.d/nginx.list
   sudo chmod a+r /etc/apt/sources.list.d/nginx.list
@@ -189,6 +189,15 @@ nginx)
 
 ### PHP install with 'grinstall php'
 php)
+
+  # Configure Sury repo for newer PHP releases
+  sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+  sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+  sudo echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] \
+     https://packages.sury.org/php/ $(lsb_release -sc) main" \
+     > /etc/apt/sources.list.d/php.list
+  sudo chmod a+r /etc/apt/sources.list.d/php.list
+  sudo apt update
 
   # Configure syslog
   sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
