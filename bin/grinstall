@@ -203,6 +203,7 @@ php)
   sudo systemctl enable php8.3-fpm
 
   # Configure PHP-FPM
+  sudo mkdir -pv /etc/php/8.3/fpm/pool.available
   sudo rm /etc/php/8.3/fpm/pool.d/www.conf
   sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
   grackle reset-php
