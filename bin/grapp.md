@@ -17,8 +17,8 @@ A checklist of basic things that the App Management utility needs to eventually 
 ### `grapp web-on|web-off`
 - ~~Enables & disables web access for app~~
 
-### `grapp php-on|php-off`
-- Enables & disables php access for app
+### `grapp php-setup|php-off|php-on`
+- ~~Sets up/disables/enables php access for app~~
 
 ### `grapp fix-perms|fix-perms-deep`
 - ~~Two levels of permissions fixing scripts that can be called manually or automatically~~
