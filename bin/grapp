@@ -35,26 +35,46 @@ EOF
 
 ### Generate new application account with 'grapp new'
 new)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    sudo echo " $(tput setaf 6 bold)Please enter a username for your new application:$(tput sgr0)"
-    sudo echo -n "  (alphanumeric only) "
-    sudo read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
+  if [[ $2 != '' ]] && [[ $3 != '' ]]; then
+    name=${2// /_} # Remove spaces
+    name=${name//[^a-zA-Z0-9_]/} # Remove anything not alphanumeric or _
+    domain=${3// /_} # Remove spaces
+    domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
+    domain=${domain#[-.]}  # Remove leading - or .
+    domain=${domain%[-.]}  # Remove trailing - or l
+    echo " $(tput setaf 6 bold)Please enter a username for your new application:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_} # Remove spaces
+    name=${name//[^a-zA-Z0-9_]/} # Remove anything not alphanumeric or _
+    echo " $(tput setaf 6 bold)Please enter the address of your new application:$(tput sgr0)"
+    echo -n "  (ie: domain.com) "
+    read -r domain
+    domain=${domain// /_} # Remove spaces
+    domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
+    domain=${domain#[-.]}  # Remove leading - or .
+    domain=${domain%[-.]}  # Remove trailing - or l
   fi
   if [[ $name != '' ]]; then
-    sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
-    sudo usermod -aG app $name
-    sudo usermod -aG $name nginx
-    # Use sed to insert variables into config files
-    #sed -i -e 's/{{MASKNAME}}/'$name'/g' $HOME/.config/dmask/data/$name/compose.yaml
-    #sed -i -e 's/{{HOMEUSER}}/'$USER'/g' $HOME/.config/dmask/data/$name/compose.yaml
-    grapp fix-perms-deep $name
+    if [[ $domain != '' ]]; then
+      sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
+      sudo usermod -aG app $name
+      sudo usermod -aG $name nginx
+      sudo usermod -c $domain $name
+      sudo cp -v /opt/grackle/skel/etc/nginx/zones/basic_http /etc/nginx/available/$name.conf
+      sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/nginx/available/$name.conf
+      sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/nginx/available/$name.conf
+      grapp fix-perms-deep $name
+      sudo chown -Rv root:nginx /etc/nginx
+      sudo chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
+      sudo systemctl reload nginx
+      sudo systemctl restart nginx
+    else
+      exec echo " $(tput setaf 1 bold)ERROR: You did not enter an address for your application!$(tput sgr0)"
+    fi
   else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a name for your application!$(tput sgr0)"
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username for your application!$(tput sgr0)"
   fi
 ;;
 
@@ -64,7 +84,7 @@ delete)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
@@ -72,6 +92,9 @@ delete)
   if [[ $name != '' ]]; then
     sudo usermod -rG $name nginx
     sudo userdel -f $name
+    sudo rm -rf /etc/nginx/active/$name.conf
+    sudo systemctl reload nginx
+    sudo systemctl restart nginx
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
@@ -83,7 +106,7 @@ purge)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Which application shall we purge?$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Which application shall we purge?$(tput sgr0)"
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
@@ -91,7 +114,9 @@ purge)
   if [[ $name != '' ]]; then
     sudo usermod -rG $name nginx
     sudo userdel -rf $name
-    sudo rm -rf /home/$name
+    sudo rm -rf /home/$name /etc/nginx/active/$name.conf /etc/nginx/available/$name.conf
+    sudo systemctl reload nginx
+    sudo systemctl restart nginx
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
@@ -103,7 +128,7 @@ fix-perms)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
@@ -122,7 +147,7 @@ fix-perms)
     sudo chmod -R g+rX /home/$name/.local/share/php
     sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
     sudo chmod -R g+rwX /home/$name/logs/nginx
-    sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_history /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
+    sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -132,7 +157,7 @@ fix-perms-deep)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
@@ -151,7 +176,7 @@ fix-perms-deep)
     sudo chmod -R g+rX /home/$name/.local/share/php
     sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
     sudo chmod -R g+rwX /home/$name/logs/nginx
-    sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_history /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
+    sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
