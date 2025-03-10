@@ -119,6 +119,7 @@ ftp)
   sudo systemctl enable vsftpd
   sudo rm /etc/vsftpd.conf
   sudo cp -v /opt/grackle/skel/etc/vsftpd.conf /etc/vsftpd.conf
+  sudo service vsftpd restart
 
   # Update firewall rules
   sudo ufw allow out 20/tcp
