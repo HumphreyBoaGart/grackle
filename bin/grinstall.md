@@ -33,7 +33,6 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~configure sshd~~
 - ~~Install imagemagick~~
 - Install vsftpd, enable to start on boot, and configure
-- Install letsencrypt & certbot
 - Install & configure fail2ban
 
 #### Outgoing Mail
@@ -53,7 +52,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~Install nginx and enable it to start on boot~~
 - ~~Configure nginx and default zones, reload & restart~~
 - ~~Open ports 80 & 443 in UFW, flush & reload~~
-- Installs certbot
+- ~~Install Certbot~~
 - Leftover per-account Nginx configuration goes to `grapp` command:
 	- `grapp` will configure per-app Nginx zones
 	- ~~`grapp` will grant Nginx user access to app groups~~
