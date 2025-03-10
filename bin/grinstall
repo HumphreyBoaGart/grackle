@@ -117,7 +117,18 @@ ftp)
   # Install vsftp
   sudo apt install -y vsftpd
   sudo systemctl enable vsftpd
+  sudo rm /etc/vsftpd.conf
+  sudo cp -v /opt/grackle/skel/etc/vsftpd.conf /etc/vsftpd.conf
 
+  # Update firewall rules
+  sudo ufw allow out 20/tcp
+  sudo ufw allow 21/tcp
+  sudo ufw allow out 21/tcp
+  sudo ufw allow out 989/tcp
+  sudo ufw allow 990/tcp
+  sudo ufw allow out 990/tcp
+  sudo ufw allow 40000:50000/tcp
+  sudo ufw reload
 
   # Close installer
 ;;
