@@ -1,8 +1,8 @@
 # Grackle App Management Roadmap
 
-## Commands
+A checklist of basic things that the App Management utility needs to eventually do, and related things that need to be fixed.
 
-A checklist of basic things that the App Management utility needs to eventually do:
+## Commands
 
 ### `grapp new`
 - ~~Populate homedir with skeleton dir~~
