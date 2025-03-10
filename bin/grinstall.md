@@ -2,7 +2,7 @@
 
 A checklist of basic things that each installer module needs to eventually do, and related things that need to be fixed.
 
-## Commands
+## Main Installer
 
 ### `grinstall base`
 Minimum installer package, grabbing the barest dependencies for Grackle to function.
@@ -32,7 +32,6 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~set up TPM and tmux theme for user & app skels~~
 - ~~configure sshd~~
 - ~~Install imagemagick~~
-- Install vsftpd, enable to start on boot, and configure
 - Install & configure fail2ban
 
 #### Outgoing Mail
@@ -44,6 +43,24 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 - ~~Prepare usergroups~~
 - ~~Import .dotfiles to /root~~
 - ~~Reset permissions on /home/grackle and all other applicable directories~~
+
+## A-la-carte Installers
+
+### `grinstall docker`
+***Requires Nginx***
+- First checks to see if Nginx is installed and issues y/n warning if not
+- Installs minimal Docker to server
+- Leftover per-account Docker configuration goes to `grapp` command:
+	- `grapp` will configure rootless Docker
+	- `grapp` will define app port (and check for conflicts)
+	- `grapp` will enable nginx routing to app port
+
+### `grinstall ftp`
+- ~~Install vsftpd, enable to start on boot, basic configurations~~
+- Open FTP firewall ports
+- Configure SSL for FTP
+- Configure user for FTP daemon
+- Configure chroot for users
 
 ### `grinstall mail`
 - Incoming mail server; figure out later
@@ -66,14 +83,7 @@ Minimum installer package, grabbing the barest dependencies for Grackle to funct
 	- `grapp` will configure PHP pool
 	- `grapp` will enable nginx routing to PHP socket
 
-### `grinstall docker`
-***Requires Nginx***
-- First checks to see if Nginx is installed and issues y/n warning if not
-- Installs minimal Docker to server
-- Leftover per-account Docker configuration goes to `grapp` command:
-	- `grapp` will configure rootless Docker
-	- `grapp` will define app port (and check for conflicts)
-	- `grapp` will enable nginx routing to app port
+## Metapackages
 
 ### `grinstall web`
 - ~~Runs both the `base` and `nginx` installers~~
