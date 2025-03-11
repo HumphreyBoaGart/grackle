@@ -26,3 +26,4 @@ A checklist of basic things that the App Management utility needs to eventually 
 
 ## Misc Patches
 - Throw together default landing page for new apps
+- Tweak ~/.profile welcome message to be more geared for app accounts instead of user accounts
