@@ -1,6 +1,6 @@
 # GRACKLE BASH CONFIG - ~/.profile
 # Generated From: /opt/grackle/skel/home/user/.profile
-# Saves To: /home/USER/.profile
+# Saves To: /home/{{USERNAME}}/.profile
 #
 # Executed by the command interpreter for login shells. This file
 # is not read by bash(1), if ~/.bash_profile or ~/.bash_login exists.
