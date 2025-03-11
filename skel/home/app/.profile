@@ -15,6 +15,8 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 # Uncomment to run tmux on login
+# Since in most cases, you will be using your Tmux-enabled shell account to work on apps,
+# it is disabled by default for app accounts.
 #[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit; }
 
 # Uncomment to display # the default umask is set in /etc/profile; for setting the umask
