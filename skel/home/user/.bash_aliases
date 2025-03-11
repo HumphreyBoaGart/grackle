@@ -1,7 +1,8 @@
+# GRACKLE BASH CONFIG - ~/.bash_aliases
+# Generated From: /opt/grackle/skel/home/user/.bash_aliases
+# Saves To: /home/{{USERNAME}}/.bash_aliases
 #
-# ~/.bash_aliases
-#
-# supplementary variables and aliases for bash(1) to set.
+# Supplementary variables and aliases for bash(1) to set.
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
