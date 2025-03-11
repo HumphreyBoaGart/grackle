@@ -102,6 +102,9 @@ base)
   sudo cp -bv /opt/grackle/skel/etc/ssh/sshd_config /etc/ssh/sshd_config
   sudo cp -v /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
   sudo useradd -D -s /sbin/nologin
+  sudo rm -v /etc/motd /etc/issue /etc/issue.net
+  sudo touch /etc/issue /etc/issue/net
+  sudo cp -bv /opt/grackle/skel/etc/motd /etc/motd
 
   # Close installer
 ;;
