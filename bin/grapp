@@ -155,6 +155,12 @@ php-setup)
     sudo ln -s /etc/php/8.3/fpm/pool.available/$name.conf /etc/php/8.3/fpm/pool.d/$name.conf
     sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.3/fpm/pool.available/$name.conf
     #sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/php/8.3/fpm/pool.available/$name.conf
+    sudo mkdir -pv /home/$name/.local/share/php/opcache/file
+    sudo mkdir -pv /home/$name/.local/share/php/opcache/lock
+    sudo mkdir -pv /home/$name/.local/share/php/sessions
+    sudo mkdir -pv /home/$name/.local/share/php/soap
+    sudo mkdir -pv /home/$name/.local/share/php/tmp_upload
+    grapp fix-perms $name
     grackle reset-php
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
