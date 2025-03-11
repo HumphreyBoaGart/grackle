@@ -59,6 +59,10 @@ new)
   if [[ $name != '' ]]; then
     sudo useradd $name -Um --skel /opt/grackle/skel/home/user --shell /sbin/nologin
     sudo usermod -aG user $name
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
     grapp fix-perms $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
