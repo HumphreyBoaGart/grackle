@@ -7,9 +7,8 @@
 # See /usr/share/doc/bash/examples/startup-files for examples.
 # The files are located in the bash-doc package.
 
-# If running bash
+# Invoke ~/.bashrc
 if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
         . "$HOME/.bashrc"
     fi
