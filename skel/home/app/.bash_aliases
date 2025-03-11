@@ -1,7 +1,8 @@
+# GRACKLE BASH CONFIG - ~/.bash_aliases
+# Generated From: /opt/grackle/skel/home/app/.bash_aliases
+# Saves To: /home/{{USERNAME}}/.bash_aliases
 #
-# ~/.bash_aliases
-#
-# supplementary variables and aliases for bash(1) to set.
+# Supplementary variables and aliases for bash(1) to set.
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -33,4 +34,5 @@ alias ip='ip --color=auto'
 alias l='ls -ACF --color=always'
 alias ll='ls -aFhl --color=always'
 alias ls='ls -AFhl --color=always'
+alias rtmux='tmux source ~/.config/tmux/tmux.conf'
 alias vdir='vdir --color=auto'
