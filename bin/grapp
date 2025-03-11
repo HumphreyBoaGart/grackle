@@ -61,6 +61,10 @@ new)
       sudo usermod -aG app $name
       sudo usermod -aG $name nginx
       sudo usermod -c $domain $name
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
       sudo cp -v /opt/grackle/skel/etc/nginx/available/basic_http /etc/nginx/available/$name.conf
       sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
       sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/nginx/available/$name.conf
