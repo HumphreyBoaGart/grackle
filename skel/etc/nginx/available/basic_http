@@ -1,0 +1,32 @@
+##############################
+### Base Account Config ######
+##############################
+
+server {
+        listen 80;
+        server_name {{DOMAIN}};
+        include /etc/nginx/includes/headers.conf;
+        include /etc/nginx/includes/util.conf;
+        root /home/{{USERNAME}}/public_html;
+        error_log /home/{{USERNAME}}/logs/nginx/error.log warn;
+        #access_log /home/{{USERNAME}}/logs/nginx/access.log main;
+        location / {
+                try_files $uri $uri/ =404;
+                limit_except GET POST {
+                        deny all;
+                }
+        }
+}
+
+
+##############################
+### No-WWW Redirects #########
+##############################
+
+server {
+        listen 80;
+        server_name www.{{DOMAIN}};
+        include /etc/nginx/includes/headers.conf;
+        include /etc/nginx/includes/util.conf;
+        return 301 http://{{DOMAIN}}$request_uri;
+}

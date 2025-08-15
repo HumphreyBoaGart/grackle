@@ -1,0 +1,11 @@
+# GRACKLE APT CONFIG - sources.list
+# Generated From: /opt/grackle/skel/etc/apt/sources.list
+# Saves To: /etc/apt/sources.list
+#
+# Master sources file for apt package manager.
+# It is recommended to use "drop-in" modular files
+# in /etc/apt/sources.list.d/ instead of listing
+# repositories here.
+#
+# See /etc/apt/sources.list.d/debian.list for the
+# Debian operating system repositories.

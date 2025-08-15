@@ -1,0 +1,26 @@
+# GRACKLE APT CONFIG - debian.list
+# Generated From: /opt/grackle/skel/etc/apt/sources.list.d/debian.list
+# Saves To: /etc/apt/sources.list.d/debian.list
+#
+# Debian operating system repositories for apt package manager.
+
+# default SSL-enabled bookworm and bookworm-security repos for OS kernel & core;
+deb https://deb.debian.org/debian bookworm main contrib non-free-firmware
+#deb-src https://deb.debian.org/debian bookworm main contrib non-free-firmware
+deb https://security.debian.org/debian-security bookworm-security main contrib non-free-firmware
+#deb-src https://security.debian.org/debian-security bookworm-security main contrib non-free-firmware
+
+# bookworm-updates, to get updates before a point release is made;
+# see https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_updates_and_backports
+deb https://deb.debian.org/debian bookworm-updates main contrib non-free-firmware
+#deb-src https://deb.debian.org/debian bookworm-updates main contrib non-free-firmware
+
+# bookworm-backports repo, for even more fringe updates on case by case basis;
+deb https://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+#deb-src https://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+
+# testing repo, for access to packages from testing (aka 'trixie')
+# DO NOT UNCOMMENT THE FIRST LINE WITHOUT CONFIGURING APT PRIORITIES!
+# DOING SO WILL OVERWRITE STABLE PACKAGES WITH EVERYTHING FROM TESTING!
+#deb https://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+#deb-src https://deb.debian.org/debian trixie main contrib non-free non-free-firmware

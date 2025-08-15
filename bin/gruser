@@ -1,0 +1,220 @@
+#!/bin/bash
+# gruser - User Management component for Grackle
+# More info at https://github.com/HumphreyBoaGart/grackle
+
+### All script functions are thrown in a simple case statement
+case $1 in
+
+### Script documentation with 'gruser help'
+help | -h | --help)
+exec cat <<EOF
+  ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
+ ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
+ ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
+ ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
+ ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
+ $(tput setaf 4 bold)USER ACCOUNT MANAGEMENT:$(tput sgr0)
+  Omit USERNAME et al, to trigger interactive mode.
+
+  $(tput setaf 3 bold)Create new local user:$(tput sgr0)
+    $(tput setaf 6)gruser new USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Delete local user:$(tput sgr0)
+    $(tput bold)Only Account:$(tput sgr0) $(tput setaf 6)gruser delete USERNAME$(tput sgr0)
+    $(tput bold)Account & All Data:$(tput sgr0) $(tput setaf 6)gruser purge USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Reset user's homedir permissions:$(tput sgr0)
+    $(tput setaf 6)gruser fix-perms USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Grant user shell access:$(tput sgr0)
+    $(tput setaf 6)gruser shell-on USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Revoke user's shell access:$(tput sgr0)
+    $(tput setaf 6)gruser shell-off USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Upgrade user to administrator:$(tput sgr0)
+    $(tput setaf 6)gruser admin-on USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Downgrade user from administrator:$(tput sgr0)
+    $(tput setaf 6)gruser admin-off USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
+    $(tput setaf 6)grackle help$(tput sgr0)
+
+EOF
+;;
+
+### Generate new local user account with 'gruser new'
+new)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username for your new user:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo useradd $name -Um --skel /opt/grackle/skel/home/user --shell /sbin/nologin
+    sudo usermod -aG user $name
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
+    gruser fix-perms $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Upgrade user to administrator with 'gruser admin-on'
+admin-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to grant admin access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -aG admin $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Downgrade user from administrator with 'gruser admin-off'
+admin-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke admin access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG admin $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Grant user shell access with 'gruser shell-on'
+shell-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -s /bin/bash $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Grant user shell access with 'gruser shell-off'
+shell-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -s /sbin/nologin $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Delete local user account and keep homedir with 'gruser delete'
+delete)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Which account shall we delete?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG $name nginx
+    sudo userdel -f $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Nuke local user account and all data with 'gruser purge'
+purge)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Which account shall we purge?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG $name nginx
+    sudo userdel -rf $name
+    sudo rm -rf /home/$name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Permissions-Fixing Utilities with 'gruser fix-perms'
+fix-perms)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo chown -Rv $name:$name /home/$name
+    sudo chmod -Rv u+rwX,g-rwx,o-rwx /home/$name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Output error for any input not explicitly defined
+*)
+exec cat <<EOF
+
+  $(tput setaf 1 bold)GRACKLE ERROR: No valid command specified!$(tput sgr0)
+
+   Run $(tput setaf 6 bold)gruser help$(tput sgr0) for a full list of User Management commands.
+   Run $(tput setaf 6 bold)grackle help$(tput sgr0) for a full list of Grackle components.
+
+EOF
+;;
+
+### Close initial case statement and move on with our life
+esac

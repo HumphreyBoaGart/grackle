@@ -1,0 +1,312 @@
+#!/bin/bash
+# grapp - Application management component for Grackle
+# More info at https://github.com/HumphreyBoaGart/grackle
+
+### All script functions are thrown in a simple case statement
+case $1 in
+
+### Script documentation with 'grapp help'
+help | -h | --help)
+exec cat <<EOF
+  ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
+ ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
+ ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
+ ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
+ ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
+ $(tput setaf 4 bold)APP ACCOUNT MANAGEMENT:$(tput sgr0)
+  Omit USERNAME et al, to trigger interactive mode.
+
+  $(tput setaf 3 bold)Create new app account:$(tput sgr0)
+    $(tput setaf 6)grapp new USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Delete app account:$(tput sgr0)
+    $(tput bold)Only Account:$(tput sgr0) $(tput setaf 6)grapp delete USERNAME$(tput sgr0)
+    $(tput bold)Account & All Data:$(tput sgr0) $(tput setaf 6)grapp purge USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Fix app's homedir permissions:$(tput sgr0)
+    $(tput bold)General Fix:$(tput sgr0) $(tput setaf 6)grapp fix-perms USERNAME$(tput sgr0)
+    $(tput bold)Deep Fix (Careful!):$(tput sgr0) $(tput setaf 6)grapp fix-perms-deep USERNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
+    $(tput setaf 6)grackle help$(tput sgr0)
+
+EOF
+;;
+
+### Generate new application account with 'grapp new'
+new)
+  if [[ $2 != '' ]] && [[ $3 != '' ]]; then
+    name=${2// /_} # Remove spaces
+    name=${name//[^a-zA-Z0-9_]/} # Remove anything not alphanumeric or _
+    domain=${3// /_} # Remove spaces
+    domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
+    domain=${domain#[-.]}  # Remove leading - or .
+    domain=${domain%[-.]}  # Remove trailing - or l
+    echo " $(tput setaf 6 bold)Please enter a username for your new application:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_} # Remove spaces
+    name=${name//[^a-zA-Z0-9_]/} # Remove anything not alphanumeric or _
+    echo " $(tput setaf 6 bold)Please enter the address of your new application:$(tput sgr0)"
+    echo -n "  (ie: domain.com) "
+    read -r domain
+    domain=${domain// /_} # Remove spaces
+    domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
+    domain=${domain#[-.]}  # Remove leading - or .
+    domain=${domain%[-.]}  # Remove trailing - or l
+  fi
+  if [[ $name != '' ]]; then
+    if [[ $domain != '' ]]; then
+      sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
+      sudo usermod -aG app $name
+      sudo usermod -aG $name nginx
+      sudo usermod -c $domain $name
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
+      sudo cp -v /opt/grackle/skel/etc/nginx/available/basic_http /etc/nginx/available/$name.conf
+      sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/nginx/available/$name.conf
+      sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/nginx/available/$name.conf
+      grapp fix-perms-deep $name
+      sudo chown -Rv root:nginx /etc/nginx
+      sudo chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
+      grackle reset-web
+    else
+      exec echo " $(tput setaf 1 bold)ERROR: You did not enter an address for your application!$(tput sgr0)"
+    fi
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username for your application!$(tput sgr0)"
+  fi
+;;
+
+### Delete application account, preserving data with 'grapp delete'
+delete)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG $name nginx
+    sudo userdel -f $name
+    sudo rm -rf /etc/nginx/active/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
+### Revoke web access to app with 'grapp web-off'
+web-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to revoke web access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo rm /etc/nginx/active/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+### Enable web access to app with 'grapp web-on'
+web-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to restore web access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+### Set up PHP access for app with 'grapp php-setup'
+php-setup)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to grant PHP access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo cp -v /opt/grackle/skel/etc/php/pool.d/pool.conf /etc/php/8.3/fpm/pool.available/$name.conf
+    sudo ln -s /etc/php/8.3/fpm/pool.available/$name.conf /etc/php/8.3/fpm/pool.d/$name.conf
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.3/fpm/pool.available/$name.conf
+    #sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/php/8.3/fpm/pool.available/$name.conf
+    sudo mkdir -pv /home/$name/.local/share/php/opcache/file
+    sudo mkdir -pv /home/$name/.local/share/php/opcache/lock
+    sudo mkdir -pv /home/$name/.local/share/php/sessions
+    sudo mkdir -pv /home/$name/.local/share/php/soap
+    sudo mkdir -pv /home/$name/.local/share/php/tmp_upload
+    grapp fix-perms $name
+    grackle reset-php
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+### Disable PHP access for app with 'grapp php-off'
+php-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to revoke PHP access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo rm /etc/php/8.3/fpm/pool.d/$name.conf
+    grackle reset-php
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+### Enable PHP access for app with 'grapp php-on'
+php-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to enable PHP access for:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo ln -s /etc/php/8.3/fpm/pool.available/$name.conf /etc/php/8.3/fpm/pool.d/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+### Nuke application account and all data with 'grapp purge'
+purge)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which application shall we purge?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG $name nginx
+    sudo userdel -rf $name
+    sudo rm -rf /home/$name /etc/nginx/active/$name.conf /etc/nginx/available/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
+### Permissions-Fixing Utilities with 'grapp fix-perms'
+fix-perms)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -aG app $name
+    sudo chown -R $name:$name /home/$name
+    sudo chmod u+rwX,g+rX,o+rX /home/$name
+    sudo chmod g-w,o-w /home/$name
+    sudo chmod u+rwX,g+rX /home/$name/public_html
+    sudo chmod g-w,o-rwx /home/$name/public_html
+    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/private_html
+    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
+    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
+    sudo chmod -R g+rX /home/$name/.local/share/php
+    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
+    sudo chmod -R g+rwX /home/$name/logs/nginx
+    sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
+
+    sudo chmod u+rwX,g+rX /home/$name
+    sudo chmod g-w,o-rwx /home/$name
+ else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+fix-perms-deep)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -aG app $name
+    sudo chown -R $name:$name /home/$name
+    sudo chmod u+rwX,g+rX,o+rX /home/$name
+    sudo chmod g-w,o-w /home/$name
+    sudo chmod -R u+rwX,g+rX /home/$name/public_html
+    sudo chmod -R g-w,o-rwx /home/$name/public_html
+    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/private_html
+    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
+    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
+    sudo chmod -R g+rX /home/$name/.local/share/php
+    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
+    sudo chmod -R g+rwX /home/$name/logs/nginx
+    sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
+    sudo chown root:root /home/$name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Output error for any input not explicitly defined
+*)
+exec cat <<EOF
+
+  $(tput setaf 1 bold)GRACKLE ERROR: No valid command specified!$(tput sgr0)
+
+   Run $(tput setaf 6 bold)grapp help$(tput sgr0) for a full list of App Management commands.
+   Run $(tput setaf 6 bold)grackle help$(tput sgr0) for a full list of Grackle components.
+
+EOF
+;;
+
+### Close initial case statement and move on with our life
+esac

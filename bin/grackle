@@ -1,0 +1,70 @@
+#!/bin/bash
+# grackle - Simple web server management for the people!
+# More info at https://github.com/HumphreyBoaGart/grackle
+
+### All script functions are thrown in a simple case statement
+case $1 in
+
+### Script documentation with 'grackle help'
+help | -h | --help)
+exec cat <<EOF
+  ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
+ ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
+ ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
+ ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
+ ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
+ $(tput setaf 4 bold)UTILITY COMMANDS:$(tput sgr0)
+
+  $(tput setaf 3 bold)Flush & reset all services:$(tput sgr0)
+    $(tput setaf 6)grackle reset$(tput sgr0)
+
+    $(tput bold)Or, to reset individual components:$(tput sgr0)
+    $(tput setaf 6)grackle reset-web$(tput sgr0)
+    $(tput setaf 6)grackle reset-php$(tput sgr0)
+
+ $(tput setaf 4 bold)DOCUMENTATION INDEX:$(tput sgr0)
+
+  $(tput setaf 3 bold)Install Grackle components:$(tput sgr0)
+    $(tput setaf 6)grinstall help$(tput sgr0)
+
+  $(tput setaf 3 bold)Manage app accounts:$(tput sgr0)
+    $(tput setaf 6)grapp help$(tput sgr0)
+
+  $(tput setaf 3 bold)Manage user accounts:$(tput sgr0)
+    $(tput setaf 6)gruser help$(tput sgr0)
+
+  $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
+    $(tput setaf 6)grackle help$(tput sgr0)
+
+EOF
+;;
+
+### Flush & reset web services with 'grackle reset'
+reset)
+  systemctl reload php8.3-fpm
+  systemctl restart php8.3-fpm
+  systemctl reload nginx
+  systemctl restart nginx
+;;
+reset-php)
+  systemctl reload php8.3-fpm
+  systemctl restart php8.3-fpm
+;;
+reset-web | reset-nginx)
+  systemctl reload nginx
+  systemctl restart nginx
+;;
+
+### Output error for any input not explicitly defined
+*)
+exec cat <<EOF
+
+  $(tput setaf 1 bold)GRACKLE ERROR: No valid command specified!$(tput sgr0)
+
+   Run $(tput setaf 6 bold)grackle help$(tput sgr0) for a full list of commands.
+
+EOF
+;;
+
+### Close initial case statement and move on with our life
+esac

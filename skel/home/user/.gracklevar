@@ -1,0 +1,5 @@
+account:
+  user: {{USER}}
+  name: {{NAME}}
+  type: app
+  email: {{CONTACT}}

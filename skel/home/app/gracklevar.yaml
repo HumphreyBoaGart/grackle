@@ -1,0 +1,9 @@
+---
+test: test2
+account:
+  user: {{USER}}
+  name: {{NAME}}
+  type: app
+  email: {{CONTACT}}
+app:
+  domain {{DOMAIN}}
