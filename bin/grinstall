@@ -233,7 +233,7 @@ update)
 
   # Delete old homedir contents and resync to repo
   sudo rm -rfv /opt/grackle
-  sudo git clone https://grackle.lanterns.io/grackle.git /opt/grackle
+  sudo git clone https://repos.lanterns.io/grackle.git /opt/grackle
 
   # Clean up homedir permissions
   sudo chown -vR root:root /opt/grackle
