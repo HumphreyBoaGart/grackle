@@ -59,7 +59,7 @@ new)
     name=${name// /_} # Remove spaces
     name=${name//[^a-zA-Z0-9_]/} # Remove anything not alphanumeric or _
     echo " $(tput setaf 6 bold)Please enter the address of your new application:$(tput sgr0)"
-    echo -n "  (ie: domain.com) "
+    echo -n "  (ie: domain.com or subdomain.domain.com) "
     read -r domain
     domain=${domain// /_} # Remove spaces
     domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
