@@ -46,7 +46,7 @@ base)
   sudo groupadd user
   sudo groupadd app
 
-  # Clean up homedir permissions
+  # Clean up permissions
   sudo chown -vR root:root /opt/grackle
   sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
   sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
@@ -231,12 +231,12 @@ full)
 ### Update Grackle with 'grinstall update'
 update)
 
-  # Delete old homedir contents and resync to repo
+  # Delete old /opt/ contents and resync to repo
   sudo rm -rfv /opt/grackle
   # Edit URL here to enable updating Grackle from custom fork
   sudo git clone https://repos.lanterns.io/grackle.git /opt/grackle
 
-  # Clean up homedir permissions
+  # Clean up permissions
   sudo chown -vR root:root /opt/grackle
   sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
   sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
@@ -254,11 +254,11 @@ update)
 # to switch back & forth between stock & forked Grackle packages
 update-src)
 
-  # Delete old homedir contents and resync to repo
+  # Delete old /opt/ contents and resync to repo
   sudo rm -rfv /opt/grackle
   sudo git clone https://repos.lanterns.io/grackle.git /opt/grackle
 
-  # Clean up homedir permissions
+  # Clean up permissions
   sudo chown -vR root:root /opt/grackle
   sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
   sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
