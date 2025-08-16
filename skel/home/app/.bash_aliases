@@ -25,6 +25,7 @@ export XDG_DATA_DIRS="$HOME/.local/share/applications:/usr/local/share/:/usr/sha
 export XDG_DATA_HOME="$HOME/.local/share"
 
 # Misc Aliases
+alias commit='git add * && git commit -m'
 alias diff='diff --color=auto'
 alias dir='dir --color=auto'
 alias egrep='egrep --color=auto'
