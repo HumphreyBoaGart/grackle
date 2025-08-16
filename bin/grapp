@@ -66,7 +66,7 @@ new)
     domain=${domain%[-.]}  # Remove trailing - or l
   fi
 
-  # Create new app with sanitized inputs
+  # Create new app with sanitized inputs, but only if we have both
   if [[ $name != '' ]] && [[ $domain != '' ]]; then
     sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
     sudo usermod -aG app $name
