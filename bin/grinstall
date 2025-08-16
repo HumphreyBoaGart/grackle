@@ -233,6 +233,29 @@ update)
 
   # Delete old homedir contents and resync to repo
   sudo rm -rfv /opt/grackle
+  # Edit URL here to enable updating Grackle from custom fork
+  sudo git clone https://repos.lanterns.io/grackle.git /opt/grackle
+
+  # Clean up homedir permissions
+  sudo chown -vR root:root /opt/grackle
+  sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  sudo chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  sudo chmod -v u=rwx /opt/grackle/bin/grinstall
+  sudo chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  sudo chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  sudo chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
+
+  # Close updater
+;;
+
+### Update Grackle to latest stock package with 'grinstall update-src'
+# Use this command in conjunction with modified 'grinstall update' above
+# to switch back & forth between stock & forked Grackle packages
+update-src)
+
+  # Delete old homedir contents and resync to repo
+  sudo rm -rfv /opt/grackle
   sudo git clone https://repos.lanterns.io/grackle.git /opt/grackle
 
   # Clean up homedir permissions
