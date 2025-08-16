@@ -46,7 +46,6 @@ new)
     domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
     domain=${domain#[-.]}  # Remove leading - or .
     domain=${domain%[-.]}  # Remove trailing - or l
-
   fi
 
   # Otherwise, go to interactive mode
@@ -89,27 +88,6 @@ new)
   # Fail and quit if inputs are still empty
   else
     exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you enter a name AND address!$(tput sgr0)"
-  fi
-;;
-
-### Delete application account, preserving data with 'grapp delete'
-delete)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    sudo usermod -rG $name nginx
-    sudo userdel -f $name
-    sudo rm -rf /etc/nginx/active/$name.conf
-    grackle reset-web
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
 ;;
 
@@ -222,6 +200,28 @@ php-on)
   fi
 ;;
 
+### Delete application account, preserving data with 'grapp delete'
+delete)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
+    echo -n "  (WARNING: OBNOXIOUS TO UNDO!) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG $name nginx
+    sudo userdel -f $name
+    sudo rm -rf /etc/nginx/active/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
 ### Nuke application account and all data with 'grapp purge'
 purge)
   if [[ $2 != '' ]]; then
@@ -229,6 +229,7 @@ purge)
     name=${name//[^a-zA-Z0-9_]/}
   else
     echo " $(tput setaf 6 bold)Which application shall we purge?$(tput sgr0)"
+    echo -n "  (WARNING: CANNOT BE UNDONE!) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
