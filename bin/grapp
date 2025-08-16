@@ -35,13 +35,24 @@ EOF
 
 ### Generate new application account with 'grapp new'
 new)
+
+  # Fill in name & domain to skip interactive mode
   if [[ $2 != '' ]] && [[ $3 != '' ]]; then
+
+    # Filter input
     name=${2// /_} # Remove spaces
     name=${name//[^a-zA-Z0-9_]/} # Remove anything not alphanumeric or _
     domain=${3// /_} # Remove spaces
     domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
     domain=${domain#[-.]}  # Remove leading - or .
     domain=${domain%[-.]}  # Remove trailing - or l
+
+  fi
+
+  # Otherwise, go to interactive mode
+  if [[ $2 = '' ]] && [[ $3 = '' ]]; then
+
+    # Ask for user input and filter
     echo " $(tput setaf 6 bold)Please enter a username for your new application:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
@@ -55,29 +66,29 @@ new)
     domain=${domain#[-.]}  # Remove leading - or .
     domain=${domain%[-.]}  # Remove trailing - or l
   fi
-  if [[ $name != '' ]]; then
-    if [[ $domain != '' ]]; then
-      sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
-      sudo usermod -aG app $name
-      sudo usermod -aG $name nginx
-      sudo usermod -c $domain $name
-      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
-      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
-      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
-      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
-      sudo cp -v /opt/grackle/skel/etc/nginx/available/basic_http /etc/nginx/available/$name.conf
-      sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
-      sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/nginx/available/$name.conf
-      sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/nginx/available/$name.conf
-      grapp fix-perms-deep $name
-      sudo chown -Rv root:nginx /etc/nginx
-      sudo chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
-      grackle reset-web
-    else
-      exec echo " $(tput setaf 1 bold)ERROR: You did not enter an address for your application!$(tput sgr0)"
-    fi
+
+  # Create new app with sanitized inputs
+  if [[ $name != '' ]] && [[ $domain != '' ]]; then
+    sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
+    sudo usermod -aG app $name
+    sudo usermod -aG $name nginx
+    sudo usermod -c $domain $name
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
+    sudo cp -v /opt/grackle/skel/etc/nginx/available/basic_http /etc/nginx/available/$name.conf
+    sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/nginx/available/$name.conf
+    sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/nginx/available/$name.conf
+    grapp fix-perms-deep $name
+    sudo chown -Rv root:nginx /etc/nginx
+    sudo chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
+    grackle reset-web
+
+  # Fail and quit if inputs are still empty
   else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username for your application!$(tput sgr0)"
+    exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you enter a name AND address!$(tput sgr0)"
   fi
 ;;
 
