@@ -82,7 +82,7 @@ base)
   ufw allow out 123/udp
   ufw allow out 443/tcp
   ufw enable
-  apt install fail2ban
+  apt install -y fail2ban
   cp /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
   systemctl enable fail2ban
   systemctl start fail2ban
