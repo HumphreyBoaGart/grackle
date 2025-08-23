@@ -37,74 +37,78 @@ EOF
 base)
 
   # Create usergroups and import new root .dotfiles
-  sudo cp -bv /opt/grackle/skel/root/.bash_logout /root/.bash_logout
-  sudo cp -bv /opt/grackle/skel/root/.bashrc /root/.bashrc
-  sudo cp -bv /opt/grackle/skel/root/.profile /root/.profile
-  sudo mkdir -pv /root/.config/ranger
-  sudo cp -bv /opt/grackle/skel/root/.config/ranger/rc.conf /root/.config/ranger/rc.conf
-  sudo groupadd admin
-  sudo groupadd user
-  sudo groupadd app
+  cp -bv /opt/grackle/skel/root/.bash_logout /root/.bash_logout
+  cp -bv /opt/grackle/skel/root/.bashrc /root/.bashrc
+  cp -bv /opt/grackle/skel/root/.profile /root/.profile
+  mkdir -pv /root/.config/ranger
+  cp -bv /opt/grackle/skel/root/.config/ranger/rc.conf /root/.config/ranger/rc.conf
+  groupadd admin
+  groupadd user
+  groupadd app
 
   # Clean up permissions
-  sudo chown -vR root:root /opt/grackle
-  sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
-  sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
-  sudo chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
-  sudo chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
-  sudo chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
-  sudo chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
+  chown -vR root:root /opt/grackle
+  chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Configure apt
-  sudo cp -bv /opt/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
-  sudo cp -bv /opt/grackle/skel/etc/apt/sources.list.d/debian.list /etc/apt/sources.list.d/debian.list
-  sudo chmod -vR u+rwX,g+rX,o+rX /etc/apt/
-  sudo apt update
+  cp -bv /opt/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
+  cp -bv /opt/grackle/skel/etc/apt/sources.list.d/debian.list /etc/apt/sources.list.d/debian.list
+  chmod -vR u+rwX,g+rX,o+rX /etc/apt/
+  apt update
 
   # Install additional packages
-  sudo apt install -y apt-transport-https ca-certificates debian-archive-keyring gnupg2 lsb-release
-  sudo apt install -y 7zip bzip2 gzip imagemagick mawk tar unzip zip
-  sudo apt install -y -t bookworm-backports 7zip curl tmux
-  sudo apt purge -y ntp
-  sudo apt install -y btop chrony git htop logrotate ranger rsyslog ufw wget
-  sudo systemctl enable chrony
-  sudo systemctl enable ufw
+  apt install -y apt-transport-https ca-certificates debian-archive-keyring gnupg2 lsb-release
+  apt install -y 7zip bzip2 gzip imagemagick mawk sudo tar unzip zip
+  apt install -y -t bookworm-backports 7zip curl tmux
+  apt purge -y ntp
+  apt install -y btop chrony git htop logrotate ranger rsyslog ufw wget
+  systemctl enable chrony
+  systemctl enable ufw
 
-  # Configure firewall
-  sudo ufw reset
-  sudo ufw default deny incoming
-  sudo ufw default deny outgoing
-  sudo ufw allow 22/tcp
-  sudo ufw allow out 22/tcp
-  sudo ufw allow out 53/tcp
-  sudo ufw allow out 53/udp
-  sudo ufw allow out 80/tcp
-  sudo ufw allow out 123/udp
-  sudo ufw allow out 443/tcp
-  sudo ufw enable
+  # Configure firewall & fail2ban
+  ufw reset
+  ufw default deny incoming
+  ufw default deny outgoing
+  ufw allow 22/tcp
+  ufw allow out 22/tcp
+  ufw allow out 53/tcp
+  ufw allow out 53/udp
+  ufw allow out 80/tcp
+  ufw allow out 123/udp
+  ufw allow out 443/tcp
+  ufw enable
+  apt install fail2ban
+  cp /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
+  systemctl enable fail2ban
+  systemctl start fail2ban
 
   # Configure syslog
-  sudo cp -Rv /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
-  sudo rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
-  sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
-  sudo cp -Rv /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
-  sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
-  sudo systemctl enable rsyslog
-  sudo systemctl restart rsyslog
-  sudo systemctl restart systemd-journald
-  sudo rm -rfv /var/log/journal /var/log/syslog
+  cp -Rv /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
+  rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
+  cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
+  cp -Rv /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
+  cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
+  systemctl enable rsyslog
+  systemctl restart rsyslog
+  systemctl restart systemd-journald
+  rm -rfv /var/log/journal /var/log/syslog
 
   # Configure environment
-  sudo apt install -y tmux-plugin-manager
+  apt install -y tmux-plugin-manager
 
   # Additional configuration
-  sudo rm -v /etc/adduser.conf
-  sudo cp -bv /opt/grackle/skel/etc/ssh/sshd_config /etc/ssh/sshd_config
-  sudo cp -v /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
-  sudo useradd -D -s /sbin/nologin
-  sudo rm -v /etc/motd /etc/issue /etc/issue.net
-  sudo touch /etc/issue /etc/issue/net
-  sudo cp -bv /opt/grackle/skel/etc/motd /etc/motd
+  rm -v /etc/adduser.conf
+  cp -bv /opt/grackle/skel/etc/ssh/sshd_config /etc/ssh/sshd_config
+  cp -v /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
+  useradd -D -s /sbin/nologin
+  rm -v /etc/motd /etc/issue /etc/issue.net
+  touch /etc/issue /etc/issue/net
+  cp -bv /opt/grackle/skel/etc/motd /etc/motd
 
   # Close installer
 ;;
@@ -118,22 +122,22 @@ docker)
 ftp)
 
   # Install vsftp
-  sudo apt install -y vsftpd
-  sudo systemctl enable vsftpd
-  sudo rm /etc/vsftpd.conf
-  sudo cp -v /opt/grackle/skel/etc/vsftpd.conf /etc/vsftpd.conf
-  sudo service vsftpd restart
+  apt install -y vsftpd
+  systemctl enable vsftpd
+  rm /etc/vsftpd.conf
+  cp -v /opt/grackle/skel/etc/vsftpd.conf /etc/vsftpd.conf
+  service vsftpd restart
 
   # Update firewall rules
-  sudo ufw allow out 20/tcp
-  sudo ufw allow 21/tcp
-  sudo ufw allow out 21/tcp
-  sudo ufw allow out 989/tcp
-  sudo ufw allow 990/tcp
-  sudo ufw allow out 990/tcp
-  sudo ufw allow 40000:50000/tcp
-  sudo ufw allow out 40000:50000/tcp
-  sudo ufw reload
+  ufw allow out 20/tcp
+  ufw allow 21/tcp
+  ufw allow out 21/tcp
+  ufw allow out 989/tcp
+  ufw allow 990/tcp
+  ufw allow out 990/tcp
+  ufw allow 40000:50000/tcp
+  ufw allow out 40000:50000/tcp
+  ufw reload
 
   # Close installer
 ;;
@@ -147,43 +151,43 @@ mail)
 nginx)
 
   # Configure official Nginx repo
-  sudo curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
-    | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-  sudo chmod a+r /usr/share/keyrings/nginx-archive-keyring.gpg
-  sudo echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+  curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+    | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+  chmod a+r /usr/share/keyrings/nginx-archive-keyring.gpg
+  echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
     http://nginx.org/packages/debian `lsb_release -cs` nginx" \
-    | sudo tee /etc/apt/sources.list.d/nginx.list
-  sudo chmod a+r /etc/apt/sources.list.d/nginx.list
+    | tee /etc/apt/sources.list.d/nginx.list
+  chmod a+r /etc/apt/sources.list.d/nginx.list
   echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
-    | sudo tee /etc/apt/preferences.d/99nginx
-  sudo chmod a+r /etc/apt/preferences.d/99nginx
+    | tee /etc/apt/preferences.d/99nginx
+  chmod a+r /etc/apt/preferences.d/99nginx
 
   # Install Nginx
-  sudo apt update
-  sudo apt install -y nginx
-  sudo systemctl start nginx
-  sudo systemctl enable nginx
+  apt update
+  apt install -y nginx
+  systemctl start nginx
+  systemctl enable nginx
 
   # Configure Nginx
-  sudo mkdir -pv /etc/nginx/active /etc/nginx/available /etc/nginx/gates /etc/nginx/includes
-  sudo rm -rf /etc/nginx/conf.d/ /etc/nginx/nginx.conf
-  sudo cp -v /opt/grackle/skel/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-  sudo cp -Rv /opt/grackle/skel/etc/nginx/includes/headers.conf /etc/nginx/includes/headers.conf
-  sudo cp -Rv /opt/grackle/skel/etc/nginx/includes/ssl.conf /etc/nginx/includes/ssl.conf
-  sudo cp -Rv /opt/grackle/skel/etc/nginx/includes/util.conf /etc/nginx/includes/util.conf
-  sudo chgrp -Rv nginx /etc/nginx
-  sudo chmod -Rv g+rX /etc/nginx
-  sudo mkdir -pv /var/log/nginx
-  sudo chown -Rv nginx:admin /var/log/nginx
-  sudo chmod -Rv u+rwX,g+rX,o-rwX /var/log/nginx
+  mkdir -pv /etc/nginx/active /etc/nginx/available /etc/nginx/gates /etc/nginx/includes
+  rm -rf /etc/nginx/conf.d/ /etc/nginx/nginx.conf
+  cp -v /opt/grackle/skel/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+  cp -Rv /opt/grackle/skel/etc/nginx/includes/headers.conf /etc/nginx/includes/headers.conf
+  cp -Rv /opt/grackle/skel/etc/nginx/includes/ssl.conf /etc/nginx/includes/ssl.conf
+  cp -Rv /opt/grackle/skel/etc/nginx/includes/util.conf /etc/nginx/includes/util.conf
+  chgrp -Rv nginx /etc/nginx
+  chmod -Rv g+rX /etc/nginx
+  mkdir -pv /var/log/nginx
+  chown -Rv nginx:admin /var/log/nginx
+  chmod -Rv u+rwX,g+rX,o-rwX /var/log/nginx
 
   # Install Certbot
-  sudo apt install -y certbot python3-certbot-nginx
+  apt install -y certbot python3-certbot-nginx
 
   # Update firewall rules and reload Nginx
-  sudo ufw allow 80/tcp
-  sudo ufw allow 443/tcp
-  sudo ufw reload
+  ufw allow 80/tcp
+  ufw allow 443/tcp
+  ufw reload
   grackle reset-web
 
   # Close installer
@@ -193,22 +197,22 @@ nginx)
 php)
 
   # Configure Sury repo for newer PHP releases
-  sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
-  sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
-  sudo echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] \
+  curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+  dpkg -i /tmp/debsuryorg-archive-keyring.deb
+  echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] \
      https://packages.sury.org/php/ $(lsb_release -sc) main" \
      > /etc/apt/sources.list.d/php.list
-  sudo chmod a+r /etc/apt/sources.list.d/php.list
-  sudo apt update
+  chmod a+r /etc/apt/sources.list.d/php.list
+  apt update
 
   # Install PHP 8.3 & PHP-FPM from Sury
-  sudo apt install -y php8.3 php8.3-fpm php8.3-{bz2,cli,curl,gd,imagick,intl,mbstring,opcache,readline,xml,zip}
-  sudo systemctl enable php8.3-fpm
+  apt install -y php8.3 php8.3-fpm php8.3-{bz2,cli,curl,gd,imagick,intl,mbstring,opcache,readline,xml,zip}
+  systemctl enable php8.3-fpm
 
   # Configure PHP-FPM
-  sudo mkdir -pv /etc/php/8.3/fpm/pool.available
-  sudo rm /etc/php/8.3/fpm/pool.d/www.conf
-  sudo cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
+  mkdir -pv /etc/php/8.3/fpm/pool.available
+  rm /etc/php/8.3/fpm/pool.d/www.conf
+  cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
   grackle reset-php
 
   # Close installer
@@ -216,35 +220,35 @@ php)
 
 ### Basic web server stack with 'grinstall web'
 web)
-  sudo bash /opt/grackle/bin/grinstall base
-  sudo bash /opt/grackle/bin/grinstall nginx
+  bash /opt/grackle/bin/grinstall base
+  bash /opt/grackle/bin/grinstall nginx
 ;;
 
 ### Full stack install with 'grinstall full'
 full)
-  sudo bash /opt/grackle/bin/grinstall web
-  sudo bash /opt/grackle/bin/grinstall php
-  sudo bash /opt/grackle/bin/grinstall mail
-  sudo bash /opt/grackle/bin/grinstall docker
+  bash /opt/grackle/bin/grinstall web
+  bash /opt/grackle/bin/grinstall php
+  bash /opt/grackle/bin/grinstall mail
+  bash /opt/grackle/bin/grinstall docker
 ;;
 
 ### Update Grackle with 'grinstall update'
 update)
 
   # Delete old /opt/ contents and resync to repo
-  sudo rm -rfv /opt/grackle
+  rm -rfv /opt/grackle
   # Edit URL here to enable updating Grackle from custom fork
-  sudo git clone https://repos.lanterns.io/grackle.git /opt/grackle
+  git clone https://repos.lanterns.io/grackle.git /opt/grackle
 
   # Clean up permissions
-  sudo chown -vR root:root /opt/grackle
-  sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
-  sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
-  sudo chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
-  sudo chmod -v u=rwx /opt/grackle/bin/grinstall
-  sudo chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
-  sudo chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
-  sudo chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
+  chown -vR root:root /opt/grackle
+  chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -v u=rwx /opt/grackle/bin/grinstall
+  chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Close updater
 ;;
@@ -255,18 +259,18 @@ update)
 update-src)
 
   # Delete old /opt/ contents and resync to repo
-  sudo rm -rfv /opt/grackle
-  sudo git clone https://repos.lanterns.io/grackle.git /opt/grackle
+  rm -rfv /opt/grackle
+  git clone https://repos.lanterns.io/grackle.git /opt/grackle
 
   # Clean up permissions
-  sudo chown -vR root:root /opt/grackle
-  sudo chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
-  sudo chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
-  sudo chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
-  sudo chmod -v u=rwx /opt/grackle/bin/grinstall
-  sudo chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
-  sudo chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
-  sudo chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
+  chown -vR root:root /opt/grackle
+  chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -v u=rwx /opt/grackle/bin/grinstall
+  chgrp -v admin /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Close updater
 ;;
