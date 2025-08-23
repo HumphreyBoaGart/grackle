@@ -107,10 +107,10 @@ ClientAliveInterval 120
 #PidFile /run/sshd.pid
 #MaxStartups 10:30:100
 #PermitTunnel no
-#ChrootDirectory none
-#VersionAddendum none
-#Banner none
-#DebianBanner no
+ChrootDirectory %h
+VersionAddendum none
+Banner none
+DebianBanner no
 
 # Allow client to pass locale environment variables
 AcceptEnv LANG LC_*
@@ -125,3 +125,15 @@ Subsystem       sftp    internal-sftp
 #	AllowTcpForwarding no
 #	PermitTTY no
 #	ForceCommand cvs server
+
+Match Group adm
+        ChrootDirectory none
+        PermitRootLogin yes
+
+Match Group user
+        ChrootDirectory %h
+        PermitRootLogin no
+
+Match Group app
+        ChrootDirectory %h
+        PermitRootLogin no
