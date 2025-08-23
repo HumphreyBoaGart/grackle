@@ -1,0 +1,7 @@
+[DEFAULT]
+bantime = 24h
+bantime.increment = true
+bantime.factor = 2
+bantime.formula = ban.Time * (1<<(ban.Count if ban.Count<20 else 20)) * banFactor
+maxretry = 5
+banaction = ufw
