@@ -24,15 +24,15 @@ Imagine self-hosting not only your own web sites, but any browser-based web appl
 ### Requirements
 
 - Factory Debian 12 (Bookworm) install, no GUI
-- A root user account *(or temporary sudo user)*
+- A root user account
 - Git
 
 ### Instructions
 Run the following commands to install Grackle on your machine:
 ```
-sudo git clone https://repos.lanterns.io/grackle.git /opt/grackle
-sudo chmod u+rwx,g-rwx,o-rwx /opt/grackle/bin/grinstall
-sudo /opt/grackle/bin/grinstall MODE
+git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
+chmod u+rwx,g-rwx,o-rwx /opt/grackle/bin/grinstall
+/opt/grackle/bin/grinstall MODE
 ```
 Where "MODE" is any one of the following install types:
   * **base** (Bare minimum Grackle components)
