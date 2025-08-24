@@ -27,6 +27,10 @@ Imagine self-hosting not only your own web sites, but any browser-based web appl
 - A root user account
 - Git
 
+### Recommended
+
+- A properly set hostname that matches the FQDM specified for your server's reverse DNS
+
 ### Instructions
 Run the following commands to install Grackle on your machine:
 ```
