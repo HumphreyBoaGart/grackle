@@ -36,17 +36,8 @@ Run the following commands to install Grackle on your machine:
 ```
 git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 chmod u+rwx,g-rwx,o-rwx /opt/grackle/bin/grinstall
-/opt/grackle/bin/grinstall MODE
+/opt/grackle/bin/grinstall base
 ```
-Where "MODE" is any one of the following install types:
-  * **base** (Bare minimum Grackle components)
-  * **web** (Base package + Nginx web server)
-  * **full** (All components)
-
-Alternatively, "MODE" can be replaced with a la carte package names:
-  * **docker** (Docker component)
-  * **nginx** (Nginx component)
-  * **php** (PHP-FPM component)
 
 ### First-Time Configuration
 
