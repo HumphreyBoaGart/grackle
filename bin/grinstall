@@ -83,7 +83,8 @@ base)
   ufw allow out 443/tcp
   ufw enable
   apt install -y fail2ban
-  cp /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
+  cp -v /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
+  touch /var/log/auth.log
   systemctl enable fail2ban
   systemctl start fail2ban
 
@@ -238,7 +239,9 @@ update)
   # Delete old /opt/ contents and resync to repo
   rm -rfv /opt/grackle
   # Edit URL here to enable updating Grackle from custom fork
-  git clone https://repos.lanterns.io/grackle.git /opt/grackle
+  #git clone https://repos.lanterns.io/grackle.git /opt/grackle
+  # Update from Github mirror until official repo is un-fubar'd
+  git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
   # Clean up permissions
   chown -vR root:root /opt/grackle
@@ -260,7 +263,9 @@ update-src)
 
   # Delete old /opt/ contents and resync to repo
   rm -rfv /opt/grackle
-  git clone https://repos.lanterns.io/grackle.git /opt/grackle
+  #git clone https://repos.lanterns.io/grackle.git /opt/grackle
+  # Update from Github mirror until official repo is un-fubar'd
+  git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
   # Clean up permissions
   chown -vR root:root /opt/grackle
