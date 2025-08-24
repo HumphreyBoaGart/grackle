@@ -29,7 +29,7 @@ Imagine self-hosting not only your own web sites, but any browser-based web appl
 
 ### Recommended
 
-- A properly set hostname that matches the FQDM specified for your server's reverse DNS
+- A properly set hostname that matches the FQDN specified for your server's reverse DNS
 
 ### Instructions
 Run the following commands to install Grackle on your machine:
