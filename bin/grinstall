@@ -219,20 +219,6 @@ php)
   # Close installer
 ;;
 
-### Basic web server stack with 'grinstall web'
-web)
-  bash /opt/grackle/bin/grinstall base
-  bash /opt/grackle/bin/grinstall nginx
-;;
-
-### Full stack install with 'grinstall full'
-full)
-  bash /opt/grackle/bin/grinstall web
-  bash /opt/grackle/bin/grinstall php
-  bash /opt/grackle/bin/grinstall mail
-  bash /opt/grackle/bin/grinstall docker
-;;
-
 ### Update Grackle with 'grinstall update'
 update)
 
