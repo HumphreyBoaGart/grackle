@@ -14,8 +14,12 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+# Uncomment to run screen on login
+#screen -dRR
 # Uncomment to run tmux on login
 #[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit; }
+# Uncomment to run byobu on login
+#byobu
 
 # Uncomment to display # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.shortcuts at top of shell
