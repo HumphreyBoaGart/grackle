@@ -21,7 +21,7 @@ fi
 # Uncomment to run byobu on login
 #byobu
 
-# Output shortcuts
+# Output help & shortcut commands
 cat <<EOF
   ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
  ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
