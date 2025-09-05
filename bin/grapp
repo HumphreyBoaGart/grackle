@@ -257,8 +257,9 @@ fix-perms)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    # Make sure app account is in 'app' secondary usergroup
+    # Make sure app account is in the right usergroup
     sudo usermod -aG app $name
+    sudo usermod -rG user $name
     # Set initial homedir permissions
     sudo chown -R $name:$name /home/$name
     sudo chmod u+rwX,g+rX,o+rX /home/$name
@@ -292,8 +293,9 @@ fix-perms-deep)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    # Make sure app account is in 'app' secondary usergroup
+    # Make sure app account is in the right usergroup
     sudo usermod -aG app $name
+    sudo usermod -rG user $name
     # Set initial homedir permissions
     sudo chown -R $name:$name /home/$name
     sudo chmod u+rwX,g+rX,o+rX /home/$name
