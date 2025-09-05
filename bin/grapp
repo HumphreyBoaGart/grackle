@@ -257,7 +257,7 @@ fix-perms)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    # Make sure app account is in the right usergroup
+    # Make sure account is in the right group
     sudo usermod -aG app $name
     sudo usermod -rG user $name
     # Set initial homedir permissions
@@ -293,7 +293,7 @@ fix-perms-deep)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    # Make sure app account is in the right usergroup
+    # Make sure account is in the right group
     sudo usermod -aG app $name
     sudo usermod -rG user $name
     # Set initial homedir permissions
