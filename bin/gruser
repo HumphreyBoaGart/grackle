@@ -197,6 +197,10 @@ fix-perms)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
+    # Make sure app account is in the right usergroup
+    sudo usermod -aG user $name
+    sudo usermod -rG app $name
+    # Set homedir permissions
     sudo chown -Rv $name:$name /home/$name
     sudo chmod -Rv u+rwX,g-rwx,o-rwx /home/$name
   else
