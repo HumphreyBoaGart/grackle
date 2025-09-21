@@ -64,7 +64,7 @@ base)
   # Install additional packages
   apt install -y apt-transport-https ca-certificates debian-archive-keyring gnupg2 lsb-release
   apt install -y 7zip bzip2 gzip imagemagick mawk sudo tar unzip zip
-  apt install -y -t bookworm-backports 7zip curl tmux
+  apt install -y -t bookworm-backports 7zip curl byobu
   apt purge -y ntp
   apt install -y btop chrony git htop logrotate ranger rsyslog ufw wget
   systemctl enable chrony
@@ -98,9 +98,6 @@ base)
   systemctl restart rsyslog
   systemctl restart systemd-journald
   rm -rfv /var/log/journal /var/log/syslog
-
-  # Configure environment
-  apt install -y tmux-plugin-manager
 
   # Additional configuration
   rm -v /etc/adduser.conf
