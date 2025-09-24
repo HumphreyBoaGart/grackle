@@ -59,7 +59,7 @@ PubkeyAuthentication yes
 #IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
-PasswordAuthentication yes
+PasswordAuthentication no
 PermitEmptyPasswords no
 
 # Change to yes to enable challenge-response passwords (beware issues with
@@ -129,11 +129,14 @@ Subsystem       sftp    internal-sftp
 Match Group adm
         ChrootDirectory none
         PermitRootLogin yes
+        PasswordAuthentication no
 
 Match Group user
         ChrootDirectory none
         PermitRootLogin no
+        PasswordAuthentication yes
 
 Match Group app
         ChrootDirectory %h
         PermitRootLogin no
+        PasswordAuthentication yes
