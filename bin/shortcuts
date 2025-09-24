@@ -18,17 +18,5 @@ $(tput setaf 6 bold)Ctrl+W$(tput sgr0) — Cut word behind cursor
 $(tput setaf 6 bold)Alt+D$(tput sgr0) — Cut word following cursor
 $(tput setaf 6 bold)Ctrl+Y$(tput sgr0) — Paste most recently cut text
 $(tput setaf 6 bold)Alt+Y$(tput sgr0) — Rotate through previously cut text
-$(tput setaf 4 bold)TMUX SHORTCUTS:$(tput sgr0)
-Enter $(tput setaf 6 bold)Ctrl+Space$(tput sgr0), followed by:
-$(tput setaf 6 bold)Arrow Keys$(tput sgr0) — Move between panes
-$(tput setaf 6 bold)%$(tput sgr0) — Split pane horizontally
-$(tput setaf 6 bold)"$(tput sgr0) — Split pane vertically
-$(tput setaf 6 bold)x$(tput sgr0) — Close pane
-$(tput setaf 6 bold)c$(tput sgr0) — Create a new window
-$(tput setaf 6 bold)N or P$(tput sgr0) — Move to the next/previous window
-$(tput setaf 6 bold)0 (1,2...)$(tput sgr0) — Move to a specific window by number
-$(tput setaf 6 bold):$(tput sgr0) — Enter the command line to type commands
-$(tput setaf 6 bold)D$(tput sgr0) — Detach from the current session
-$(tput setaf 6 bold)?$(tput sgr0) — View all keybindings (Press Q to exit)
 EOF
 
