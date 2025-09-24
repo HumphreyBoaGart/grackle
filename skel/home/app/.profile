@@ -14,10 +14,8 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# Uncomment to run tmux on login
-# Since in most cases, you will be using your Tmux-enabled shell account to work on apps,
-# it is disabled by default for app accounts.
-#[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit; }
+# Uncomment to run byobu on login
+#exec byobu
 
 # Uncomment to display # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.shortcuts at top of shell
