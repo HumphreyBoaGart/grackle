@@ -14,9 +14,6 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# Uncomment to run byobu on login
-#exec byobu
-
 # Uncomment to display # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.shortcuts at top of shell
 #cat <<EOF
