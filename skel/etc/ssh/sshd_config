@@ -59,7 +59,7 @@ PubkeyAuthentication yes
 #IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
-PasswordAuthentication no
+PasswordAuthentication yes
 PermitEmptyPasswords no
 
 # Change to yes to enable challenge-response passwords (beware issues with
@@ -130,9 +130,9 @@ Match Group adm
         ChrootDirectory none
         PermitRootLogin yes
 
-Match Group user
-        ChrootDirectory %h
-        PermitRootLogin no
+#Match Group user
+#        ChrootDirectory %h
+#        PermitRootLogin no
 
 Match Group app
         ChrootDirectory %h
