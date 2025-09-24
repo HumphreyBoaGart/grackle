@@ -14,12 +14,12 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+# Uncomment to run byobu on login
+#byobu
 # Uncomment to run screen on login
 #screen -dRR
 # Uncomment to run tmux on login
 #[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit; }
-# Uncomment to run byobu on login
-#byobu
 
 # Output help & shortcut commands
 cat <<EOF
