@@ -274,8 +274,8 @@ fix-perms)
     sudo chmod -R g+rwX /home/$name/logs/nginx
     sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
     # Tweak top-level homedir permissions for SSH chrooting to work
-    sudo chmod u+rwX,g+rX /home/$name
-    sudo chmod g-w,o-rwx /home/$name
+    sudo chmod u+rwX,g+rX,o+rX /home/$name
+    sudo chmod g-w,o-w /home/$name
     sudo chown root:root /home/$name
  else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
@@ -310,8 +310,8 @@ fix-perms-deep)
     sudo chmod -R g+rwX /home/$name/logs/nginx
     sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
     # Tweak top-level homedir permissions for SSH chrooting to work
-    sudo chmod u+rwX,g+rX /home/$name
-    sudo chmod g-w,o-rwx /home/$name
+    sudo chmod u+rwX,g+rX,o+rX /home/$name
+    sudo chmod g-w,o-w /home/$name
     sudo chown root:root /home/$name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
