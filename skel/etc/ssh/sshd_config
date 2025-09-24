@@ -126,6 +126,11 @@ Subsystem       sftp    internal-sftp
 #	PermitTTY no
 #	ForceCommand cvs server
 
+Match Group app
+        ChrootDirectory %h
+        PermitRootLogin no
+        PasswordAuthentication yes
+
 Match Group adm
         ChrootDirectory none
         PermitRootLogin yes
@@ -133,10 +138,5 @@ Match Group adm
 
 Match Group user
         ChrootDirectory none
-        PermitRootLogin no
-        PasswordAuthentication yes
-
-Match Group app
-        ChrootDirectory %h
         PermitRootLogin no
         PasswordAuthentication yes
