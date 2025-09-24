@@ -130,9 +130,9 @@ Match Group adm
         ChrootDirectory none
         PermitRootLogin yes
 
-#Match Group user
-#        ChrootDirectory %h
-#        PermitRootLogin no
+Match Group user
+        ChrootDirectory none
+        PermitRootLogin no
 
 Match Group app
         ChrootDirectory %h
