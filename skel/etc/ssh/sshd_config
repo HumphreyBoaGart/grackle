@@ -119,27 +119,27 @@ AcceptEnv LANG LC_*
 #Subsystem      sftp    /usr/lib/openssh/sftp-server
 Subsystem       sftp    internal-sftp 
 
+# GRACKLE PERMISSIONS BLOCK - DO NOT MODIFY!
+# Grackle's chrooting+password policy depends on a very
+# specific layering of options. Do not modify this block!
+Match Group adm
+        PasswordAuthentication no
+Match Group app
+        ChrootDirectory %h
+        PermitRootLogin no
+        PasswordAuthentication yes
+Match Group adm
+        ChrootDirectory none
+        PermitRootLogin yes
+Match Group user
+        ChrootDirectory none
+        PermitRootLogin no
+        PasswordAuthentication yes
+
+# CUSTOM USER PERMISSIONS AREA - ADD TO BOTTOM
 # Example of overriding settings on a per-user basis
 #Match User anoncvs
 #	X11Forwarding no
 #	AllowTcpForwarding no
 #	PermitTTY no
 #	ForceCommand cvs server
-
-Match Group adm
-        PasswordAuthentication no
-
-Match Group app
-        ChrootDirectory %h
-        PermitRootLogin no
-        PasswordAuthentication yes
-
-Match Group adm
-        ChrootDirectory none
-        PermitRootLogin yes
-
-Match Group user
-        ChrootDirectory none
-        PermitRootLogin no
-        PasswordAuthentication yes
-
