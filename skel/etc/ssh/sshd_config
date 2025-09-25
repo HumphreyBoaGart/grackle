@@ -1,11 +1,11 @@
-# GRACKLE SSH CONFIG - sshd_config
+### GRACKLE SSH CONFIG - sshd_config
 # Generated From: /opt/grackle/skel/etc/ssh/sshd_config
 # Saves To: /etc/ssh/sshd_config
 #
 # This is the sshd server system-wide configuration file.
 # See sshd_config(5) for more information.
 
-# This file was copied here from /opt/grackle/skel/etc/ssh/sshd_config
+### This file was copied here from /opt/grackle/skel/etc/ssh/sshd_config
 
 # The strategy used for options in the default sshd_config shipped with
 # OpenSSH is to specify options with their default value where
@@ -15,8 +15,10 @@
 # Some of these are deliberately uncommented & set to default as a failsafe.
 # This file will likely be reorganized in future releases.
 
+### Include modular sshd configuration files
 Include /etc/ssh/sshd_config.d/*.conf
 
+### Daemon & Policy Options
 #Port 22
 #AddressFamily any
 #ListenAddress 0.0.0.0
@@ -115,11 +117,12 @@ DebianBanner no
 # Allow client to pass locale environment variables
 AcceptEnv LANG LC_*
 
+### SFTP Options
 # Define which SFTP subsystem to use
 #Subsystem      sftp    /usr/lib/openssh/sftp-server
 Subsystem       sftp    internal-sftp 
 
-# GRACKLE PERMISSIONS BLOCK - DO NOT MODIFY!
+### GRACKLE PERMISSIONS BLOCK - DO NOT MODIFY!
 # Grackle's chrooting+password policy depends on a very
 # specific layering of options, to preserve SFTP access
 # for chrooted low-level accounts, but restrict insecure
@@ -140,7 +143,12 @@ Match Group user
         PermitRootLogin no
         PasswordAuthentication yes
 
-# CUSTOM USER PERMISSIONS AREA - ADD TO BOTTOM
+### CUSTOM USER/GROUP PERMISSIONS AREA - ADD TO BOTTOM
+# For conflicting policies, the highest one in the list
+# takes priority.
+# DO NOT put any custom policies above this one, or you
+# will adversely affect your server's security!
+#
 # Example of overriding settings on a per-user basis
 #Match User anoncvs
 #	X11Forwarding no
