@@ -122,9 +122,10 @@ Subsystem       sftp    internal-sftp
 # GRACKLE PERMISSIONS BLOCK - DO NOT MODIFY!
 # Grackle's chrooting+password policy depends on a very
 # specific layering of options, to preserve SFTP access
-# for low-level accounts, but restrict admins. Messing
-# with this block WILL adversely affect your server's
-# security, so please don't molest it.
+# for chrooted low-level accounts, but restrict insecure
+# access to administrator accounts. Messing with this
+# block WILL adversely affect your server's security in
+# several ways, so please don't molest it.
 Match Group adm
         PasswordAuthentication no
 Match Group app
