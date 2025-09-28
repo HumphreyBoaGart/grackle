@@ -1,0 +1,6 @@
+set mbox_type=Maildir
+set folder="~/.local/mail"
+set spoolfile="~/.local/mail"
+set record="~/.local/mail/Sent"
+set postponed="~/.local/mail/Drafts"
+mailboxes `find ~/.local/mail -maxdepth 1 -type d -printf \"+\'%f\' \"`
