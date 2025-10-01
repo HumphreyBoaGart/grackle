@@ -153,6 +153,8 @@ php-setup)
     sudo mkdir -pv /home/$name/.local/share/php/sessions
     sudo mkdir -pv /home/$name/.local/share/php/soap
     sudo mkdir -pv /home/$name/.local/share/php/tmp_upload
+    sudo mkdir -pv /home/$name/logs/php-fpm
+    sudo cp -v /opt/grackle/skel/etc/php/logdir-readme.md /home/$name/logs/php-fpm/README.md
     grapp fix-perms $name
     grackle reset-php
   else
