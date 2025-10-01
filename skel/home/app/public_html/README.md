@@ -1,6 +1,6 @@
-# /public_html/
+# ~/public_html/
 
-The `/public_html/` directory is a predefined spot in your application's home directory for storing application code that you need to have visible to the web server.
+The `~/public_html/` directory is a predefined spot in your application's home directory for storing application code that you need to have visible to the web server.
 
 ***All files in this directory should be considered public to the outside world!*** Unless you have secured your code in this directory through other means, you should store sensitive data elsewhere, such as in [/private_html/](../private_html) or a secure database.
 
