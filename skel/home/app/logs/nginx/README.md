@@ -1,4 +1,4 @@
-# logs/nginx/
+# ~/logs/nginx/
 
 This directory is where Nginx dumps application-specific error logs.
 
