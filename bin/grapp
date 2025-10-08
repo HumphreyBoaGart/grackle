@@ -85,6 +85,10 @@ new)
     sudo chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
     grackle reset-web
 
+    # Make sure app username can't somehow get mail
+    echo "$name: /dev/null" >> /etc/aliases
+    newaliases
+
   # Fail and quit if inputs are still empty
   else
     exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you enter a name AND address!$(tput sgr0)"
