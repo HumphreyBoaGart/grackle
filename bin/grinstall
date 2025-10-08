@@ -168,6 +168,10 @@ mail)
   # Install base packages
   apt install -y postfix dovecot-lmtpd opendkim opendkim-tools opendmarc postfix-policyd-spf-python mutt
 
+  # Create postmaster account to catch utility emails
+  gruser new postmaster
+  gruser shell-on postmaster
+
   # Configure postfix & dovecot
 
 
