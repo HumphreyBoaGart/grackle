@@ -200,7 +200,12 @@ mail)
  ##TODO HERE> swap {HOSTNAME} for hostname in signing.table, key.table & trusted.hosts
  ##TODO HERE> generate DKIM key pair for hostname in /etc/opendkim/keys
  ##TODO HERE> finish setting proper permissions on /etc/opendkim files
+  mkdir /var/spool/postfix/opendkim
+  chown opendkim:postfix /var/spool/postfix/opendkim
+  cp -v /opt/grackle/skel/etc/default/opendkim /etc/default/opendkim
+ ##TODO HERE> check file/dir permissions in these last two commands
   systemctl enable opendkim
+  systemctl restart opendkim postfix
 
   # Configure OpenDMARC
   systemctl enable opendmarc
