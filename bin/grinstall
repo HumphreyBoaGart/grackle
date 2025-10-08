@@ -163,7 +163,7 @@ ircd)
   # Close installer
 ;;
 
-### Incoming mail server install with 'grinstall mail'
+### Mail server install with 'grinstall mail'
 mail)
   # Install base packages
   apt install -y postfix dovecot-lmtpd opendkim opendkim-tools opendmarc postfix-policyd-spf-python mutt
