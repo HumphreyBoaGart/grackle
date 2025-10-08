@@ -165,13 +165,12 @@ ircd)
 ### Local mail server with 'grinstall mail'
 mail)
   # Install base packages
-  apt install -y postfix dovecot-lmtpd opendkim opendkim-tools opendmarc postfix-policyd-spf-python mutt
+  apt install -y postfix dovecot-lmtpd postfix-policyd-spf-python mutt
 
   # Set up daemon accounts/groups
   adduser dovecot mail
-  gpasswd -a postfix opendkim
 
-# Create postmaster account to catch utility emails
+  # Create postmaster account to catch utility emails
   gruser new postmaster
   gruser shell-on postmaster
 
@@ -188,7 +187,9 @@ mail)
   systemctl enable postfix dovecot
   systemctl restart postfix dovecot
 
-  # Configure OpenDKIM
+  # Install and configure OpenDKIM
+  apt install -y opendkim opendkim-tools
+  gpasswd -a postfix opendkim
   cp -v /opt/grackle/skel/etc/opendkim/opendkim.conf /etc/opendkim.conf
   mkdir -p /etc/opendkim/keys
   chown -R opendkim:opendkim /etc/opendkim
@@ -206,7 +207,8 @@ mail)
   systemctl enable opendkim
   systemctl restart opendkim postfix
 
-  # Configure OpenDMARC
+  # Install and configure OpenDMARC
+  apt install -y opendmarc
   systemctl enable opendmarc
 
   # Reload services and reset twice to make sure everything dials in
