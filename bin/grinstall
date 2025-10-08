@@ -190,6 +190,10 @@ mail)
   systemctl restart postfix dovecot opendkim opendmarc
   systemctl restart postfix dovecot opendkim opendmarc
 
+  # Set up default aliases
+  cp -v /opt/grackle/skel/etc/aliases /etc/aliases
+  newaliases
+
   # Update firewall rules and reload ufw
   ufw allow 25/tcp
   ufw allow out 25/tcp
