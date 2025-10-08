@@ -155,6 +155,36 @@ mail)
   # Close installer
 ;;
 
+### IRC client & monitoring utils with 'grinstall irc'
+irc)
+  # Install base packages
+  apt install -y weechat
+
+  # Update firewall rules and reload ufw
+  ufw allow out 6667/tcp
+  ufw allow out 6697/tcp
+  ufw allow out 7000/tcp
+  ufw allow out 7070/tcp
+  ufw allow out 9999/tcp
+  ufw reload
+
+  # Close installer
+;;
+
+### IRC server with 'grinstall ircd'
+ircd)
+  # Install base packages
+
+  # Close installer
+;;
+
+### Matrix server with 'grinstall matrix'
+matrix)
+  # Install base packages
+
+  # Close installer
+;;
+
 ### Nginx install with 'grinstall nginx'
 nginx)
 
