@@ -1,7 +1,7 @@
 # See man 5 aliases for format
 
 # Custom forwarders
-# (ie) postmaster:       email@domain.com
+# (ie) name:            email@domain.com
 
 
 # Route various system addresses to /dev/null
