@@ -118,7 +118,6 @@ docker)
 
 ### FTP server install with 'grinstall ftp'
 ftp)
-
   # Install vsftp
   apt install -y vsftpd
   systemctl enable vsftpd
@@ -238,7 +237,6 @@ matrix)
 
 ### Nginx server with 'grinstall nginx'
 nginx)
-
   # Configure official Nginx repo
   curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
     | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
@@ -284,7 +282,6 @@ nginx)
 
 ### PHP daemon with 'grinstall php'
 php)
-
   # Configure Sury repo for newer PHP releases
   curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
   dpkg -i /tmp/debsuryorg-archive-keyring.deb
@@ -309,7 +306,6 @@ php)
 
 ### Update Grackle with 'grinstall update'
 update)
-
   # Delete old /opt/ contents and resync to repo
   rm -rfv /opt/grackle
   # Edit URL here to enable updating Grackle from custom fork
@@ -334,7 +330,6 @@ update)
 # Use this command in conjunction with modified 'grinstall update' above
 # to switch back & forth between stock & forked Grackle packages
 update-src)
-
   # Delete old /opt/ contents and resync to repo
   rm -rfv /opt/grackle
   #git clone https://repos.lanterns.io/grackle.git /opt/grackle
