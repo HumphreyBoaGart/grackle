@@ -165,6 +165,7 @@ ircd)
 ### Local mail server with 'grinstall mail'
 mail)
   # Install base packages
+  HOSTNAME=$(hostname)
   apt install -y postfix dovecot-lmtpd postfix-policyd-spf-python mutt
 
   # Set up daemon accounts/groups
@@ -177,13 +178,13 @@ mail)
   # Configure Postfix & Dovecot
   cp -v /opt/grackle/skel/etc/postfix/master.cf /etc/postfix/master.cf
   cp -v /opt/grackle/skel/etc/postfix/main.cf /etc/postfix/main.cf
- ##TODO HERE> swap {HOSTNAME} for hostname in main.cf
+  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/postfix/main.cf
   cp -v /opt/grackle/skel/etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-mail.conf /etc/dovecot/conf.d/10-mail.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-master.conf /etc/dovecot/conf.d/10-master.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-auth.conf /etc/dovecot/conf.d/10-auth.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-ssl.conf /etc/dovecot/conf.d/10-ssl.conf
- ##TODO HERE> swap {HOSTNAME} for hostname in 10-ssl.conf
+  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/dovecot/conf.d/10-ssl.conf
   systemctl enable postfix dovecot
   systemctl restart postfix dovecot
 
@@ -197,7 +198,9 @@ mail)
   cp -v /opt/grackle/skel/etc/opendkim/signing.table /etc/signing.table
   cp -v /opt/grackle/skel/etc/opendkim/key.table /etc/key.table
   cp -v /opt/grackle/skel/etc/opendkim/trusted.hosts /etc/trusted.hosts
- ##TODO HERE> swap {HOSTNAME} for hostname in signing.table, key.table & trusted.hosts
+  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/signing.table
+  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/key.table
+  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/trusted.hosts
  ##TODO HERE> generate DKIM key pair for hostname in /etc/opendkim/keys
  ##TODO HERE> finish setting proper permissions on /etc/opendkim files
   mkdir /var/spool/postfix/opendkim
@@ -211,7 +214,7 @@ mail)
   apt install -y opendmarc
   adduser postfix opendmarc
   cp -v /opt/grackle/skel/etc/opendmarc.conf /etc/opendmarc.conf
- ##TODO HERE> swap {HOSTNAME} for hostname in opendmarc.conf
+  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendmarc.conf
   mkdir -p /var/spool/postfix/opendmarc
   chown opendmarc:opendmarc /var/spool/postfix/opendmarc -R
   chmod 750 /var/spool/postfix/opendmarc/ -R
