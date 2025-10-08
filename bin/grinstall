@@ -172,11 +172,23 @@ mail)
   gruser new postmaster
   gruser shell-on postmaster
 
-  # Configure postfix & dovecot
+  # Configure Postfix
+  cp -v /opt/grackle/skel/etc/postfix/master.cf /etc/postfix/master.cf
+  cp -v /opt/grackle/skel/etc/postfix/main.cf /etc/postfix/main.cf
+  #TODO HERE> swap {HOSTNAME} for hostname in main.cf
 
+  # Configure Dovecot
 
-  # Configure milters
+  # Configure SPF Filter
 
+  # Configure OpenDKIM
+
+  # Configure OpenDMARC
+
+  # Enable services and reset twice to make sure everything dials in
+  systemctl enable postfix dovecot opendkim opendmarc
+  systemctl restart postfix dovecot opendkim opendmarc
+  systemctl restart postfix dovecot opendkim opendmarc
 
   # Update firewall rules and reload ufw
   ufw allow 25/tcp
@@ -220,9 +232,9 @@ nginx)
   mkdir -pv /etc/nginx/active /etc/nginx/available /etc/nginx/gates /etc/nginx/includes
   rm -rf /etc/nginx/conf.d/ /etc/nginx/nginx.conf
   cp -v /opt/grackle/skel/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-  cp -Rv /opt/grackle/skel/etc/nginx/includes/headers.conf /etc/nginx/includes/headers.conf
-  cp -Rv /opt/grackle/skel/etc/nginx/includes/ssl.conf /etc/nginx/includes/ssl.conf
-  cp -Rv /opt/grackle/skel/etc/nginx/includes/util.conf /etc/nginx/includes/util.conf
+  cp -v /opt/grackle/skel/etc/nginx/includes/headers.conf /etc/nginx/includes/headers.conf
+  cp -v /opt/grackle/skel/etc/nginx/includes/ssl.conf /etc/nginx/includes/ssl.conf
+  cp -v /opt/grackle/skel/etc/nginx/includes/util.conf /etc/nginx/includes/util.conf
   chgrp -Rv nginx /etc/nginx
   chmod -Rv g+rX /etc/nginx
   mkdir -pv /var/log/nginx
