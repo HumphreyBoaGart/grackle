@@ -143,7 +143,7 @@ ftp)
 ### IRC client & monitoring utils with 'grinstall irc'
 irc)
   # Install base packages
-  apt install -y weechat
+  apt install -y -t bookworm-backports weechat
 
   # Update firewall rules and reload ufw
   ufw allow out 6667/tcp
