@@ -44,7 +44,7 @@ chmod u+rwx,g-rwx,o-rwx /opt/grackle/bin/grinstall
 #### Admin User Account(s)
 ***Do not log out of the terminal after running the installer, because you may be locked out!*** You need to create an administrative user for yourself first to manage the system, as root logins are disabled at this point in the install process.
 
-While the installer is designed to only be used as root/sudo, it creates an `admin` usergroup on your system so anyone within the group can run the other Grackle commands. This is to minimize the need for dangerous things like remote root access. To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
+While the installer is designed to only be used as root/sudo, it uses Debian's stock `adm` usergroup on your system so anyone within the group can run the other Grackle commands. This is to minimize the need for dangerous things like remote root access. To create an admin account, run the `gruser` utility thrice. These three commands 1) create the account, 2) grant it SSH access, and 3) drop it in the admin usergroup:
 ```
 sudo gruser new USERNAME
 sudo gruser shell-on USERNAME
@@ -52,7 +52,7 @@ sudo gruser admin-on USERNAME
 ```
 The flags `shell-off` and `admin-off` will revoke shell and admin access, respectively.
 
-Password authentication over SSH is disabled by default, meaning ***you have to set up a valid public/private key pair to use the account before you switch, or you will be locked out!***
+Password authentication over SSH is disabled by default on admin users, meaning ***you have to set up a valid public/private key pair to use the account before you switch, or you will be locked out!***
 
 Also do not forget to add your new admin user to the sudoers file with `visudo` or you will not be able to configure or even update your machine unless your datacenter gives you a browser terminal. Just run `visudo` and add your user there at the bottom:
 ```
