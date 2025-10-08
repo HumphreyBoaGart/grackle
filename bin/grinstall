@@ -209,7 +209,15 @@ mail)
 
   # Install and configure OpenDMARC
   apt install -y opendmarc
+  adduser postfix opendmarc
+  cp -v /opt/grackle/skel/etc/opendmarc.conf /etc/opendmarc.conf
+ ##TODO HERE> swap {HOSTNAME} for hostname in opendmarc.conf
+  mkdir -p /var/spool/postfix/opendmarc
+  chown opendmarc:opendmarc /var/spool/postfix/opendmarc -R
+  chmod 750 /var/spool/postfix/opendmarc/ -R
+ ##TODO HERE> check file/dir permissions in these last three commands
   systemctl enable opendmarc
+  systemctl restart opendmarc postfix
 
   # Reload services and reset twice to make sure everything dials in
   systemctl reload postfix dovecot opendkim opendmarc
