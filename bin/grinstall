@@ -178,6 +178,10 @@ mail)
   #TODO HERE> swap {HOSTNAME} for hostname in main.cf
 
   # Configure Dovecot
+  cp -v /opt/grackle/skel/etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
+  cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-mail.conf /etc/dovecot/conf.d/10-mail.conf
+  cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-master.conf /etc/dovecot/conf.d/10-master.conf
+
 
   # Configure SPF Filter
 
