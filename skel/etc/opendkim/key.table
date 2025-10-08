@@ -1,0 +1,1 @@
+default._domainkey.{HOSTNAME}     {HOSTNAME}:default:/etc/opendkim/keys/{HOSTNAME}/default.private
