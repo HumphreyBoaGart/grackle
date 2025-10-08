@@ -170,32 +170,32 @@ mail)
 
   # Set up daemon accounts/groups
   adduser dovecot mail
+  gpasswd -a postfix opendkim
 
-  # Create postmaster account to catch utility emails
+# Create postmaster account to catch utility emails
   gruser new postmaster
   gruser shell-on postmaster
 
-  # Configure Postfix
+  # Configure Postfix & Dovecot
   cp -v /opt/grackle/skel/etc/postfix/master.cf /etc/postfix/master.cf
   cp -v /opt/grackle/skel/etc/postfix/main.cf /etc/postfix/main.cf
-  #TODO HERE> swap {HOSTNAME} for hostname in main.cf
-
-  # Configure Dovecot
+ ##TODO HERE> swap {HOSTNAME} for hostname in main.cf
   cp -v /opt/grackle/skel/etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-mail.conf /etc/dovecot/conf.d/10-mail.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-master.conf /etc/dovecot/conf.d/10-master.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-auth.conf /etc/dovecot/conf.d/10-auth.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-ssl.conf /etc/dovecot/conf.d/10-ssl.conf
-  #TODO HERE> swap {HOSTNAME} for hostname in 10-ssl.conf
-
-  # Configure SPF Filter
+ ##TODO HERE> swap {HOSTNAME} for hostname in 10-ssl.conf
+  systemctl enable postfix dovecot
+  systemctl restart postfix dovecot
 
   # Configure OpenDKIM
+  systemctl enable opendkim
 
   # Configure OpenDMARC
+  systemctl enable opendmarc
 
-  # Enable services and reset twice to make sure everything dials in
-  systemctl enable postfix dovecot opendkim opendmarc
+  # Reload services and reset twice to make sure everything dials in
   systemctl reload postfix dovecot opendkim opendmarc
   systemctl restart postfix dovecot opendkim opendmarc
   systemctl restart postfix dovecot opendkim opendmarc
