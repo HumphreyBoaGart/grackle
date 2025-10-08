@@ -190,6 +190,16 @@ mail)
   systemctl restart postfix dovecot
 
   # Configure OpenDKIM
+  cp -v /opt/grackle/skel/etc/opendkim/opendkim.conf /etc/opendkim.conf
+  mkdir -p /etc/opendkim/keys
+  chown -R opendkim:opendkim /etc/opendkim
+  chmod go-rw /etc/opendkim/keys
+  cp -v /opt/grackle/skel/etc/opendkim/signing.table /etc/signing.table
+  cp -v /opt/grackle/skel/etc/opendkim/key.table /etc/key.table
+  cp -v /opt/grackle/skel/etc/opendkim/trusted.hosts /etc/trusted.hosts
+ ##TODO HERE> swap {HOSTNAME} for hostname in signing.table, key.table & trusted.hosts
+ ##TODO HERE> generate DKIM key pair for hostname in /etc/opendkim/keys
+ ##TODO HERE> finish setting proper permissions on /etc/opendkim files
   systemctl enable opendkim
 
   # Configure OpenDMARC
