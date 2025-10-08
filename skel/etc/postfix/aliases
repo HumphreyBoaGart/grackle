@@ -1,15 +1,1 @@
-# See man 5 aliases for format
 
-# Custom forwarders
-# (ie) postmaster:       email@domain.com
-
-
-# Route various system addresses to /dev/null
-nginx:                  /dev/null
-nobody:                 /dev/null
-donotreply:             /dev/null
-root:                   /dev/null
-systemd-network:        /dev/null
-systemd-timesync:       /dev/null
-
-# Grackle-managed aliases
