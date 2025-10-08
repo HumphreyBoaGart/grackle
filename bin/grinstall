@@ -168,6 +168,9 @@ mail)
   # Install base packages
   apt install -y postfix dovecot-lmtpd opendkim opendkim-tools opendmarc postfix-policyd-spf-python mutt
 
+  # Set up daemon accounts/groups
+  adduser dovecot mail
+
   # Create postmaster account to catch utility emails
   gruser new postmaster
   gruser shell-on postmaster
@@ -181,7 +184,9 @@ mail)
   cp -v /opt/grackle/skel/etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-mail.conf /etc/dovecot/conf.d/10-mail.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-master.conf /etc/dovecot/conf.d/10-master.conf
-
+  cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-auth.conf /etc/dovecot/conf.d/10-auth.conf
+  cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-ssl.conf /etc/dovecot/conf.d/10-ssl.conf
+  #TODO HERE> swap {HOSTNAME} for hostname in 10-ssl.conf
 
   # Configure SPF Filter
 
@@ -191,6 +196,7 @@ mail)
 
   # Enable services and reset twice to make sure everything dials in
   systemctl enable postfix dovecot opendkim opendmarc
+  systemctl reload postfix dovecot opendkim opendmarc
   systemctl restart postfix dovecot opendkim opendmarc
   systemctl restart postfix dovecot opendkim opendmarc
 
