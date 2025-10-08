@@ -145,6 +145,13 @@ mail)
   # Install base packages
   apt install -y postfix dovecot-lmtpd opendkim opendkim-tools opendmarc postfix-policyd-spf-python mutt
 
+  # Update firewall rules and reload ufw
+  ufw allow 25/tcp
+  ufw allow out 25/tcp
+  ufw allow out 465/tcp
+  ufw allow out 587/tcp
+  ufw reload
+
   # Close installer
 ;;
 
