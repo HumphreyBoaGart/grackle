@@ -35,6 +35,24 @@ EOF
 
 ### Base install with 'grinstall base'
 base)
+  # Set up secure base environment
+  apt install -y ufw fail2ban
+  ufw reset
+  ufw default deny incoming
+  ufw default deny outgoing
+  ufw allow 22/tcp
+  ufw allow out 22/tcp
+  ufw allow out 53/tcp
+  ufw allow out 53/udp
+  ufw allow out 80/tcp
+  ufw allow out 123/udp
+  ufw allow out 443/tcp
+  ufw enable
+  cp -v /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
+  touch /var/log/auth.log
+  systemctl enable fail2ban
+  systemctl start fail2ban
+  systemctl restart fail2ban
 
   # Create usergroups and import new root .dotfiles
   cp -bv /opt/grackle/skel/root/.bash_logout /root/.bash_logout
@@ -66,27 +84,9 @@ base)
   apt install -y 7zip bzip2 gzip imagemagick mawk sudo tar unzip zip
   apt install -y -t bookworm-backports 7zip curl byobu
   apt purge -y ntp
-  apt install -y btop chrony git htop logrotate ranger rsyslog ufw wget
+  apt install -y btop chrony git htop logrotate ranger rsyslog wget
   systemctl enable chrony
   systemctl enable ufw
-
-  # Configure firewall & fail2ban
-  ufw reset
-  ufw default deny incoming
-  ufw default deny outgoing
-  ufw allow 22/tcp
-  ufw allow out 22/tcp
-  ufw allow out 53/tcp
-  ufw allow out 53/udp
-  ufw allow out 80/tcp
-  ufw allow out 123/udp
-  ufw allow out 443/tcp
-  ufw enable
-  apt install -y fail2ban
-  cp -v /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
-  touch /var/log/auth.log
-  systemctl enable fail2ban
-  systemctl start fail2ban
 
   # Configure syslog
   cp -Rv /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
@@ -142,6 +142,9 @@ ftp)
 
 ### Incoming mail server install with 'grinstall mail'
 mail)
+  # Install base packages
+  apt install -y postfix dovecot-lmtpd opendkim opendkim-tools opendmarc postfix-policyd-spf-python mutt
+
   # Close installer
 ;;
 
