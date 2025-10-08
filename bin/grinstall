@@ -163,7 +163,7 @@ ircd)
   # Close installer
 ;;
 
-### Mail server install with 'grinstall mail'
+### Local mail server with 'grinstall mail'
 mail)
   # Install base packages
   apt install -y postfix dovecot-lmtpd opendkim opendkim-tools opendmarc postfix-policyd-spf-python mutt
@@ -191,7 +191,7 @@ matrix)
   # Close installer
 ;;
 
-### Nginx install with 'grinstall nginx'
+### Nginx server with 'grinstall nginx'
 nginx)
 
   # Configure official Nginx repo
@@ -237,7 +237,7 @@ nginx)
   # Close installer
 ;;
 
-### PHP install with 'grinstall php'
+### PHP daemon with 'grinstall php'
 php)
 
   # Configure Sury repo for newer PHP releases
