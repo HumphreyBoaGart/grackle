@@ -63,7 +63,7 @@ new)
     sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
     sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
     sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
-    sudo mkdir -p .local/mail/cur .local/mail/new .local/mail/tmp
+    sudo mkdir -pv /home/$name/.local/mail/cur /home/$name/.local/mail/new /home/$name/.local/mail/tmp
     gruser fix-perms $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
