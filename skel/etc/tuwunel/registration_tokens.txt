@@ -4,12 +4,11 @@ each-token-is-single-use
 one-registration-per-token
 *unless-you-prefix-like-this
 *starred-tokens-are-reusable
-tokens-can-also-be-random
-ideally-you-will-have-a-tool
+replace-this-file-immediately
+or-skids-will-use-these-codes
+they-will-screw-your-day-up
+eventually-this-will-have-a-tool
 which-generates-tokens-like-this
 79d98649aa56ad86fe4f7bdc4787482f
 49891fede8b2393de578f73724f2fc41
 faac43c45f51822614fe899ff14f2b4a
-replace-this-file-immediately
-or-skids-will-use-these-codes
-they-will-screw-your-day-up
