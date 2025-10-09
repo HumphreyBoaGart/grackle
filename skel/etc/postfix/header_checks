@@ -1,0 +1,1 @@
+/^Received: by (.*) \(Postfix, from userid [0-9]+\)/ REPLACE Received: by $1 (Postfix)
