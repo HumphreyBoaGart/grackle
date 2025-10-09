@@ -198,7 +198,6 @@ mail)
   cp -v /opt/grackle/skel/etc/opendkim/opendkim.conf /etc/opendkim.conf
   mkdir -vp /etc/opendkim/keys
   chown -Rv opendkim:opendkim /etc/opendkim
-  chmod -v o-rw /etc/opendkim/keys
   cp -v /opt/grackle/skel/etc/opendkim/signing.table /etc/opendkim/signing.table
   cp -v /opt/grackle/skel/etc/opendkim/key.table /etc/opendkim/key.table
   cp -v /opt/grackle/skel/etc/opendkim/trusted.hosts /etc/opendkim/trusted.hosts
@@ -207,8 +206,10 @@ mail)
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/trusted.hosts
   mkdir -v /etc/opendkim/keys/$HOSTNAME
   opendkim-genkey -b 2048 -d $HOSTNAME -D /etc/opendkim/keys/$HOSTNAME -s default -v
-  chown opendkim:opendkim /etc/opendkim/keys/$HOSTNAME/default.private
+  chown -Rv opendkim:opendkim /etc/opendkim/keys
+  chmod -v g+rx,o-rwx /etc/opendkim/keys
   chmod 600 /etc/opendkim/keys/$HOSTNAME/default.private
+  chmod 640 /etc/opendkim/keys/$HOSTNAME/default.txt
   mkdir -v /var/spool/postfix/opendkim
   chown -v opendkim:postfix /var/spool/postfix/opendkim
   chmod -v g+rx /var/spool/postfix/opendkim
