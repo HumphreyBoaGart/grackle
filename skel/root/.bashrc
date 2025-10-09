@@ -29,6 +29,9 @@ alias l='ls -CF --color=auto'
 alias la='ls -A --color=auto'
 alias ll='ls -alF --color=auto'
 alias ls='ls -lhaF --color=auto'
+alias sysrl='systemctl reload'
+alias sysrs='systemctl restart'
+alias sysst='systemctl status'
 alias vdir='vdir --color=auto'
 
 # Extra Alias Definitions.
