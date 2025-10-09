@@ -1,7 +1,9 @@
 this-is-a-tokens-file
-each-line-is-a-token
+each-line-is-an-invite-token
 each-token-is-single-use
+one-registration-per-token
 *unless-you-prefix-like-this
+*starred-tokens-are-reusable
 tokens-can-also-be-random
 ideally-you-will-have-a-tool
 which-generates-tokens-like-this
