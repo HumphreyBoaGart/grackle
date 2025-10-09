@@ -196,7 +196,7 @@ mail)
   apt install -y opendkim opendkim-tools
   gpasswd -a postfix opendkim
   cp -v /opt/grackle/skel/etc/opendkim/opendkim.conf /etc/opendkim.conf
-  mkdir -p /etc/opendkim/keys
+  mkdir -vp /etc/opendkim/keys
   chown -Rv opendkim:opendkim /etc/opendkim
   chmod -v o-rw /etc/opendkim/keys
   cp -v /opt/grackle/skel/etc/opendkim/signing.table /etc/opendkim/signing.table
@@ -205,9 +205,12 @@ mail)
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/signing.table
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/key.table
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/trusted.hosts
+  mkdir -v /etc/opendkim/keys/{HOSTNAME}
+  opendkim-genkey -b 2048 -d {HOSTNAME} -D /etc/opendkim/keys/{HOSTNAME} -s default -v
+  chown opendkim:opendkim /etc/opendkim/keys/{HOSTNAME}/default.private
+  chmod 600 /etc/opendkim/keys/{HOSTNAME}/default.private
  ##TODO HERE> generate DKIM key pair for hostname in /etc/opendkim/keys
- ##TODO HERE> finish setting proper permissions on /etc/opendkim files
-  mkdir /var/spool/postfix/opendkim
+  mkdir -v /var/spool/postfix/opendkim
   chown -v opendkim:postfix /var/spool/postfix/opendkim
   chmod -v g+rx /var/spool/postfix/opendkim
   cp -v /opt/grackle/skel/etc/default/opendkim /etc/default/opendkim
@@ -219,7 +222,7 @@ mail)
   adduser postfix opendmarc
   cp -v /opt/grackle/skel/etc/opendmarc.conf /etc/opendmarc.conf
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendmarc.conf
-  mkdir -p /var/spool/postfix/opendmarc
+  mkdir -pv /var/spool/postfix/opendmarc
   chown -v opendmarc:opendmarc /var/spool/postfix/opendmarc -R
   chmod -v 750 /var/spool/postfix/opendmarc/ -R
   systemctl enable opendmarc
