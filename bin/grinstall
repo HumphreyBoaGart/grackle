@@ -205,10 +205,10 @@ mail)
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/signing.table
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/key.table
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/trusted.hosts
-  mkdir -v /etc/opendkim/keys/{HOSTNAME}
-  opendkim-genkey -b 2048 -d {HOSTNAME} -D /etc/opendkim/keys/{HOSTNAME} -s default -v
-  chown opendkim:opendkim /etc/opendkim/keys/{HOSTNAME}/default.private
-  chmod 600 /etc/opendkim/keys/{HOSTNAME}/default.private
+  mkdir -v /etc/opendkim/keys/$HOSTNAME
+  opendkim-genkey -b 2048 -d $HOSTNAME -D /etc/opendkim/keys/$HOSTNAME -s default -v
+  chown opendkim:opendkim /etc/opendkim/keys/$HOSTNAME/default.private
+  chmod 600 /etc/opendkim/keys/$HOSTNAME/default.private
   mkdir -v /var/spool/postfix/opendkim
   chown -v opendkim:postfix /var/spool/postfix/opendkim
   chmod -v g+rx /var/spool/postfix/opendkim
