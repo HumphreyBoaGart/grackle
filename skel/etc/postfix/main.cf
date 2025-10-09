@@ -51,6 +51,7 @@ biff = no
 readme_directory = no
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 relayhost =
+header_checks = regexp:/etc/postfix/header_checks
 
 # PolicyD settings
 policyd-spf_time_limit = 3600
