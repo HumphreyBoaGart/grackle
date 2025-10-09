@@ -209,7 +209,6 @@ mail)
   opendkim-genkey -b 2048 -d {HOSTNAME} -D /etc/opendkim/keys/{HOSTNAME} -s default -v
   chown opendkim:opendkim /etc/opendkim/keys/{HOSTNAME}/default.private
   chmod 600 /etc/opendkim/keys/{HOSTNAME}/default.private
- ##TODO HERE> generate DKIM key pair for hostname in /etc/opendkim/keys
   mkdir -v /var/spool/postfix/opendkim
   chown -v opendkim:postfix /var/spool/postfix/opendkim
   chmod -v g+rx /var/spool/postfix/opendkim
@@ -249,7 +248,24 @@ mail)
 
 ### Matrix server with 'grinstall matrix'
 matrix)
-  # Install base packages
+  # Pull hostname from server for sed to use
+  HOSTNAME=$(hostname)
+
+  # Install base packages & configure
+  wget https://github.com/matrix-construct/tuwunel/releases/download/v1.4.2/v1.4.2-release-all-x86_64-v3-linux-gnu-tuwunel.deb
+  apt install -y ./v1.4.2-release-all-x86_64-v3-linux-gnu-tuwunel.deb
+  rm -v ./v1.4.2-release-all-x86_64-v3-linux-gnu-tuwunel.deb
+  cp -v /opt/grackle/skel/etc/tuwunel/tuwunel.toml /etc/tuwunel/tuwunel.toml
+  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/tuwunel/tuwunel.toml
+  chown -v tuwunel:tuwunel /etc/tuwunel/tuwunel.toml
+  chmod -v g+r /etc/tuwunel/tuwunel.toml
+  cp -v /opt/grackle/skel/etc/tuwunel/registration_tokens.txt /etc/tuwunel/registration_tokens.txt
+  chown -v tuwunel:tuwunel /etc/tuwunel/registration_tokens.txt
+  chmod -v g+r /etc/tuwunel/registration_tokens.txt
+
+  # Enable & restart to send live to a unix socket
+  systemctl enable tuwunel
+  systemctl restart tuwunel
 
   # Close installer
 ;;
