@@ -263,9 +263,14 @@ matrix)
   chown -v tuwunel:tuwunel /etc/tuwunel/registration_tokens.txt
   chmod -v g+r /etc/tuwunel/registration_tokens.txt
 
-  # Enable & restart to send live to a unix socket
+  # Grant nginx access to the tuwunel socket
+  usermod -aG tuwunel nginx
+
+  # Enable & restart to send live
   systemctl enable tuwunel
   systemctl restart tuwunel
+
+ ##TODO> Insert nginx configuration
 
   # Close installer
 ;;
