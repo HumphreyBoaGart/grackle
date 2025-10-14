@@ -82,12 +82,12 @@ new)
     sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/nginx/available/$name.conf
 
     # Create ~/.gracklevar with initial metadata
-    sudo tee "/home/$name/.gracklevar" >/dev/null <<JSON
+    sudo tee '/home/$name/.gracklevar' >/dev/null <<EOF
     {
       "user": "$name",
       "url": "$domain"
     }
-    JSON
+    EOF
 
     # Tidy up permissions
     grapp fix-perms-deep $name
