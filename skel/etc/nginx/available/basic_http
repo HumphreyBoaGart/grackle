@@ -10,6 +10,7 @@ server {
   include /etc/nginx/includes/util.conf;
   root /home/{{USERNAME}}/public_html;
   error_log /home/{{USERNAME}}/logs/nginx/error.log warn;
+  access_log off;
   #access_log /home/{{USERNAME}}/logs/nginx/access.log main;
   location / {
     try_files $uri $uri/ =404;
