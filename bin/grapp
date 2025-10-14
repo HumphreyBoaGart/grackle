@@ -87,8 +87,8 @@ new)
       "user": "$name",
       "url": "$domain"
     }
-    EOF
-    ;;
+EOF
+;;
 
     # Tidy up permissions
     grapp fix-perms-deep $name
