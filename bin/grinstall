@@ -94,6 +94,7 @@ base)
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
   cp -Rv /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
+  rm /var/log/syslog
   systemctl enable rsyslog
   systemctl restart rsyslog
   systemctl restart systemd-journald
