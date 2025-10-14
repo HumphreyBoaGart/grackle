@@ -339,7 +339,9 @@ php)
   # Configure PHP-FPM
   mkdir -pv /etc/php/8.3/fpm/pool.available
   rm /etc/php/8.3/fpm/pool.d/www.conf
+  cp -v /opt/grackle/skel/etc/php/php-fpm.conf /etc/php/8.3/fpm/php-fpm.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
+  systemctl restart rsyslog
   grackle reset-php
 
   # Close installer
