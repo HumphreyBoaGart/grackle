@@ -46,16 +46,25 @@ EOF
 
 ### Generate new local user account with 'gruser new'
 new)
+  # Fill in name to skip interactive mode
   if [[ $2 != '' ]]; then
+
+    # Filter input
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
+
+  # Otherwise, go to interactive mode
   else
     sudo echo " $(tput setaf 6 bold)Please enter a username for your new user:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
+
+    # Filter input
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
+
+  # Create new user with sanitized inputs
   if [[ $name != '' ]]; then
     sudo useradd $name -Um --skel /opt/grackle/skel/home/user --shell /sbin/nologin
     sudo usermod -aG user $name
@@ -64,6 +73,16 @@ new)
     sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
     sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
     sudo mkdir -pv /home/$name/.local/mail/cur /home/$name/.local/mail/new /home/$name/.local/mail/tmp
+
+    # Create ~/.gracklevar with initial metadata
+    sudo tee "/home/$name/.gracklevar" >/dev/null <<EOF
+{
+	"user": "$name",
+	"url": "$domain"
+}
+EOF
+
+    # Tidy up permissions
     gruser fix-perms $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
@@ -204,6 +223,8 @@ fix-perms)
     # Set homedir permissions
     sudo chown -Rv $name:$name /home/$name
     sudo chmod -Rv u+rwX,g-rwx,o-rwx /home/$name
+    sudo chown "root:$name" "/home/$name/.gracklevar"
+    sudo chmod 640 "/home/$name/.gracklevar"
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
