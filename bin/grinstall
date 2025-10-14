@@ -81,7 +81,7 @@ base)
   apt install -y apt-transport-https ca-certificates debian-archive-keyring gnupg2 lsb-release
 
   # Install additional packages
-  apt install -y 7zip bzip2 gzip imagemagick mawk rsync sudo tar unzip zip
+  apt install -y bzip2 gzip imagemagick jq mawk rsync sudo tar unzip zip
   apt install -y -t bookworm-backports 7zip curl byobu
   apt purge -y ntp
   apt install -y btop chrony git htop logrotate ranger rsyslog wget
