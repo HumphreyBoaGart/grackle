@@ -31,5 +31,8 @@ server {
   server_name www.{{DOMAIN}};
   include /etc/nginx/includes/headers.conf;
   include /etc/nginx/includes/util.conf;
+  error_log /home/{{USERNAME}}/logs/nginx/www-error.log warn;
+  access_log off;
+  #access_log /home/{{USERNAME}}/logs/nginx/www-access.log main;
   return 301 http://{{DOMAIN}}$request_uri;
 }
