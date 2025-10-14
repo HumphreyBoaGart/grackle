@@ -92,11 +92,13 @@ base)
   cp -Rv /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
   rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
-  cp -Rv /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
+  cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
+  cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/20-fail2ban.conf /etc/rsyslog.d/20-fail2ban.conf
+  cp -v /opt/grackle/skel/etc/fail2ban/10-syslog.conf /etc/fail2ban/fail2ban.d/10-syslog.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
   rm -v /var/log/syslog
   systemctl enable rsyslog
-  systemctl restart rsyslog
+  systemctl restart fail2ban rsyslog
   systemctl restart systemd-journald
   rm -rfv /var/log/journal /var/log/syslog
   cp -v /opt/grackle/skel/etc/syslog/local-logs.conf /etc/tmpfiles.d/local-logs.conf
