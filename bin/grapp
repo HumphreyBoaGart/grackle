@@ -80,6 +80,18 @@ new)
     sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
     sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/nginx/available/$name.conf
     sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/nginx/available/$name.conf
+
+    # Create ~/.gracklevar with initial metadata
+    if [[ ! -f "/home/$name/.gracklevar" ]]; then
+      sudo tee "/home/$name/.gracklevar" >/dev/null <<JSON
+      {
+        "user": "$name",
+        "url": "$domain"
+      }
+      JSON
+    fi
+
+    # Tidy up permissions
     grapp fix-perms-deep $name
     sudo chown -Rv root:nginx /etc/nginx
     sudo chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
@@ -279,6 +291,8 @@ fix-perms)
     sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
     sudo chmod -R g+rwX /home/$name/logs/nginx
     sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
+    sudo chown "root:$name" "/home/$name/.gracklevar"
+    sudo chmod 640 "/home/$name/.gracklevar"
     # Tweak top-level homedir permissions for SSH chrooting to work
     sudo chmod u+rwX,g+rX,o+rX /home/$name
     sudo chmod g-w,o-w /home/$name
@@ -315,6 +329,8 @@ fix-perms-deep)
     sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
     sudo chmod -R g+rwX /home/$name/logs/nginx
     sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
+    sudo chown "root:$name" "/home/$name/.gracklevar"
+    sudo chmod 640 "/home/$name/.gracklevar"
     # Tweak top-level homedir permissions for SSH chrooting to work
     sudo chmod u+rwX,g+rX,o+rX /home/$name
     sudo chmod g-w,o-w /home/$name
