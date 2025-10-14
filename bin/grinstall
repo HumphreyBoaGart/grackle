@@ -98,6 +98,8 @@ base)
   systemctl restart rsyslog
   systemctl restart systemd-journald
   rm -rfv /var/log/journal /var/log/syslog
+  cp -v /opt/grackle/skel/etc/syslog/local-logs.conf /etc/tmpfiles.d/local-logs.conf
+  systemd-tmpfiles --create /etc/tmpfiles.d/local-logs.conf
 
   # Additional configuration
   rm -v /etc/adduser.conf
