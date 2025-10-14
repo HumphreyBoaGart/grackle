@@ -83,10 +83,10 @@ new)
 
     # Create ~/.gracklevar with initial metadata
     sudo tee "/home/$name/.gracklevar" >/dev/null <<EOF
-    {
-      "user": "$name",
-      "url": "$domain"
-    }
+{
+	"user": "$name",
+	"url": "$domain"
+}
 EOF
 
     # Tidy up permissions
