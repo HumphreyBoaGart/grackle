@@ -158,10 +158,17 @@ php-setup)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
+    # Read domain from ~/.gracklevar
+    domain="$(sudo jq -er '.url | select(type=="string" and length>0)' "/home/$name/.gracklevar")" || {
+      echo "ERROR: .gracklevar missing or .url empty for $name" >&2; exit 2;
+    }
+    esc_domain="$(printf '%s' "$domain" | sed 's/[&/\]/\\&/g')"
+
+    # Copy skeleton files and insert appdata
     sudo cp -v /opt/grackle/skel/etc/php/pool.d/pool.conf /etc/php/8.3/fpm/pool.available/$name.conf
     sudo ln -s /etc/php/8.3/fpm/pool.available/$name.conf /etc/php/8.3/fpm/pool.d/$name.conf
     sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.3/fpm/pool.available/$name.conf
-    #sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/php/8.3/fpm/pool.available/$name.conf
+    sudo sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.3/fpm/pool.available/$name.conf"
     sudo mkdir -pv /home/$name/.local/share/php/opcache/file
     sudo mkdir -pv /home/$name/.local/share/php/opcache/lock
     sudo mkdir -pv /home/$name/.local/share/php/sessions
