@@ -89,7 +89,7 @@ base)
   systemctl enable ufw
 
   # Configure syslog
-  cp -Rv /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
+  cp -v /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
   rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
@@ -392,15 +392,34 @@ reinstall)
   # Backup: Update from Github mirror, or modify for custom mirror
   git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
- ###TODO> recopy various /etc files from base installer
-  cp -v /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
+  # Clean up permissions again
+  grinstall fix-perms
 
- ###TODO> re-enable and restart base services
-  systemctl enable fail2ban
+  # Recopy various /etc files from base installer
+  cp -bv /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
+  cp -bv /opt/grackle/skel/root/.bash_logout /root/.bash_logout
+  cp -bv /opt/grackle/skel/root/.bashrc /root/.bashrc
+  cp -bv /opt/grackle/skel/root/.profile /root/.profile
+  cp -bv /opt/grackle/skel/root/.config/ranger/rc.conf /root/.config/ranger/rc.conf
+  cp -bv /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
+  cp -bv /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
+  cp -bv /opt/grackle/skel/etc/syslog/rsyslog.d/20-ufw.conf /etc/rsyslog.d/20-ufw.conf
+  cp -bv /opt/grackle/skel/etc/syslog/rsyslog.d/20-fail2ban.conf /etc/rsyslog.d/20-fail2ban.conf
+  cp -bv /opt/grackle/skel/etc/fail2ban/10-syslog.conf /etc/fail2ban/fail2ban.d/10-syslog.conf
+  cp -bv /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
+  cp -bv /opt/grackle/skel/etc/syslog/local-logs.conf /etc/tmpfiles.d/local-logs.conf
+  systemd-tmpfiles --create /etc/tmpfiles.d/local-logs.conf
+  cp -bv /opt/grackle/skel/etc/ssh/sshd_config /etc/ssh/sshd_config
+  cp -bv /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
+  cp -bv /opt/grackle/skel/etc/motd /etc/motd
+
+  # Re-enable and restart base services
   systemctl restart fail2ban
+  systemctl restart rsyslog
+  systemctl reload sshd
+  systemctl restart sshd
 
-
-  # Clean up permissions
+  # Clean up permissions again
   grinstall fix-perms
 
   # Close updater
