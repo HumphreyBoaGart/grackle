@@ -383,8 +383,8 @@ update)
   # Close updater
 ;;
 
-### Update Grackle and reinsert some config files with 'grinstall update-src'
-update-src)
+### Update Grackle and reinsert some config files with 'grinstall reinstall'
+reinstall)
   # Delete old /opt/ contents and resync to repo
   rm -rfv /opt/grackle
   # Edit URL here to enable updating Grackle from custom fork
