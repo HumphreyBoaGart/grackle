@@ -363,7 +363,14 @@ update)
 
   # Clean up permissions
   chmod -v u=rwx /opt/grackle/bin/grinstall
-  grinstall fix-perms
+  chown -vR root:root /opt/grackle
+  chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -v u=rwx /opt/grackle/bin/grinstall
+  chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Close updater
 ;;
@@ -377,9 +384,16 @@ reinstall)
   # Backup: Update from Github mirror, or modify for custom mirror
   git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
-  # Clean up permissions again
+  # Clean up permissions
   chmod -v u=rwx /opt/grackle/bin/grinstall
-  grinstall fix-perms
+  chown -vR root:root /opt/grackle
+  chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -v u=rwx /opt/grackle/bin/grinstall
+  chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Recopy various /etc files from base installer
   cp -bv /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
@@ -404,9 +418,6 @@ reinstall)
   systemctl restart rsyslog
   systemctl reload sshd
   systemctl restart sshd
-
-  # Clean up permissions again
-  grinstall fix-perms
 
   # Close updater
 ;;
