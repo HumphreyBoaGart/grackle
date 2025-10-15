@@ -393,6 +393,12 @@ update-src)
   git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
  ###TODO> recopy various /etc files from base installer
+  cp -v /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
+
+ ###TODO> re-enable and restart base services
+  systemctl enable fail2ban
+  systemctl restart fail2ban
+
 
   # Clean up permissions
   grinstall fix-perms
