@@ -352,22 +352,6 @@ php)
   # Close installer
 ;;
 
-### Fix /opt/grackle ownership & permissions with 'grinstall fix-perms'
-fix-perms)
-  # Clean up permissions
-  chown -vR root:root /opt/grackle
-  chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
-  chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
-  chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
-  chmod -v u=rwx /opt/grackle/bin/grinstall
-  chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
-  chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
-  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
- ###TODO> set perms/ownership on all the various /etc files inserted from the base installer
-
-  # Close repair tool
-;;
-
 ### Update Grackle with 'grinstall update'
 update)
   # Delete old /opt/ contents and resync to repo
@@ -378,6 +362,7 @@ update)
   git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
   # Clean up permissions
+  chmod -v u=rwx /opt/grackle/bin/grinstall
   grinstall fix-perms
 
   # Close updater
@@ -393,6 +378,7 @@ reinstall)
   git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
   # Clean up permissions again
+  chmod -v u=rwx /opt/grackle/bin/grinstall
   grinstall fix-perms
 
   # Recopy various /etc files from base installer
@@ -423,6 +409,22 @@ reinstall)
   grinstall fix-perms
 
   # Close updater
+;;
+
+### Fix /opt/grackle ownership & permissions with 'grinstall fix-perms'
+fix-perms)
+  # Clean up permissions
+  chown -vR root:root /opt/grackle
+  chmod -vR u+rwX,g-rwx,o-rwx /opt/grackle
+  chmod -v u=rwx,g=rx,o=rx /opt/grackle /opt/grackle/bin /opt/grackle/bin/shortcuts
+  chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -v u=rwx /opt/grackle/bin/grinstall
+  chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
+  chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
+  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
+ ###TODO> set perms/ownership on all the various /etc files inserted from the base installer
+
+  # Close repair tool
 ;;
 
 ### Output error for any input not explicitly defined
