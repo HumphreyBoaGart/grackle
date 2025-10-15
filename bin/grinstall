@@ -409,15 +409,12 @@ reinstall)
   cp -bv /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
   cp -bv /opt/grackle/skel/etc/syslog/local-logs.conf /etc/tmpfiles.d/local-logs.conf
   systemd-tmpfiles --create /etc/tmpfiles.d/local-logs.conf
-  cp -bv /opt/grackle/skel/etc/ssh/sshd_config /etc/ssh/sshd_config
   cp -bv /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
   cp -bv /opt/grackle/skel/etc/motd /etc/motd
 
   # Re-enable and restart base services
   systemctl restart fail2ban
   systemctl restart rsyslog
-  systemctl reload sshd
-  systemctl restart sshd
 
   # Close updater
 ;;
