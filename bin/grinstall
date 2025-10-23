@@ -258,9 +258,9 @@ matrix)
   HOSTNAME=$(hostname)
 
   # Install base packages & configure
-  wget https://github.com/matrix-construct/tuwunel/releases/download/v1.4.2/v1.4.2-release-all-x86_64-v3-linux-gnu-tuwunel.deb
-  apt install -y ./v1.4.2-release-all-x86_64-v3-linux-gnu-tuwunel.deb
-  rm -v ./v1.4.2-release-all-x86_64-v3-linux-gnu-tuwunel.deb
+  wget https://github.com/matrix-construct/tuwunel/releases/download/v1.4.4.0/v1.4.4.0-release-all-x86_64-v3-linux-gnu-tuwunel.deb
+  apt install -y ./v1.4.4.0-release-all-x86_64-v3-linux-gnu-tuwunel.deb
+  rm -v ./v1.4.4.0-release-all-x86_64-v3-linux-gnu-tuwunel.deb
   cp -v /opt/grackle/skel/etc/tuwunel/tuwunel.toml /etc/tuwunel/tuwunel.toml
   sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/tuwunel/tuwunel.toml
   chown -v tuwunel:tuwunel /etc/tuwunel/tuwunel.toml
