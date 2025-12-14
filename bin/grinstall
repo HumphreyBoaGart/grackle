@@ -353,6 +353,20 @@ php)
   # Close installer
 ;;
 
+### Private Wiki application with 'grinstall wiki'
+wiki)
+  # Install base packages
+  grinstall php
+
+##TODO> Prompt for variables & create account
+##TODO> Download newest DW to designated account
+##TODO> Modify nginx config for designated account
+##TODO> Set up DW
+##TODO> Set up password gateway
+
+  # Close installer
+;;
+
 ### Update Grackle with 'grinstall update'
 update)
   # Delete old /opt/ contents and resync to repo
