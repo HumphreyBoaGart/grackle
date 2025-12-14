@@ -303,6 +303,7 @@ nginx)
 
   # Configure Nginx
   mkdir -pv /etc/nginx/active /etc/nginx/available /etc/nginx/gates /etc/nginx/includes
+  touch /etc/nginx/gates/void
   rm -rf /etc/nginx/conf.d/ /etc/nginx/nginx.conf
   cp -v /opt/grackle/skel/etc/nginx/nginx.conf /etc/nginx/nginx.conf
   cp -v /opt/grackle/skel/etc/nginx/includes/headers.conf /etc/nginx/includes/headers.conf
