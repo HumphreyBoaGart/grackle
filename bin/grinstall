@@ -361,7 +361,7 @@ wiki)
 ##TODO> Prompt for variables & create account
 ##TODO> Download newest DW to designated account
 ##TODO> Modify nginx config for designated account
-##TODO> Set up DW
+##TODO> Set up DW & insert Grackle theme
 ##TODO> Set up password gateway
 
   # Close installer
