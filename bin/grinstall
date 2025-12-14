@@ -160,13 +160,6 @@ irc)
   # Close installer
 ;;
 
-### IRC server with 'grinstall ircd'
-ircd)
-  # Install base packages
-
-  # Close installer
-;;
-
 ### Local mail server with 'grinstall mail'
 mail)
   # Pull hostname from server for sed to use
@@ -248,35 +241,6 @@ mail)
   ufw allow out 465/tcp
   ufw allow out 587/tcp
   ufw reload
-
-  # Close installer
-;;
-
-### Matrix server with 'grinstall matrix'
-matrix)
-  # Pull hostname from server for sed to use
-  HOSTNAME=$(hostname)
-
-  # Install base packages & configure
-  wget https://github.com/matrix-construct/tuwunel/releases/download/v1.4.4.0/v1.4.4.0-release-all-x86_64-v3-linux-gnu-tuwunel.deb
-  apt install -y ./v1.4.4.0-release-all-x86_64-v3-linux-gnu-tuwunel.deb
-  rm -v ./v1.4.4.0-release-all-x86_64-v3-linux-gnu-tuwunel.deb
-  cp -v /opt/grackle/skel/etc/tuwunel/tuwunel.toml /etc/tuwunel/tuwunel.toml
-  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/tuwunel/tuwunel.toml
-  chown -v tuwunel:tuwunel /etc/tuwunel/tuwunel.toml
-  chmod -v g+r /etc/tuwunel/tuwunel.toml
-  cp -v /opt/grackle/skel/etc/tuwunel/registration_tokens.txt /etc/tuwunel/registration_tokens.txt
-  chown -v tuwunel:tuwunel /etc/tuwunel/registration_tokens.txt
-  chmod -v g+r /etc/tuwunel/registration_tokens.txt
-
-  # Grant nginx access to the tuwunel socket
-  usermod -aG tuwunel nginx
-
-  # Enable & restart to send live
-  systemctl enable tuwunel
-  systemctl restart tuwunel
-
- ##TODO> Insert nginx configuration
 
   # Close installer
 ;;
