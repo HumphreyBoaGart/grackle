@@ -322,8 +322,6 @@ update)
   # Delete old /opt/ contents and resync to repo
   rm -rfv /opt/grackle
   # Edit URL here to enable updating Grackle from custom fork
-  #git clone https://repos.lanterns.io/grackle.git /opt/grackle
-  # Backup: Update from Github mirror, or modify for custom mirror
   git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
   # Clean up permissions
@@ -344,9 +342,7 @@ update)
 reinstall)
   # Delete old /opt/ contents and resync to repo
   rm -rfv /opt/grackle
-  # Edit URL here to enable updating Grackle from custom fork
-  #git clone https://repos.lanterns.io/grackle.git /opt/grackle
-  # Backup: Update from Github mirror, or modify for custom mirror
+  # Edit URL here to enable reinstalling Grackle from custom fork
   git clone https://github.com/HumphreyBoaGart/grackle /opt/grackle
 
   # Clean up permissions
