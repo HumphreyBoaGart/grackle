@@ -1,0 +1,37 @@
+#!/bin/bash
+# grbuild - Automated software scaffolding component for Grackle
+# More info at https://github.com/HumphreyBoaGart/grackle
+
+### All script functions are thrown in a simple case statement
+case $1 in
+
+### Script documentation with 'grbuild help'
+help | -h | --help)
+exec cat <<EOF
+  ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
+ ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
+ ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
+ ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
+ ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
+  $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
+    $(tput setaf 6)grackle help$(tput sgr0)
+
+EOF
+;;
+
+
+
+### Output error for any input not explicitly defined
+*)
+exec cat <<EOF
+
+  $(tput setaf 1 bold)GRACKLE ERROR: No valid command specified!$(tput sgr0)
+
+   Run $(tput setaf 6 bold)grbruild help$(tput sgr0) for a full list of software build options.
+   Run $(tput setaf 6 bold)grackle help$(tput sgr0) for a full list of Grackle components.
+
+EOF
+;;
+
+### Close initial case statement and move on with our life
+esac

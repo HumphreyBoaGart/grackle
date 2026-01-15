@@ -158,6 +158,9 @@ php-setup)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
+    # Check for existing PHP config & failsafe
+   ### TO DO
+
     # Read domain from ~/.gracklevar
     domain="$(sudo jq -er '.url | select(type=="string" and length>0)' "/home/$name/.gracklevar")" || {
       echo "ERROR: .gracklevar missing or .url empty for $name" >&2; exit 2;
