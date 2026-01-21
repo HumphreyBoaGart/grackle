@@ -303,7 +303,7 @@ php)
   apt update
 
   # Install PHP 8.3 & PHP-FPM from Sury
-  apt install -y php8.3 php8.3-fpm php8.3-{bz2,cli,curl,gd,imagick,intl,mbstring,opcache,readline,xml,zip}
+  apt install -y php8.3 php8.3-fpm php8.3-{bz2,cli,curl,gd,imagick,intl,mbstring,opcache,readline,sqlite3,xml,zip}
   systemctl enable php8.3-fpm
 
   # Configure PHP-FPM
