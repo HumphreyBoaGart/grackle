@@ -16,16 +16,16 @@ exec cat <<EOF
  $(tput setaf 4 bold)INSTALLER UTILITY:$(tput sgr0)
 
   $(tput setaf 3 bold)To install Grackle base components w/ Nginx:$(tput sgr0)
-    $(tput setaf 6)sudo grinstall web$(tput sgr0)
+    $(tput setaf 6)grinstall web$(tput sgr0)
 
   $(tput setaf 3 bold)To install Grackle and all optional components:$(tput sgr0)
-    $(tput setaf 6)sudo grinstall full$(tput sgr0)
+    $(tput setaf 6)grinstall full$(tput sgr0)
 
   $(tput setaf 3 bold)To install Grackle components a la carte:$(tput sgr0)
-    $(tput bold)Base:$(tput sgr0) $(tput setaf 6)sudo grinstall base$(tput sgr0)
-    $(tput bold)Docker:$(tput sgr0) $(tput setaf 6)sudo grinstall docker$(tput sgr0)
-    $(tput bold)Nginx:$(tput sgr0) $(tput setaf 6)sudo grinstall nginx$(tput sgr0)
-    $(tput bold)PHP:$(tput sgr0) $(tput setaf 6)sudo grinstall php$(tput sgr0)
+    $(tput bold)Base:$(tput sgr0) $(tput setaf 6)grinstall base$(tput sgr0)
+    $(tput bold)Docker:$(tput sgr0) $(tput setaf 6)grinstall docker$(tput sgr0)
+    $(tput bold)Nginx:$(tput sgr0) $(tput setaf 6)grinstall nginx$(tput sgr0)
+    $(tput bold)PHP:$(tput sgr0) $(tput setaf 6)grinstall php$(tput sgr0)
 
   $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
     $(tput setaf 6)grackle help$(tput sgr0)
@@ -80,7 +80,7 @@ base)
   apt install -y apt-transport-https ca-certificates debian-archive-keyring gnupg2 lsb-release
 
   # Install additional packages
-  apt install -y bzip2 gzip imagemagick jq mawk rsync sudo tar unzip zip
+  apt install -y bzip2 gzip imagemagick jq mawk rsync sudo tar unrar-free unzip zip
   apt install -y -t bookworm-backports 7zip curl byobu
   apt purge -y ntp
   apt install -y aptitude btop chrony git htop logrotate ranger rsyslog sqlite3 wget

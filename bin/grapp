@@ -68,21 +68,21 @@ new)
 
   # Create new app with sanitized inputs, but only if we have both
   if [[ $name != '' ]] && [[ $domain != '' ]]; then
-    sudo useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
-    sudo usermod -aG app $name
-    sudo usermod -aG $name nginx
-    sudo usermod -c $domain $name
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
-    sudo cp -v /opt/grackle/skel/etc/nginx/available/basic_http /etc/nginx/available/$name.conf
-    sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/nginx/available/$name.conf
-    sudo sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/nginx/available/$name.conf
+    useradd $name -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
+    usermod -aG app $name
+    usermod -aG $name nginx
+    usermod -c $domain $name
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
+    cp -v /opt/grackle/skel/etc/nginx/available/basic_http /etc/nginx/available/$name.conf
+    ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/nginx/available/$name.conf
+    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/nginx/available/$name.conf
 
     # Create ~/.gracklevar with initial metadata
-    sudo tee "/home/$name/.gracklevar" >/dev/null <<EOF
+    tee "/home/$name/.gracklevar" >/dev/null <<EOF
 {
 	"user": "$name",
 	"url": "$domain",
@@ -93,8 +93,8 @@ EOF
 
     # Tidy up permissions
     grapp fix-perms-deep $name
-    sudo chown -Rv root:nginx /etc/nginx
-    sudo chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
+    chown -Rv root:nginx /etc/nginx
+    chmod -Rv u+rwX,g+rX,o-rwx /etc/nginx
     grackle reset-web
 
     # Make sure app username can't somehow get mail
@@ -120,7 +120,7 @@ web-off)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo rm /etc/nginx/active/$name.conf
+    rm /etc/nginx/active/$name.conf
     grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
@@ -140,7 +140,7 @@ web-on)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+    ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
     grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
@@ -164,23 +164,26 @@ php-setup)
    ### TO DO
 
     # Read domain from ~/.gracklevar
-    domain="$(sudo jq -er '.url | select(type=="string" and length>0)' "/home/$name/.gracklevar")" || {
+    domain="$(jq -er '.url | select(type=="string" and length>0)' "/home/$name/.gracklevar")" || {
       echo "ERROR: .gracklevar missing or .url empty for $name" >&2; exit 2;
     }
     esc_domain="$(printf '%s' "$domain" | sed 's/[&/\]/\\&/g')"
 
     # Copy skeleton files and insert appdata
-    sudo cp -v /opt/grackle/skel/etc/php/pool.d/pool.conf /etc/php/8.5/fpm/pool.available/$name.conf
-    sudo ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.5/fpm/pool.available/$name.conf
-    sudo sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.5/fpm/pool.available/$name.conf"
-    sudo mkdir -pv /home/$name/.local/share/php/opcache/file
-    sudo mkdir -pv /home/$name/.local/share/php/opcache/lock
-    sudo mkdir -pv /home/$name/.local/share/php/sessions
-    sudo mkdir -pv /home/$name/.local/share/php/soap
-    sudo mkdir -pv /home/$name/.local/share/php/tmp_upload
-    sudo mkdir -pv /home/$name/logs/php-fpm
-    sudo cp -v /opt/grackle/skel/etc/php/logdir-readme.md /home/$name/logs/php-fpm/README.md
+    cp -v /opt/grackle/skel/etc/php/pool.d/pool.conf /etc/php/8.5/fpm/pool.available/$name.conf
+    ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.5/fpm/pool.available/$name.conf
+    sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.5/fpm/pool.available/$name.conf"
+    touch /home/$name/composer.json
+    touch /home/$name/composer.lock
+    mkdir -pv /home/$name/vendor
+    mkdir -pv /home/$name/.local/share/php/opcache/file
+    mkdir -pv /home/$name/.local/share/php/opcache/lock
+    mkdir -pv /home/$name/.local/share/php/sessions
+    mkdir -pv /home/$name/.local/share/php/soap
+    mkdir -pv /home/$name/.local/share/php/tmp_upload
+    mkdir -pv /home/$name/logs/php-fpm
+    cp -v /opt/grackle/skel/etc/php/logdir-readme.md /home/$name/logs/php-fpm/README.md
     grapp fix-perms $name
     grackle reset-php
   else
@@ -201,7 +204,7 @@ php-off)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo rm /etc/php/8.5/fpm/pool.d/$name.conf
+    rm /etc/php/8.5/fpm/pool.d/$name.conf
     grackle reset-php
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
@@ -221,7 +224,7 @@ php-on)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
+    ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
     grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
@@ -241,9 +244,9 @@ delete)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -rG $name nginx
-    sudo userdel -f $name
-    sudo rm -rf /etc/nginx/active/$name.conf
+    usermod -rG $name nginx
+    userdel -f $name
+    rm -rf /etc/nginx/active/$name.conf
     grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
@@ -263,9 +266,9 @@ purge)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -rG $name nginx
-    sudo userdel -rf $name
-    sudo rm -rf /home/$name /etc/nginx/active/$name.conf /etc/nginx/available/$name.conf
+    usermod -rG $name nginx
+    userdel -rf $name
+    rm -rf /home/$name /etc/nginx/active/$name.conf /etc/nginx/available/$name.conf
     grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
@@ -286,27 +289,30 @@ fix-perms)
   fi
   if [[ $name != '' ]]; then
     # Make sure account is in the right group
-    sudo usermod -aG app $name
-    sudo usermod -rG user $name
+    usermod -aG app $name
+    usermod -rG user $name
     # Set initial homedir permissions
-    sudo chown -R $name:$name /home/$name
-    sudo chmod u+rwX,g+rX,o+rX /home/$name
+    chown -R $name:$name /home/$name
+    chmod u+rwX,g+rX,o+rX /home/$name
     # Additional resets
-    sudo chmod u+rwX,g+rX /home/$name/public_html
-    sudo chmod g-w,o-rwx /home/$name/public_html
-    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/private_html
-    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
-    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
-    sudo chmod -R g+rX /home/$name/.local/share/php
-    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
-    sudo chmod -R g+rwX /home/$name/logs/nginx
-    sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
-    sudo chown "root:$name" "/home/$name/.gracklevar"
-    sudo chmod 640 "/home/$name/.gracklevar"
+    chmod -R u+rwX,g+rX /home/$name/public_html /home/$name/vendor
+    chmod -R g-w,o-rwx /home/$name/public_html /home/$name/vendor
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/private_html
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
+    chmod -R g+rX /home/$name/.local/share/php
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
+    chmod -R g+rwX /home/$name/logs/nginx
+    chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
+    chown root:$name /home/$name/.gracklevar
+    chmod 640 /home/$name/.gracklevar
+    chown $name:$name /home/$name/composer.json /home/$name/composer.lock
+    chmod 600 /home/$name/composer.json /home/$name/composer.lock
+    
     # Tweak top-level homedir permissions for SSH chrooting to work
-    sudo chmod u+rwX,g+rX,o+rX /home/$name
-    sudo chmod g-w,o-w /home/$name
-    sudo chown root:root /home/$name
+    chmod u+rwX,g+rX,o+rX /home/$name
+    chmod g-w,o-w /home/$name
+    chown root:root /home/$name
  else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -324,27 +330,29 @@ fix-perms-deep)
   fi
   if [[ $name != '' ]]; then
     # Make sure account is in the right group
-    sudo usermod -aG app $name
-    sudo usermod -rG user $name
+    usermod -aG app $name
+    usermod -rG user $name
     # Set initial homedir permissions
-    sudo chown -R $name:$name /home/$name
-    sudo chmod u+rwX,g+rX,o+rX /home/$name
+    chown -R $name:$name /home/$name
+    chmod u+rwX,g+rX,o+rX /home/$name
     # Additional resets
-    sudo chmod -R u+rwX,g+rX /home/$name/public_html
-    sudo chmod -R g-w,o-rwx /home/$name/public_html
-    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/private_html
-    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
-    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
-    sudo chmod -R g+rX /home/$name/.local/share/php
-    sudo chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
-    sudo chmod -R g+rwX /home/$name/logs/nginx
-    sudo chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
-    sudo chown "root:$name" "/home/$name/.gracklevar"
-    sudo chmod 640 "/home/$name/.gracklevar"
+    chmod -R u+rwX,g+rX /home/$name/public_html /home/$name/vendor
+    chmod -R g-w,o-rwx /home/$name/public_html /home/$name/vendor
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/private_html
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
+    chmod -R g+rX /home/$name/.local/share/php
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
+    chmod -R g+rwX /home/$name/logs/nginx
+    chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
+    chown "root:$name" "/home/$name/.gracklevar"
+    chmod 640 /home/$name/.gracklevar
+    chown $name:$name /home/$name/composer.json /home/$name/composer.lock
+    chmod 600 /home/$name/composer.json /home/$name/composer.lock
     # Tweak top-level homedir permissions for SSH chrooting to work
-    sudo chmod u+rwX,g+rX,o+rX /home/$name
-    sudo chmod g-w,o-w /home/$name
-    sudo chown root:root /home/$name
+    chmod u+rwX,g+rX,o+rX /home/$name
+    chmod g-w,o-w /home/$name
+    chown root:root /home/$name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
