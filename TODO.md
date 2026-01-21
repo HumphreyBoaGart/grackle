@@ -13,6 +13,7 @@ A running checklist of things I need to add or patch:
 ## Misc Configs
 - ~~Import .dotfiles to /root~~
 - install npm/yarn and prep app accounts during `grapp new`
+- more skel options for nginx configs, including for ssl generation
 
 ## Misc Patches
 - merge `.bash_aliases` & `.bashrc` for users in /skel/home/, similar to the setup for root user.
