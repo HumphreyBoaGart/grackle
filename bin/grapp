@@ -86,6 +86,7 @@ new)
 {
 	"user": "$name",
 	"url": "$domain",
+	"docker": "no",
 	"php": "0"
 }
 EOF

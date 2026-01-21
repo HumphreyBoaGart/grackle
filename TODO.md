@@ -19,6 +19,9 @@ A running checklist of things I need to add or patch:
 ## Misc Patches
 - merge `.bash_aliases` & `.bashrc` for users in /skel/home/, similar to the setup for root user.
 - backport `.bashrc` updates from above to the `.bashrc` in root skel
+- finish php 8.5 upgrade
+- finish credits page on documentation site
+- add customer contact info to .gracklevar
 
 ## Commands
 
@@ -27,8 +30,13 @@ A running checklist of things I need to add or patch:
 - Have it check for existing PHP setup before generating configs
 - Have it set up Composer & associated directories for app account
 
-### `grapp php-basic`
-- The whole thing
+### `grapp docker-setup`
+- Have it set up rootless Docker on specified app account
+- Have it update docker field in .gracklevar
+
+### `grbuild php`
+- Have it check for PHP config and run `grapp php-setup` if missing
+- Copy files from skel/builds/php
 
 ### `grinstall docker`
 ***Requires Nginx***

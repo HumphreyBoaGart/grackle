@@ -71,7 +71,6 @@ base)
   chmod -v u=rwx,g=rx /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
   chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
   chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
-  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Configure apt
   cp -bv /opt/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
@@ -333,7 +332,6 @@ update)
   chmod -v u=rwx /opt/grackle/bin/grinstall
   chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
   chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
-  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Close updater
 ;;
@@ -354,7 +352,6 @@ reinstall)
   chmod -v u=rwx /opt/grackle/bin/grinstall
   chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
   chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
-  chmod -vR g+r,o+r /opt/grackle/bin/grapp.md /opt/grackle/bin/grinstall.md /opt/grackle/bin/gruser.md
 
   # Recopy various /etc files from base installer
   cp -bv /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
