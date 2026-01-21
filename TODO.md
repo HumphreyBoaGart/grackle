@@ -8,12 +8,9 @@ A running checklist of things I need to add or patch:
 
 ## More Packages
 - ~~Prepare APT repos and config~~
-- ~~Install ranger & copy config~~
 - Set timezone and metadata
-- ~~configure sshd~~
 
 ## Misc Configs
-- ~~Prepare usergroups~~
 - ~~Import .dotfiles to /root~~
 
 ## Misc Patches
