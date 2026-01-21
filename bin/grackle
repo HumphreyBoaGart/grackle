@@ -41,14 +41,14 @@ EOF
 
 ### Flush & reset web services with 'grackle reset'
 reset)
-  systemctl reload php8.3-fpm
-  systemctl restart php8.3-fpm
+  systemctl reload php8.5-fpm
+  systemctl restart php8.5-fpm
   systemctl reload nginx
   systemctl restart nginx
 ;;
 reset-php)
-  systemctl reload php8.3-fpm
-  systemctl restart php8.3-fpm
+  systemctl reload php8.5-fpm
+  systemctl restart php8.5-fpm
 ;;
 reset-web | reset-nginx)
   systemctl reload nginx
