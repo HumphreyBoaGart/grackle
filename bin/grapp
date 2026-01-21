@@ -107,41 +107,41 @@ EOF
   fi
 ;;
 
-### Revoke web access to app with 'grapp web-off'
-web-off)
+### Enable PHP access for app with 'grapp php-on'
+php-on)
   if [[ $2 != '' ]]; then
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    echo " $(tput setaf 6 bold)Please enter an app name to revoke web access from:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter an app name to enable PHP access for:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    rm /etc/nginx/active/$name.conf
+    ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
     grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
   fi
 ;;
 
-### Enable web access to app with 'grapp web-on'
-web-on)
+### Disable PHP access for app with 'grapp php-off'
+php-off)
   if [[ $2 != '' ]]; then
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    echo " $(tput setaf 6 bold)Please enter an app name to restore web access to:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter an app name to revoke PHP access from:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
-    grackle reset-web
+    rm /etc/php/8.5/fpm/pool.d/$name.conf
+    grackle reset-php
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
   fi
@@ -192,40 +192,79 @@ php-setup)
   fi
 ;;
 
-### Disable PHP access for app with 'grapp php-off'
-php-off)
+
+### Grant user shell access with 'grapp shell-on'
+shell-on)
   if [[ $2 != '' ]]; then
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    echo " $(tput setaf 6 bold)Please enter an app name to revoke PHP access from:$(tput sgr0)"
+    sudo echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    rm /etc/php/8.5/fpm/pool.d/$name.conf
-    grackle reset-php
+    sudo usermod -s /bin/bash $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Grant user shell access with 'grapp shell-off'
+shell-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -s /sbin/nologin $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Enable web access to app with 'grapp web-on'
+web-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to restore web access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+    grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
   fi
 ;;
 
-### Enable PHP access for app with 'grapp php-on'
-php-on)
+### Revoke web access to app with 'grapp web-off'
+web-off)
   if [[ $2 != '' ]]; then
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    echo " $(tput setaf 6 bold)Please enter an app name to enable PHP access for:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter an app name to revoke web access from:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
+    rm /etc/nginx/active/$name.conf
     grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"

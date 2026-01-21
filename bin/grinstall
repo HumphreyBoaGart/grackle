@@ -63,6 +63,7 @@ base)
   groupadd adm
   groupadd user
   groupadd app
+  groupadd cliapp
 
   # Clean up permissions
   chown -vR root:root /opt/grackle
