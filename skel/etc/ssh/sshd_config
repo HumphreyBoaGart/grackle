@@ -134,6 +134,7 @@ Match Group adm
         PasswordAuthentication no
 Match Group cliapp
         ChrootDirectory none
+        PasswordAuthentication no
 Match Group app
         ChrootDirectory %h
         PermitRootLogin no
