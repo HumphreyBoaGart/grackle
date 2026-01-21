@@ -207,6 +207,7 @@ shell-on)
   fi
   if [[ $name != '' ]]; then
     sudo usermod -s /bin/bash $name
+    sudo usermod -aG cliapp $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -226,6 +227,7 @@ shell-off)
   fi
   if [[ $name != '' ]]; then
     sudo usermod -s /sbin/nologin $name
+    sudo usermod -rG cliapp $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
