@@ -1,5 +1,5 @@
 # GRACKLE BASH CONFIG - ~/.profile
-# Generated From: /opt/grackle/skel/home/app/.profile
+# Generated From: /opt/grackle/skel/home/user/.profile
 # Saves To: /home/{{USERNAME}}/.profile
 #
 # Executed by the command interpreter for login shells. This file
@@ -14,12 +14,20 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+# Uncomment to run byobu on login
+#byobu
+# Uncomment to run screen on login
+#screen -dRR
+# Uncomment to run tmux on login
+#[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit; }
+
 # Output help & shortcut commands
-#  ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
-# ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
-# ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
-# ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
-# ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
-#Enter $(tput setaf 3 bold)grackle help$(tput sgr0) for a list of commands.
-#Enter $(tput setaf 3 bold)shortcuts$(tput sgr0) for a list of keyboard shortcuts.
-#EOF
+cat <<EOF
+  ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
+ ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
+ ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
+ ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
+ ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
+Enter $(tput setaf 3 bold)grackle help$(tput sgr0) for a list of commands.
+Enter $(tput setaf 3 bold)shortcuts$(tput sgr0) for a list of keyboard shortcuts.
+EOF
