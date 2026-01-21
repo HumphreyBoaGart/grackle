@@ -302,14 +302,14 @@ php)
   chmod a+r /etc/apt/sources.list.d/php.list
   apt update
 
-  # Install PHP 8.3 & PHP-FPM from Sury
-  apt install -y php8.3 php8.3-fpm php8.3-{bz2,cli,curl,gd,imagick,intl,mbstring,opcache,readline,sqlite3,xml,zip}
-  systemctl enable php8.3-fpm
+  # Install PHP 8.5 & PHP-FPM from Sury
+  apt install -y php8.5 php8.5-fpm php8.5-{bz2,cli,curl,gd,imagick,intl,mbstring,readline,sqlite3,xml,zip}
+  systemctl enable php8.5-fpm
 
   # Configure PHP-FPM
-  mkdir -pv /etc/php/8.3/fpm/pool.available
-  rm /etc/php/8.3/fpm/pool.d/www.conf
-  cp -v /opt/grackle/skel/etc/php/php-fpm.conf /etc/php/8.3/fpm/php-fpm.conf
+  mkdir -pv /etc/php/8.5/fpm/pool.available
+  rm /etc/php/8.5/fpm/pool.d/www.conf
+  cp -v /opt/grackle/skel/etc/php/php-fpm.conf /etc/php/8.5/fpm/php-fpm.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
   systemctl restart rsyslog
   grackle reset-php

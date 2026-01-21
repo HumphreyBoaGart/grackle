@@ -168,10 +168,10 @@ php-setup)
     esc_domain="$(printf '%s' "$domain" | sed 's/[&/\]/\\&/g')"
 
     # Copy skeleton files and insert appdata
-    sudo cp -v /opt/grackle/skel/etc/php/pool.d/pool.conf /etc/php/8.3/fpm/pool.available/$name.conf
-    sudo ln -s /etc/php/8.3/fpm/pool.available/$name.conf /etc/php/8.3/fpm/pool.d/$name.conf
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.3/fpm/pool.available/$name.conf
-    sudo sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.3/fpm/pool.available/$name.conf"
+    sudo cp -v /opt/grackle/skel/etc/php/pool.d/pool.conf /etc/php/8.5/fpm/pool.available/$name.conf
+    sudo ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
+    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.5/fpm/pool.available/$name.conf
+    sudo sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.5/fpm/pool.available/$name.conf"
     sudo mkdir -pv /home/$name/.local/share/php/opcache/file
     sudo mkdir -pv /home/$name/.local/share/php/opcache/lock
     sudo mkdir -pv /home/$name/.local/share/php/sessions
@@ -199,7 +199,7 @@ php-off)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo rm /etc/php/8.3/fpm/pool.d/$name.conf
+    sudo rm /etc/php/8.5/fpm/pool.d/$name.conf
     grackle reset-php
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
@@ -219,7 +219,7 @@ php-on)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo ln -s /etc/php/8.3/fpm/pool.available/$name.conf /etc/php/8.3/fpm/pool.d/$name.conf
+    sudo ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
     grackle reset-web
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
