@@ -85,7 +85,8 @@ new)
     sudo tee "/home/$name/.gracklevar" >/dev/null <<EOF
 {
 	"user": "$name",
-	"url": "$domain"
+	"url": "$domain",
+	"php": "0"
 }
 EOF
 
