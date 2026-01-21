@@ -132,6 +132,8 @@ Subsystem       sftp    internal-sftp
 # several ways, so please don't molest it.
 Match Group adm
         PasswordAuthentication no
+Match Group cliapp
+        ChrootDirectory none
 Match Group app
         ChrootDirectory %h
         PermitRootLogin no
