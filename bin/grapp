@@ -84,6 +84,7 @@ new)
     # Create ~/.gracklevar with initial metadata
     tee "/home/$name/.gracklevar" >/dev/null <<EOF
 {
+	"type": "app",
 	"user": "$name",
 	"url": "$domain",
 	"docker": "no",
