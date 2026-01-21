@@ -303,7 +303,7 @@ php)
   apt update
 
   # Install PHP 8.5 & PHP-FPM from Sury
-  apt install -y php8.5 php8.5-fpm php8.5-{bz2,cli,curl,gd,imagick,intl,mbstring,readline,sqlite3,xml,zip}
+  apt install -y php8.5 php8.5-fpm php8.5-{bz2,cli,curl,gd,imagick,intl,mbstring,readline,sqlite3,xml,zip} composer
   systemctl enable php8.5-fpm
 
   # Configure PHP-FPM
