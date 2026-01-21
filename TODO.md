@@ -26,7 +26,6 @@ A running checklist of things I need to add or patch:
 ## Commands
 
 ### `grapp php-setup`
-- Have it add PHP version to .gracklevar
 - Have it check for existing PHP setup before generating configs
 - Have it set up Composer & associated directories for app account
 
