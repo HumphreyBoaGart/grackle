@@ -339,9 +339,9 @@ fix-perms)
     chown -R $name:$name /home/$name
     chmod u+rwX,g+rX,o+rX /home/$name
     # Additional resets
-    chmod -R u+rwX,g+rX /home/$name/public_html /home/$name/vendor
-    chmod -R g-w,o-rwx /home/$name/public_html /home/$name/vendor
-    chmod -R u+rwX,g-rwx,o-rwx /home/$name/private_html
+    chmod -R u+rwX,g+rX /home/$name/app/public /home/$name/vendor
+    chmod -R g-w,o-rwx /home/$name/app/public /home/$name/vendor
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/app/private
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
     chmod -R g+rX /home/$name/.local/share/php
@@ -378,9 +378,9 @@ fix-perms-deep)
     chown -R $name:$name /home/$name
     chmod u+rwX,g+rX,o+rX /home/$name
     # Additional resets
-    chmod -R u+rwX,g+rX /home/$name/public_html /home/$name/vendor
-    chmod -R g-w,o-rwx /home/$name/public_html /home/$name/vendor
-    chmod -R u+rwX,g-rwx,o-rwx /home/$name/private_html
+    chmod -R u+rwX,g+rX /home/$name/app/public /home/$name/vendor
+    chmod -R g-w,o-rwx /home/$name/app/public /home/$name/vendor
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/app/private
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
     chmod -R g+rX /home/$name/.local/share/php
