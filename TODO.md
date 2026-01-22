@@ -8,7 +8,6 @@ A running checklist of things I need to add or patch:
 
 ## More Packages
 - Set timezone and metadata
-- install standalone dart sass and find automated updates pipeline for it
 
 ## Misc Configs
 - more skel options for nginx configs, including for ssl generation
