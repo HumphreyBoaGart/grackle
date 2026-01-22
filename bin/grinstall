@@ -112,6 +112,20 @@ base)
   rm -v /etc/motd /etc/issue /etc/issue.net
   touch /etc/issue /etc/issue/net
   cp -bv /opt/grackle/skel/etc/motd /etc/motd
+  
+  # Grab latest dart-sass
+  set -euo pipefail
+  url="$(
+    curl -fsSL https://api.github.com/repos/sass/dart-sass/releases/latest \
+    | jq -r '.assets[]
+           | select(.name | endswith("linux-x64.tar.gz"))
+           | .browser_download_url' \
+    | head -n1
+  )"
+  rm -rf /opt/dart-sass
+  curl -fL "$url" | sudo tar -xz -C /opt
+  chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
+  ln -sf /opt/dart-sass/sass /usr/local/bin/sass
 
   # Close installer
 ;;
@@ -345,6 +359,7 @@ update)
   )"
   rm -rf /opt/dart-sass
   curl -fL "$url" | sudo tar -xz -C /opt
+  chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
   ln -sf /opt/dart-sass/sass /usr/local/bin/sass
 
   # Close updater
@@ -403,6 +418,7 @@ reinstall)
   )"
   rm -rf /opt/dart-sass
   curl -fL "$url" | sudo tar -xz -C /opt
+  chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
   ln -sf /opt/dart-sass/sass /usr/local/bin/sass
 
   # Close updater
