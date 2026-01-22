@@ -1,0 +1,5 @@
+{
+  "name": "app/{{USERNAME}}",
+  "type": "project",
+  "require": {}
+}

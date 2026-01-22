@@ -176,7 +176,8 @@ php-setup)
     sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.5/fpm/pool.available/$name.conf
     sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.5/fpm/pool.available/$name.conf"
     t="$(mktemp)"; jq --argjson v 8.5 '.php=$v' "/home/$name/.gracklevar" >"$t" && sudo mv "$t" "/home/$name/.gracklevar"
-    touch /home/$name/composer.json
+    cp -v /opt/grackle/skel/etc/php/composer.json /home/$name/composer.json
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/composer.json
     touch /home/$name/composer.lock
     mkdir -pv /home/$name/vendor
     mkdir -pv /home/$name/.local/share/php/opcache/file
