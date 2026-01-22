@@ -11,7 +11,6 @@ A running checklist of things I need to add or patch:
 - install standalone dart sass and find automated updates pipeline for it
 
 ## Misc Configs
-- install npm/yarn and prep app accounts during `grapp new`
 - more skel options for nginx configs, including for ssl generation
 
 ## Misc Patches
