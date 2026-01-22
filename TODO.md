@@ -26,7 +26,7 @@ A running checklist of things I need to add or patch:
 
 ### `grapp php-setup`
 - Have it check for existing PHP setup before generating configs
-- Have it set up Composer & associated directories for app account
+- Add better support for running multiple PHP versions
 
 ### `grapp docker-setup`
 - Have it set up rootless Docker on specified app account

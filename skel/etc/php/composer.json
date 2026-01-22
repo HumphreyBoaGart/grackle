@@ -1,5 +1,8 @@
 {
   "name": "app/{{USERNAME}}",
   "type": "project",
+  "config": {
+    "vendor-dir": "composer"
+  },
   "require": {}
 }
