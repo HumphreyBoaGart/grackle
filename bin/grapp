@@ -176,10 +176,8 @@ php-setup)
     sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.5/fpm/pool.available/$name.conf
     sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.5/fpm/pool.available/$name.conf"
     t="$(mktemp)"; jq --argjson v 8.5 '.php=$v' "/home/$name/.gracklevar" >"$t" && sudo mv "$t" "/home/$name/.gracklevar"
-    cp -v /opt/grackle/skel/etc/php/composer.json /home/$name/composer.json
-    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/composer.json
-    touch /home/$name/composer.lock
-    mkdir -pv /home/$name/vendor
+    cp -v /opt/grackle/skel/etc/php/composer.json /home/$name/app/composer.json
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/app/composer.json
     mkdir -pv /home/$name/.local/share/php/opcache/file
     mkdir -pv /home/$name/.local/share/php/opcache/lock
     mkdir -pv /home/$name/.local/share/php/sessions
@@ -339,8 +337,8 @@ fix-perms)
     chown -R $name:$name /home/$name
     chmod u+rwX,g+rX,o+rX /home/$name
     # Additional resets
-    chmod -R u+rwX,g+rX /home/$name/app/public /home/$name/vendor
-    chmod -R g-w,o-rwx /home/$name/app/public /home/$name/vendor
+    chmod -R u+rwX,g+rX /home/$name/app
+    chmod -R g-w,o-rwx /home/$name/app
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/app/private
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
@@ -348,7 +346,6 @@ fix-perms)
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
     chmod -R g+rwX /home/$name/logs/nginx
     chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
-    chmod u+rwX,g-rwx,o-rwx /home/$name/composer.json /home/$name/composer.lock
     chown root:$name /home/$name/.gracklevar
     chmod 640 /home/$name/.gracklevar
     # Tweak top-level homedir permissions for SSH chrooting to work
@@ -378,8 +375,8 @@ fix-perms-deep)
     chown -R $name:$name /home/$name
     chmod u+rwX,g+rX,o+rX /home/$name
     # Additional resets
-    chmod -R u+rwX,g+rX /home/$name/app/public /home/$name/vendor
-    chmod -R g-w,o-rwx /home/$name/app/public /home/$name/vendor
+    chmod -R u+rwX,g+rX /home/$name/app
+    chmod -R g-w,o-rwx /home/$name/app
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/app/private
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
@@ -387,7 +384,6 @@ fix-perms-deep)
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
     chmod -R g+rwX /home/$name/logs/nginx
     chmod u+rwX,g-rwx,o-rwx /home/$name/.bash_aliases /home/$name/.bash_logout /home/$name/.bashrc /home/$name/.profile
-    chmod u+rwX,g-rwx,o-rwx /home/$name/composer.json /home/$name/composer.lock
     chown root:$name /home/$name/.gracklevar
     chmod 640 /home/$name/.gracklevar
     # Tweak top-level homedir permissions for SSH chrooting to work
