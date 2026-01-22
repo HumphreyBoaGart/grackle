@@ -7,11 +7,10 @@ A running checklist of things I need to add or patch:
 - tweak default logrotate settings and finish integrating with application logs
 
 ## More Packages
-- ~~Prepare APT repos and config~~
 - Set timezone and metadata
+- install standalone dart sass and find automated updates pipeline for it
 
 ## Misc Configs
-- ~~Import .dotfiles to /root~~
 - install npm/yarn and prep app accounts during `grapp new`
 - more skel options for nginx configs, including for ssl generation
 
