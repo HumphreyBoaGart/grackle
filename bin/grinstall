@@ -334,6 +334,19 @@ update)
   chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/gruser
   chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
 
+  # Grab latest dart-sass
+  set -euo pipefail
+  url="$(
+    curl -fsSL https://api.github.com/repos/sass/dart-sass/releases/latest \
+    | jq -r '.assets[]
+           | select(.name | endswith("linux-x64.tar.gz"))
+           | .browser_download_url' \
+    | head -n1
+  )"
+  rm -rf /opt/dart-sass
+  curl -fL "$url" | sudo tar -xz -C /opt
+  ln -sf /opt/dart-sass/sass /usr/local/bin/sass
+
   # Close updater
 ;;
 
@@ -378,6 +391,19 @@ reinstall)
   # Re-enable and restart base services
   systemctl restart fail2ban
   systemctl restart rsyslog
+  
+  # Grab latest dart-sass
+  set -euo pipefail
+  url="$(
+    curl -fsSL https://api.github.com/repos/sass/dart-sass/releases/latest \
+    | jq -r '.assets[]
+           | select(.name | endswith("linux-x64.tar.gz"))
+           | .browser_download_url' \
+    | head -n1
+  )"
+  rm -rf /opt/dart-sass
+  curl -fL "$url" | sudo tar -xz -C /opt
+  ln -sf /opt/dart-sass/sass /usr/local/bin/sass
 
   # Close updater
 ;;
