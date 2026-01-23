@@ -15,7 +15,6 @@ A running checklist of things I need to add or patch:
 ## Misc Patches
 - merge `.bash_aliases` & `.bashrc` for users in /skel/home/, similar to the setup for root user.
 - backport `.bashrc` updates from above to the `.bashrc` in root skel
-- finish php 8.5 upgrade
 - finish credits page on documentation site
 - add customer contact info to .gracklevar
 
@@ -31,7 +30,6 @@ A running checklist of things I need to add or patch:
 
 ### `grbuild php`
 - Have it check for PHP config and run `grapp php-setup` if missing
-- Import grackle error message template into index pages for php/html skeletons
 
 ### `grinstall docker`
 ***Requires Nginx***
