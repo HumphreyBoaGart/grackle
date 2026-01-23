@@ -44,7 +44,7 @@ html)
 ;;
 
 ### Build basic PHP skeleton with 'grbuild php'
-html)
+php)
   if [[ $2 != '' ]]; then
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
