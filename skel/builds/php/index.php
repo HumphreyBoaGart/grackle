@@ -1,7 +1,7 @@
 <?php
 define('RUNNING', true);
 require 'theme/php/meta.php';?>
-	<title>Demo</title>
+	<title>CONGRATULATIONS</title>
 	<meta name="description" content="">
 	<meta property="og:url" content="">
 	<meta property="og:title" content="Demo">
@@ -15,8 +15,8 @@ require 'theme/php/meta.php';?>
 	<link rel="canonical" href="">
 <?php require 'theme/php/header.php';?>
 
-<h1>Demo Index</h1>
-
-<p>This is a bare-bones starter skeleton for simple PHP projects. Refer to <a href="https://grackle.lanterns.io/builds">builds documentation</a> for more information.</p>
+<h1>Your PHP Skeleton is Ready!</h1>
+<p>Edit this index file in <em>/app/public/</em> to get started with your new application.</p>
+<p><a href="https://grackle.lanterns.io/builds#php">Read Documentation</a></p>
 
 <?php require 'theme/php/footer.php';?>
