@@ -19,7 +19,57 @@ exec cat <<EOF
 EOF
 ;;
 
+### Build basic HTML skeleton with 'grbuild html'
+html)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter the name of the app you are building this on:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    mkdir -pv /home/$name/app/public/theme/css /home/$name/app/public/theme/fonts
+    mkdir -pv /home/$name/app/public/theme/img /home/$name/app/public/theme/scss
+    cp /opt/grackle/skel/builds/html/index.html /home/$name/app/public/index.html
+    cp /opt/grackle/skel/builds/html/theme/css/style.css /home/$name/app/public/theme/css/style.css
+    cp /opt/grackle/skel/builds/html/theme/scss/style.scss /home/$name/app/public/theme/scss/style.scss
+    grapp fix-perms-deep $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
 
+### Build basic PHP skeleton with 'grbuild php'
+html)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter the name of the app you are building this on:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    mkdir -pv /home/$name/app/public/theme/css /home/$name/app/public/theme/fonts
+    mkdir -pv /home/$name/app/public/theme/img /home/$name/app/public/theme/scss
+    mkdir -pv /home/$name/app/public/theme/php
+    cp /opt/grackle/skel/builds/php/index.php /home/$name/app/public/index.php
+    cp /opt/grackle/skel/builds/php/theme/css/style.css /home/$name/app/public/theme/css/style.css
+    cp /opt/grackle/skel/builds/php/theme/scss/style.scss /home/$name/app/public/theme/scss/style.scss
+    cp /opt/grackle/skel/builds/php/theme/php/meta.php /home/$name/app/public/theme/php/meta.php
+    cp /opt/grackle/skel/builds/php/theme/php/header.php /home/$name/app/public/theme/php/header.php
+    cp /opt/grackle/skel/builds/php/theme/php/footer.php /home/$name/app/public/theme/php/footer.php
+    grapp fix-perms-deep $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
 
 ### Output error for any input not explicitly defined
 *)
