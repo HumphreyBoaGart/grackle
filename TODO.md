@@ -31,7 +31,7 @@ A running checklist of things I need to add or patch:
 
 ### `grbuild php`
 - Have it check for PHP config and run `grapp php-setup` if missing
-- Copy files from skel/builds/php
+- Import grackle error message template into index pages for php/html skeletons
 
 ### `grinstall docker`
 ***Requires Nginx***
