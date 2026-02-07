@@ -112,6 +112,7 @@ base)
   rm -v /etc/motd /etc/issue /etc/issue.net
   touch /etc/issue /etc/issue/net
   cp -bv /opt/grackle/skel/etc/motd /etc/motd
+ ## TO DO: Grab and configure homebrew with 'brew' user/group in /home/brew
   
   # Grab latest dart-sass
   set -euo pipefail
