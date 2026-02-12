@@ -175,7 +175,7 @@ php-setup)
     ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
     sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.5/fpm/pool.available/$name.conf
     sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.5/fpm/pool.available/$name.conf"
-    t="$(mktemp)"; jq --argjson v 8.5 '.php=$v' "/home/$name/.gracklevar" >"$t" && sudo mv "$t" "/home/$name/.gracklevar"
+    t="$(mktemp)"; jq --argjson v 8.5 '.php=$v' "/home/$name/.gracklevar" >"$t" && mv "$t" "/home/$name/.gracklevar"
     cp -v /opt/grackle/skel/etc/php/composer.json /home/$name/app/composer.json
     sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/app/composer.json
     mkdir -pv /home/$name/.local/share/php/opcache/file
@@ -199,15 +199,15 @@ shell-on)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -s /bin/bash $name
-    sudo usermod -aG cliapp $name
+    usermod -s /bin/bash $name
+    usermod -aG cliapp $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -219,15 +219,15 @@ shell-off)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -s /sbin/nologin $name
-    sudo usermod -rG cliapp $name
+    usermod -s /sbin/nologin $name
+    usermod -rG cliapp $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -239,14 +239,14 @@ brew-on)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -aG brew $name
+    usermod -aG brew $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -258,14 +258,14 @@ brew-off)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -rG brew $name
+    usermod -rG brew $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi

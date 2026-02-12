@@ -55,7 +55,7 @@ new)
 
   # Otherwise, go to interactive mode
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username for your new user:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username for your new user:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
 
@@ -66,16 +66,16 @@ new)
 
   # Create new user with sanitized inputs
   if [[ $name != '' ]]; then
-    sudo useradd $name -Um --skel /opt/grackle/skel/home/user --shell /sbin/nologin
-    sudo usermod -aG user $name
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
-    sudo sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
-    sudo mkdir -pv /home/$name/.local/mail/cur /home/$name/.local/mail/new /home/$name/.local/mail/tmp
+    useradd $name -Um --skel /opt/grackle/skel/home/user --shell /sbin/nologin
+    usermod -aG user $name
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_aliases
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bash_logout
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.bashrc
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/.profile
+    mkdir -pv /home/$name/.local/mail/cur /home/$name/.local/mail/new /home/$name/.local/mail/tmp
 
     # Create ~/.gracklevar with initial metadata
-    sudo tee "/home/$name/.gracklevar" >/dev/null <<EOF
+    tee "/home/$name/.gracklevar" >/dev/null <<EOF
 {
 	"type": "user",
 	"user": "$name"
@@ -95,14 +95,14 @@ admin-on)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to grant admin access to:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to grant admin access to:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -aG adm $name
+    usermod -aG adm $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -114,14 +114,14 @@ admin-off)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke admin access from:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to revoke admin access from:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -rG adm $name
+    usermod -rG adm $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -133,14 +133,14 @@ brew-on)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -aG brew $name
+    usermod -aG brew $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -152,14 +152,14 @@ brew-off)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -rG brew $name
+    usermod -rG brew $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -171,14 +171,14 @@ shell-on)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -s /bin/bash $name
+    usermod -s /bin/bash $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -190,14 +190,14 @@ shell-off)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -s /sbin/nologin $name
+    usermod -s /sbin/nologin $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -209,14 +209,14 @@ delete)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Which account shall we delete?$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Which account shall we delete?$(tput sgr0)"
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -rG $name nginx
-    sudo userdel -f $name
+    usermod -rG $name nginx
+    userdel -f $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -228,15 +228,15 @@ purge)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Which account shall we purge?$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Which account shall we purge?$(tput sgr0)"
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    sudo usermod -rG $name nginx
-    sudo userdel -rf $name
-    sudo rm -rf /home/$name
+    usermod -rG $name nginx
+    userdel -rf $name
+    rm -rf /home/$name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -248,7 +248,7 @@ fix-perms)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter an account username:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
@@ -256,13 +256,13 @@ fix-perms)
   fi
   if [[ $name != '' ]]; then
     # Make sure account is in the right group
-    sudo usermod -aG user $name
-    sudo usermod -rG app $name
+    usermod -aG user $name
+    usermod -rG app $name
     # Set homedir permissions
-    sudo chown -Rv $name:$name /home/$name
-    sudo chmod -Rv u+rwX,g-rwx,o-rwx /home/$name
-    sudo chown "root:$name" "/home/$name/.gracklevar"
-    sudo chmod 640 "/home/$name/.gracklevar"
+    chown -Rv $name:$name /home/$name
+    chmod -Rv u+rwX,g-rwx,o-rwx /home/$name
+    chown "root:$name" "/home/$name/.gracklevar"
+    chmod 640 "/home/$name/.gracklevar"
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
