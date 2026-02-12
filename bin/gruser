@@ -127,6 +127,44 @@ admin-off)
   fi
 ;;
 
+### Grant user Homebrew access with 'gruser brew-on'
+brew-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -aG brew $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Grant user Homebrew access with 'gruser brew-off'
+brew-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG brew $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
 ### Grant user shell access with 'gruser shell-on'
 shell-on)
   if [[ $2 != '' ]]; then

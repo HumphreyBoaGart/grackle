@@ -239,7 +239,7 @@ brew-on)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
+    sudo echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
@@ -258,7 +258,7 @@ brew-off)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
+    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
