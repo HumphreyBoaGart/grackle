@@ -193,7 +193,7 @@ php-setup)
 ;;
 
 
-### Grant user shell access with 'grapp shell-on'
+### Grant app shell access with 'grapp shell-on'
 shell-on)
   if [[ $2 != '' ]]; then
     name=${2// /_}
@@ -213,7 +213,7 @@ shell-on)
   fi
 ;;
 
-### Grant user shell access with 'grapp shell-off'
+### Grant app shell access with 'grapp shell-off'
 shell-off)
   if [[ $2 != '' ]]; then
     name=${2// /_}
@@ -228,6 +228,44 @@ shell-off)
   if [[ $name != '' ]]; then
     sudo usermod -s /sbin/nologin $name
     sudo usermod -rG cliapp $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Grant app Homebrew access with 'grapp brew-on'
+brew-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -aG brew $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Grant app Homebrew access with 'grapp brew-off'
+brew-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    sudo echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    sudo usermod -rG brew $name
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
