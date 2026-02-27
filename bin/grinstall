@@ -354,6 +354,13 @@ php)
   # Close installer
 ;;
 
+
+###
+###
+###>>>>> TODO
+###>>>>> MOVE UPDATE/REINSTALL FUNCTIONS TO DEDICATED `grupdate`
+###
+###
 ### Update Grackle with 'grinstall update'
 update)
   # Delete old /opt/ contents and resync to repo
