@@ -112,13 +112,7 @@ base)
   rm -v /etc/motd /etc/issue /etc/issue.net
   touch /etc/issue /etc/issue/net
   cp -bv /opt/grackle/skel/etc/motd /etc/motd
-  
-  # Set up Homebrew package manager
-  gruser new brew
-  gruser shell-on brew
-  chmod 750 /home/brew
- ## TO DO: Grab and configure homebrew with 'brew' user/group in /home/brew
-  
+
   # Grab latest dart-sass
   set -euo pipefail
   url="$(
@@ -133,6 +127,29 @@ base)
   chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
   ln -sf /opt/dart-sass/sass /usr/local/bin/sass
 
+  # Close installer
+;;
+
+
+### Homebrew package manager with 'grinstall brew'
+brew)
+  # Set up Homebrew package manager
+  gruser new brew
+  gruser shell-on brew
+  chmod 750 /home/brew
+
+ ## TO DO: Grab and configure homebrew with 'brew' user/group in /home/brew
+
+  # Close installer
+;;
+
+### ChatGPT Codex stack with 'grinstall codex'
+codex)
+  # Make sure Homebrew is installed
+  grinstall brew
+
+ ## TO DO: Grab and configure Codex from Homebrew, and secure.  
+  
   # Close installer
 ;;
 
