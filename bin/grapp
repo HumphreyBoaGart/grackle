@@ -108,7 +108,7 @@ EOF
   fi
 ;;
 
-### Homebrew package manager with 'grapp brew-setup'
+### Local Homebrew package manager with 'grapp brew-setup'
 brew-setup)
   if [[ $2 != '' ]]; then
     name=${2// /_}
@@ -135,6 +135,46 @@ brew-setup)
     sudo -u $name ln -sf /home/$name/.linuxbrew/Homebrew/bin/brew /home/$name/.local/bin/brew
     chown -R $name:$name /home/$name/.linuxbrew /home/$name/.local
     chmod -R g-rwx,o-rwx /home/$name/.linuxbrew /home/$name/.local
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Grant app Server Homebrew access with 'grapp brew-on'
+brew-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -aG linuxbrew $name
+    sudo -u $name ln -s /home/linuxbrew/.linuxbrew/bin/brew /home/$name/.local/bin/brew
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+### Revoke Server Homebrew access from app with 'grapp brew-off'
+brew-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -rG linuxbrew $name
+    rm -v /home/$name/.local/bin/brew
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
