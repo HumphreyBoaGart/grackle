@@ -146,23 +146,18 @@ brew)
   sudo -u brew /home/brew/.linuxbrew/Homebrew/bin/brew update --force
   sudo -u brew /home/brew/.linuxbrew/Homebrew/bin/brew doctor
 
-  # Set Permissions
+  # Make accessible to brew user/group
   ln -sf /home/brew/.linuxbrew/Homebrew/bin/brew /usr/local/bin/brew
+  cp -v /opt/grackle/skel/etc/profile.d/brew.sh /etc/profile.d/brew.sh
+
+  # Set Permissions
+  chmod 640 /etc/profile.d/brew.sh
+  chown root:brew /etc/profile.d/brew.sh
   chown -R brew:brew /home/brew/.linuxbrew
   chmod -R g-w,o-rwx /home/brew
   chmod -R g+rX /home/brew/.linuxbrew
   chmod g+rX /home/brew/.local /home/brew/.local/bin
 
-  # Close installer
-;;
-
-### ChatGPT Codex stack with 'grinstall codex'
-codex)
-  # Switch to Homebrew environment
-  cd /home/brew
-
- ## TO DO: Grab and configure Codex from Homebrew, and secure.  
-  
   # Close installer
 ;;
 
