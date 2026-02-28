@@ -154,6 +154,7 @@ brew-on)
   fi
   if [[ $name != '' ]]; then
     usermod -aG linuxbrew $name
+ ###TO-DO> Add '/home/linuxbrew/.local/bin' to $name's PATH
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -173,6 +174,7 @@ brew-off)
   fi
   if [[ $name != '' ]]; then
     usermod -rG linuxbrew $name
+ ###TO-DO> Remove '/home/linuxbrew/.local/bin' to $name's PATH
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
