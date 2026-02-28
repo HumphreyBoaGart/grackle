@@ -246,7 +246,8 @@ brew-on)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    usermod -aG brew $name
+    usermod -aG linuxbrew $name
+    sudo -u $name ln -s /home/linuxbrew/.linuxbrew/bin/brew /home/$name/.local/bin/brew
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -265,7 +266,8 @@ brew-off)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    usermod -rG brew $name
+    usermod -rG linuxbrew $name
+    rm -v /home/$name/.local/bin/brew
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
