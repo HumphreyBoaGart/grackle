@@ -150,14 +150,15 @@ brew)
   chown -R brew:brew /home/brew/.linuxbrew
   chmod -R g-w,o-rwx /home/brew
   chmod -R g+rX /home/brew/.linuxbrew
+  chmod g+rX /home/brew/.local /home/brew/.local/bin
 
   # Close installer
 ;;
 
 ### ChatGPT Codex stack with 'grinstall codex'
 codex)
-  # Make sure Homebrew is installed
-  grinstall brew
+  # Switch to Homebrew environment
+  cd /home/brew
 
  ## TO DO: Grab and configure Codex from Homebrew, and secure.  
   
