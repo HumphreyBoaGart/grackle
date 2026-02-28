@@ -153,8 +153,7 @@ brew)
   chown root:linuxbrew /etc/profile.d/brew.sh
   chown -R linuxbrew:linuxbrew /home/linuxbrew/.linuxbrew
   chmod -R g-w,o-rwx /home/linuxbrew
-  chmod -R g+rX /home/linuxbrew/.linuxbrew /home/linuxbrew/.local/Caskroom /home/linuxbrew/.local/Cellar
-  chmod g+rX /home/linuxbrew/.local /home/linuxbrew/.local/bin
+  chmod -R g+rX /home/linuxbrew/.linuxbrew /home/linuxbrew/.local
 
   # Close installer
 ;;
