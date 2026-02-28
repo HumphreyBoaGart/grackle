@@ -138,7 +138,8 @@ brew)
   gruser shell-on brew
   chmod 750 /home/brew
   rm -rf /home/brew/.linuxbrew
-  bash /home/brew
+  bash
+  cd /home/brew
 
   # Grab Homebrew package
   sudo -u brew git clone https://github.com/Homebrew/brew /home/brew/.linuxbrew/Homebrew
