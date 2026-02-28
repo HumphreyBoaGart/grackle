@@ -147,6 +147,7 @@ brew)
   sudo -u brew /home/brew/.linuxbrew/Homebrew/bin/brew doctor
 
   # Set Permissions
+  ln -sf /home/brew/.linuxbrew/Homebrew/bin/brew /usr/local/bin/brew
   chown -R brew:brew /home/brew/.linuxbrew
   chmod -R g-w,o-rwx /home/brew
   chmod -R g+rX /home/brew/.linuxbrew
