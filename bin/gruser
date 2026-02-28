@@ -127,6 +127,38 @@ admin-off)
   fi
 ;;
 
+### Homebrew package manager with 'grapp brew-setup'
+brew-setup)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    # Set up Environment
+    gruser shell-on $name
+    cd /home/$name
+    rm -rf /home/$name/.linuxbrew
+    sudo -u $name mkdir -p /home/$name/.linuxbrew/bin/
+    # Grab Homebrew package
+    sudo -u $name git clone https://github.com/Homebrew/brew /home/$name/.linuxbrew/Homebrew
+    sudo -u $name ln -sf /home/$name/.linuxbrew/Homebrew/bin/brew /home/$name/.linuxbrew/bin/brew
+    sudo -u $name /home/$name/.linuxbrew/Homebrew/bin/brew update --force
+    sudo -u $name /home/$name/.linuxbrew/Homebrew/bin/brew doctor
+    # Make accessible & set permissions
+    sudo -u $name ln -sf /home/$name/.linuxbrew/Homebrew/bin/brew /home/$name/.local/bin/brew
+    chown -R $name:$name /home/$name/.linuxbrew /home/$name/.local
+    chmod -R g-rwx,o-rwx /home/$name/.linuxbrew /home/$name/.local
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
 ### Grant user Homebrew access with 'gruser brew-on'
 brew-on)
   if [[ $2 != '' ]]; then
