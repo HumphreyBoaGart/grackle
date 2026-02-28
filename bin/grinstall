@@ -148,7 +148,11 @@ brew)
     HOME=/home/brew \
     PATH="/home/brew/.linuxbrew/bin:/home/brew/.linuxbrew/sbin:/usr/bin:/bin" \
     /home/brew/.linuxbrew/bin/brew update --force
-  sudo -u brew /home/brew/.linuxbrew/Homebrew/bin/brew doctor
+  #sudo -u brew /home/brew/.linuxbrew/Homebrew/bin/brew doctor
+  sudo -u brew -H env \
+    HOME=/home/brew \
+    PATH="/home/brew/.linuxbrew/bin:/home/brew/.linuxbrew/sbin:/usr/bin:/bin" \
+    /home/brew/.linuxbrew/bin/brew doctor
 
   # Make accessible & set permissions
   sudo -u brew ln -sf /home/brew/.linuxbrew/Homebrew/bin/brew /home/brew/.local/bin/brew
