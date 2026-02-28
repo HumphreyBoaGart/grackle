@@ -158,6 +158,11 @@ brew)
   # Close installer
 ;;
 
+### Codex install with 'grinstall codex'
+codex)
+  # Close installer
+;;
+
 ### Rootless Docker install with 'grinstall docker'
 docker)
   # Close installer
