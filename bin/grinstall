@@ -137,9 +137,8 @@ brew)
   gruser new brew
   gruser shell-on brew
   chmod 750 /home/brew
-  rm -rf /home/brew/.linuxbrew
-  bash
   cd /home/brew
+  rm -rf ./.linuxbrew
 
   # Grab Homebrew package
   sudo -u brew git clone https://github.com/Homebrew/brew /home/brew/.linuxbrew/Homebrew
@@ -153,7 +152,6 @@ brew)
   chmod -R g+rX /home/brew/.linuxbrew
 
   # Close installer
-  exit
 ;;
 
 ### ChatGPT Codex stack with 'grinstall codex'
