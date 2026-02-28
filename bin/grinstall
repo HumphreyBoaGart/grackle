@@ -142,8 +142,8 @@ brew)
   # Grab Homebrew package
   sudo -u brew git clone https://github.com/Homebrew/brew /home/brew/.linuxbrew/Homebrew
   sudo -u brew ln -sf /home/brew/.linuxbrew/Homebrew/bin/brew /home/brew/.local/bin/brew
-  sudo -u brew brew update --force
-  sudo -u brew brew doctor
+  sudo -u brew /home/brew/.linuxbrew/Homebrew/bin/brew update --force
+  sudo -u brew /home/brew/.linuxbrew/Homebrew/bin/brew doctor
 
   # Set Permissions
   chown -R brew:brew /home/brew/.linuxbrew
