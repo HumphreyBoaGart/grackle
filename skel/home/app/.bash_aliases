@@ -20,6 +20,7 @@ umask 0027
 
 # Set environment variables
 export PATH="/opt/grackle/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin"
+export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_DIRS="$HOME/.local/share/applications:/usr/local/share/:/usr/share/"
 export XDG_DATA_HOME="$HOME/.local/share"
