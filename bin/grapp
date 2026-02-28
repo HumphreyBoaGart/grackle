@@ -154,7 +154,6 @@ brew-on)
   fi
   if [[ $name != '' ]]; then
     usermod -aG linuxbrew $name
-    sudo -u $name ln -s /home/linuxbrew/.linuxbrew/bin/brew /home/$name/.local/bin/brew
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -174,7 +173,6 @@ brew-off)
   fi
   if [[ $name != '' ]]; then
     usermod -rG linuxbrew $name
-    rm -v /home/$name/.local/bin/brew
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
