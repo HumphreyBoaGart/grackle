@@ -138,6 +138,7 @@ brew)
   chmod 750 /home/brew
   cd /home/brew
   rm -rf /home/brew/.linuxbrew
+  sudo -u brew mkdir -p /home/brew/.linuxbrew/bin/
 
   # Grab Homebrew package
   sudo -u brew git clone https://github.com/Homebrew/brew /home/brew/.linuxbrew/Homebrew
