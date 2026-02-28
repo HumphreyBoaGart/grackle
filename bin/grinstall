@@ -137,6 +137,10 @@ brew)
   gruser new brew
   gruser shell-on brew
   chmod 750 /home/brew
+  mkdir -p /usr/local/var/homebrew
+  chmod 755 /usr/local/var
+  chown brew:brew /usr/local/var/homebrew
+  chmod 700 /usr/local/var/homebrew
   cd /home/brew
   rm -rf /home/brew/.linuxbrew
 
