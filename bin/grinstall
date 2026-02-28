@@ -133,12 +133,28 @@ base)
 
 ### Homebrew package manager with 'grinstall brew'
 brew)
-  # Set up Homebrew package manager
+  # Set up install environment
   gruser new brew
   gruser shell-on brew
   chmod 750 /home/brew
+  sudo -iu brew
+  rm -rf /home/brew/.linuxbrew
 
- ## TO DO: Grab and configure homebrew with 'brew' user/group in /home/brew
+  # Grab Homebrew package
+  git clone https://github.com/Homebrew/brew /home/brew/.linuxbrew/Homebrew
+  ln -sf /home/brew/.linuxbrew/Homebrew/bin/brew /home/brew/.local/bin/brew
+
+  # Install
+  exit
+  sudo -iu brew
+  brew update --force
+  brew doctor
+  exit
+
+  # Set Permissions
+  chown -R brew:brew /home/brew/.linuxbrew
+  chmod -R g-w,o-rwx /home/brew
+  chmod -R g+rX /home/brew/.linuxbrew
 
   # Close installer
 ;;
