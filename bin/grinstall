@@ -151,7 +151,7 @@ brew)
   cp -v /opt/grackle/skel/etc/profile.d/brew.sh /etc/profile.d/brew.sh
   chmod 640 /etc/profile.d/brew.sh
   chown root:linuxbrew /etc/profile.d/brew.sh
-  chown -R linuxbrew:linuxbrew /home/linuxbrew/.linuxbrew
+  chown -R linuxbrew:linuxbrew /home/linuxbrew/.linuxbrew /home/linuxbrew/.local
   chmod -R g-w,o-rwx /home/linuxbrew
   chmod -R g+rX /home/linuxbrew/.linuxbrew /home/linuxbrew/.local
 
