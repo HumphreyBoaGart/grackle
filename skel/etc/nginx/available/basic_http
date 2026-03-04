@@ -14,7 +14,7 @@ server {
   #access_log /home/{{USERNAME}}/logs/nginx/access.log main;
   location / {
     try_files $uri $uri/ =404;
-    limit_except GET {
+    limit_except GET HEAD {
       deny all;
     }
   }
