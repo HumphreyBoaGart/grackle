@@ -13,7 +13,7 @@ server {
   access_log off;
   #access_log /home/{{USERNAME}}/logs/nginx/access.log main;
   location / {
-    limit_except GET HEAD { deny all; }
+    limit_except GET { deny all; }
     try_files $uri $uri/ =404;
   }
 }
