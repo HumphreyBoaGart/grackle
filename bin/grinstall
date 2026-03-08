@@ -200,7 +200,7 @@ gopher)
   # Generate app account for serving gopher web root
   grapp new gopher gopher.localhost
   grapp web-off gopher
-  rm -f /etc/nginx/available/gopher
+  rm -f /etc/nginx/available/gopher.conf
   usermod -aG gopher gopherd
   rm -rf /home/gopher/app/public/*
   cp /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
