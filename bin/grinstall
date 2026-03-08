@@ -219,7 +219,7 @@ gopher)
 }
 EOF
   # Tidy up permissions
-  grapp fix-perms-deep $name
+  grapp fix-perms-deep gopher
 
   # Grab and compile geomyidae
   cd /usr/local/src
