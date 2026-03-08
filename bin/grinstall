@@ -199,13 +199,27 @@ gopher)
   
   # Generate app account for serving gopher web root
   useradd gopher -m --comment gopher.localhost --skel /opt/grackle/skel/home/app/ --shell /sbin/nologin
-  rm -f /etc/nginx/available/gopher.conf
+  usermod -aG app gopher
   usermod -aG gopher gopherd
+  sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_aliases
+  sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_logout
+  sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bashrc
+  sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.profile
   rm -rf /home/gopher/app/public/*
   cp /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
-  chown -R gopher:gopher /home/gopher/app
-  chmod -R g-w,o-rwx /home/gopher/app/
-  chmod -R g+rX,o-rwx /home/gopher/app/public
+
+  # Create ~/.gracklevar with initial metadata
+  tee "/home/$name/.gracklevar" >/dev/null <<EOF
+{
+	"type": "app",
+	"user": "$name",
+	"url": "$domain",
+	"docker": "no",
+	"php": 0
+}
+EOF
+  # Tidy up permissions
+  grapp fix-perms-deep $name
 
   # Grab and compile geomyidae
   cd /usr/local/src
