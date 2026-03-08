@@ -246,7 +246,6 @@ EOF
   chmod 640 /etc/systemd/system/geomyidae.service
   systemctl daemon-reload
   systemctl enable --now geomyidae
-  systemctl status geomyidae
   grackle reset-web
   ufw allow 70/tcp
   ufw reload
