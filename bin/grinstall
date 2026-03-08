@@ -212,6 +212,8 @@ gopher)
   cd /usr/local/src
   git clone https://github.com/StygianBlues/geomyidae.git
   cd geomyidae
+  sed -i 's/^TLS_CFLAGS.*/TLS_CFLAGS =/; s/^TLS_LDFLAGS.*/TLS_LDFLAGS =/' Makefile
+  make clean
   make
   make install
   
