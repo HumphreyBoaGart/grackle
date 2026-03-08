@@ -198,7 +198,7 @@ gopher)
   useradd --system --home /nonexistent --shell /usr/sbin/nologin gopherd
   
   # Generate app account for serving gopher web root
-  useradd gopher -m --comment gopher.localhost --skel /opt/grackle/skel/home/app/ --shell /sbin/nologin
+  useradd gopher -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin --comment gopher.localhost
   usermod -aG app gopher
   usermod -aG gopher gopherd
   sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_aliases
