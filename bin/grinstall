@@ -198,8 +198,7 @@ gopher)
   useradd --system --home /nonexistent --shell /usr/sbin/nologin gopherd
   
   # Generate app account for serving gopher web root
-  grapp new gopher gopher.localhost
-  grapp web-off gopher
+  useradd gopher -m --comment gopher.localhost --skel /opt/grackle/skel/home/app/ --shell /sbin/nologin
   rm -f /etc/nginx/available/gopher.conf
   usermod -aG gopher gopherd
   rm -rf /home/gopher/app/public/*
