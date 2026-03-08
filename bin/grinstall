@@ -279,7 +279,7 @@ EOF
 
   # Fail and quit if inputs are still empty
   else
-    exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you enter a name AND address!$(tput sgr0)"
+    exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you an address!$(tput sgr0)"
   fi
 ;;
 
