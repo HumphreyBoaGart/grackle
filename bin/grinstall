@@ -191,6 +191,46 @@ ftp)
   # Close installer
 ;;
 
+### Gopher install with 'grinstall gopher'
+gopher)
+  # Install dependencies & generate runtime account
+  apt install -y build-essential git libnginx-mod-stream
+  useradd --system --home /nonexistent --shell /usr/sbin/nologin gopherd
+  
+  # Generate app account for serving gopher web root
+  grapp new gopher gopher.localhost
+  grapp web-off gopher
+  rm -f /etc/nginx/available/gopher
+  usermod -aG gopher gopherd
+  rm -rf /home/gopher/app/public/*
+  cp /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
+  chown -R gopher:gopher /home/gopher/app
+  chmod -R g-w,o-rwx /home/gopher/app/
+  chmod -R g+rX,o-rwx /home/gopher/app/public
+
+  # Grab and compile geomyidae
+  cd /usr/local/src
+  git clone https://github.com/StygianBlues/geomyidae.git
+  cd geomyidae
+  make
+  make install
+  
+  # Set up logging
+  mkdir -p /var/log/geomyidae
+  chown gopherd:gopherd /var/log/geomyidae
+  chmod 750 /var/log/geomyidae
+
+  # Configure environment & launch daemon
+  cp /opt/grackle/skel/etc/geomyidae/geomyidae.service /etc/systemd/system/geomyidae.service
+  cp /opt/grackle/skel/etc/geomyidae/gopherd-stream.conf /etc/nginx/stream.d/gopherd.conf
+  systemctl daemon-reload
+  systemctl enable --now geomyidae
+  systemctl status geomyidae
+  grackle reset-web
+  ufw allow 70/tcp
+  ufw reload
+;;
+
 ### IRC client & monitoring utils with 'grinstall irc'
 irc)
   # Install base packages
@@ -313,7 +353,7 @@ nginx)
   systemctl enable nginx
 
   # Configure Nginx
-  mkdir -pv /etc/nginx/active /etc/nginx/available /etc/nginx/gates /etc/nginx/includes
+  mkdir -pv /etc/nginx/active /etc/nginx/available /etc/nginx/gates /etc/nginx/includes /etc/nginx/stream.d
   touch /etc/nginx/gates/void
   rm -rf /etc/nginx/conf.d/ /etc/nginx/nginx.conf
   cp -v /opt/grackle/skel/etc/nginx/nginx.conf /etc/nginx/nginx.conf

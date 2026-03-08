@@ -1,0 +1,29 @@
+[Unit]
+Description=geomyidae Gopher server
+After=network.target
+
+[Service]
+Type=simple
+User=gopherd
+Group=gopherd
+ExecStart=/usr/local/bin/geomyidae -d -b /home/gopher/app/public -p 7070 -o 70 -h bestpoint.institute -i 127.0.0.1 -l /var/log/geomyidae/geomyidae.log
+Restart=on-failure
+RestartSec=2
+
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadOnlyPaths=/home/gopher/app/public
+ReadWritePaths=/var/log/geomyidae
+
+[Install]
+WantedBy=multi-user.target
