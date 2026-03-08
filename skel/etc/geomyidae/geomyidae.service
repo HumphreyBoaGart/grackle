@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=gopherd
 Group=gopherd
-ExecStart=/usr/local/bin/geomyidae -d -b /home/gopher/app/public -p 7070 -o 70 -h bestpoint.institute -i 127.0.0.1 -l /var/log/geomyidae/geomyidae.log
+ExecStart=/usr/local/sbin/geomyidae -d -b /home/gopher/app/public -p 7070 -o 70 -h bestpoint.institute -i 127.0.0.1 -l /var/log/geomyidae/geomyidae.log
 Restart=on-failure
 RestartSec=2
 
