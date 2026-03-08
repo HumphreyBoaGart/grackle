@@ -221,11 +221,13 @@ gopher)
     # Install dependencies & generate runtime account
     apt install -y build-essential git
     useradd --system --home /nonexistent --shell /usr/sbin/nologin gopherd
-
+    usermod -c "gopher server" gopherd
+    
     # Generate app account for serving gopher web root
-    useradd gopher -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin --comment gopher://$domain
+    useradd gopher -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
     usermod -aG app gopher
     usermod -aG gopher gopherd
+    usermod -c "gopher web root" gopher
     sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_aliases
     sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_logout
     sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bashrc
