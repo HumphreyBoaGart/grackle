@@ -194,7 +194,7 @@ ftp)
 ### Gopher install with 'grinstall gopher'
 gopher)
   # Install dependencies & generate runtime account
-  apt install -y build-essential git libnginx-mod-stream
+  apt install -y build-essential git
   useradd --system --home /nonexistent --shell /usr/sbin/nologin gopherd
   
   # Generate app account for serving gopher web root
@@ -223,6 +223,10 @@ gopher)
   # Configure environment & launch daemon
   cp /opt/grackle/skel/etc/geomyidae/geomyidae.service /etc/systemd/system/geomyidae.service
   cp /opt/grackle/skel/etc/geomyidae/gopherd-stream.conf /etc/nginx/stream.d/gopherd.conf
+  chown root:gopherd /usr/local/bin/geomyidae
+  chmod 750 /usr/local/bin/geomyidae
+  chown root:gopherd /etc/systemd/system/geomyidae.service
+  chmod 640 /etc/systemd/system/geomyidae.service
   systemctl daemon-reload
   systemctl enable --now geomyidae
   systemctl status geomyidae
