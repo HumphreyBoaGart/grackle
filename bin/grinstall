@@ -225,8 +225,8 @@ gopher)
   # Configure environment & launch daemon
   cp /opt/grackle/skel/etc/geomyidae/geomyidae.service /etc/systemd/system/geomyidae.service
   cp /opt/grackle/skel/etc/geomyidae/gopherd-stream.conf /etc/nginx/stream.d/gopherd.conf
-  chown root:gopherd /usr/local/bin/geomyidae
-  chmod 750 /usr/local/bin/geomyidae
+  chown root:gopherd /usr/local/sbin/geomyidae
+  chmod 750 /usr/local/sbin/geomyidae
   chown root:gopherd /etc/systemd/system/geomyidae.service
   chmod 640 /etc/systemd/system/geomyidae.service
   systemctl daemon-reload
