@@ -193,62 +193,92 @@ ftp)
 
 ### Gopher install with 'grinstall gopher'
 gopher)
-  # Install dependencies & generate runtime account
-  apt install -y build-essential git
-  useradd --system --home /nonexistent --shell /usr/sbin/nologin gopherd
-  
-  # Generate app account for serving gopher web root
-  useradd gopher -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin --comment gopher.localhost
-  usermod -aG app gopher
-  usermod -aG gopher gopherd
-  sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_aliases
-  sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_logout
-  sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bashrc
-  sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.profile
-  rm -rf /home/gopher/app/public/*
-  cp /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
 
-  # Create ~/.gracklevar with initial metadata
-  tee "/home/gopher/.gracklevar" >/dev/null <<EOF
+  # Fill in domain to skip interactive mode
+  if [[ $2 != '' ]]; then
+    # Filter input
+    domain=${2// /_} # Remove spaces
+    domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
+    domain=${domain#[-.]}  # Remove leading - or .
+    domain=${domain%[-.]}  # Remove trailing - or l
+  fi
+
+  # Otherwise, go to interactive mode
+  if [[ $2 = '' ]]; then
+    # Ask for user input and filter
+    echo " $(tput setaf 6 bold)Please enter the address of your Gopher server:$(tput sgr0)"
+    echo -n "  (ie: domain.com or subdomain.domain.com) "
+    read -r domain
+    domain=${domain// /_} # Remove spaces
+    domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
+    domain=${domain#[-.]}  # Remove leading - or .
+    domain=${domain%[-.]}  # Remove trailing - or l
+  fi
+
+  # Create new app with sanitized inputs, but only if we have both
+  if [[ $domain != '' ]]; then
+
+    # Install dependencies & generate runtime account
+    apt install -y build-essential git
+    useradd --system --home /nonexistent --shell /usr/sbin/nologin gopherd
+
+    # Generate app account for serving gopher web root
+    useradd gopher -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin --comment gopher://$domain
+    usermod -aG app gopher
+    usermod -aG gopher gopherd
+    sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_aliases
+    sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_logout
+    sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bashrc
+    sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.profile
+    rm -rf /home/gopher/app/public/*
+    cp /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
+
+    # Create ~/.gracklevar with initial metadata
+    tee "/home/gopher/.gracklevar" >/dev/null <<EOF
 {
 	"type": "app",
 	"user": "gopher",
-	"url": "gopher.localhost",
+	"url": "$domain",
 	"docker": "no",
 	"php": 0
 }
 EOF
-  # Tidy up permissions
-  grapp fix-perms-deep gopher
+    # Tidy up permissions
+    grapp fix-perms-deep gopher
 
-  # Grab and compile geomyidae
-  cd /usr/local/src
-  git clone https://github.com/StygianBlues/geomyidae.git
-  cd geomyidae
-  sed -i 's/^TLS_CFLAGS.*/TLS_CFLAGS =/; s/^TLS_LDFLAGS.*/TLS_LDFLAGS =/' Makefile
-  make clean
-  make
-  make install
-  
-  # Set up logging
-  mkdir -p /var/log/geomyidae
-  chown gopherd:gopherd /var/log/geomyidae
-  chmod 750 /var/log/geomyidae
+    # Grab and compile geomyidae
+    cd /usr/local/src
+    git clone https://github.com/StygianBlues/geomyidae.git
+    cd geomyidae
+    sed -i 's/^TLS_CFLAGS.*/TLS_CFLAGS =/; s/^TLS_LDFLAGS.*/TLS_LDFLAGS =/' Makefile
+    make clean
+    make
+    make install
 
-  # Configure environment & launch daemon
-  chown root:gopherd /usr/local/sbin/geomyidae
-  chmod 750 /usr/local/sbin/geomyidae
-  cp /opt/grackle/skel/etc/geomyidae/gopherd-stream.conf /etc/nginx/stream.d/gopherd.conf
-  chgrp nginx /etc/nginx/stream.d/gopherd.conf
-  chmod 640 /etc/nginx/stream.d/gopherd.conf
-  cp /opt/grackle/skel/etc/geomyidae/geomyidae.service /etc/systemd/system/geomyidae.service
-  chown root:gopherd /etc/systemd/system/geomyidae.service
-  chmod 640 /etc/systemd/system/geomyidae.service
-  systemctl daemon-reload
-  systemctl enable --now geomyidae
-  grackle reset-web
-  ufw allow 70/tcp
-  ufw reload
+    # Set up logging
+    mkdir -p /var/log/geomyidae
+    chown gopherd:gopherd /var/log/geomyidae
+    chmod 750 /var/log/geomyidae
+
+    # Configure environment & launch daemon
+    chown root:gopherd /usr/local/sbin/geomyidae
+    chmod 750 /usr/local/sbin/geomyidae
+    cp /opt/grackle/skel/etc/geomyidae/gopherd-stream.conf /etc/nginx/stream.d/gopherd.conf
+    chgrp nginx /etc/nginx/stream.d/gopherd.conf
+    chmod 640 /etc/nginx/stream.d/gopherd.conf
+    cp /opt/grackle/skel/etc/geomyidae/geomyidae.service /etc/systemd/system/geomyidae.service
+    chown root:gopherd /etc/systemd/system/geomyidae.service
+    chmod 640 /etc/systemd/system/geomyidae.service
+    systemctl daemon-reload
+    systemctl enable --now geomyidae
+    grackle reset-web
+    ufw allow 70/tcp
+    ufw reload
+
+  # Fail and quit if inputs are still empty
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you enter a name AND address!$(tput sgr0)"
+  fi
 ;;
 
 ### IRC client & monitoring utils with 'grinstall irc'
