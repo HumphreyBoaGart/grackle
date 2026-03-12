@@ -250,11 +250,11 @@ EOF
 
     # Grab and compile geomyidae
     cd /usr/local/src
-    git clone https://github.com/StygianBlues/geomyidae.git
+    git clone git://git.codemadness.org/geomyidae
     cd geomyidae
-    sed -i 's/^TLS_CFLAGS.*/TLS_CFLAGS =/; s/^TLS_LDFLAGS.*/TLS_LDFLAGS =/' Makefile
+    git checkout v0.99
     make clean
-    make
+    make TLS_CFLAGS= TLS_LDFLAGS=
     make install
 
     # Set up logging
