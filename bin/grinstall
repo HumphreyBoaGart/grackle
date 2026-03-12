@@ -430,7 +430,7 @@ nginx)
   # Close installer
 ;;
 
-### PHP daemon with 'grinstall php'
+### PHP-FPM daemon for Nginx with 'grinstall php'
 php)
   # Configure Sury repo for newer PHP releases
   curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
@@ -456,7 +456,7 @@ php)
   # Close installer
 ;;
 
-### PHP daemon for Gopher with 'grinstall phpg'
+### PHP-CGI daemon for Gopher/Gemini with 'grinstall phpg'
 phpg)
   # Configure Sury repo for newer PHP releases
   curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
