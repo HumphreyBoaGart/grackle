@@ -456,6 +456,17 @@ php)
   # Close installer
 ;;
 
+### PHP development stack extras with 'grinstall php-extra'
+php-extra)
+  # Install extra PHP 8.5 development packages from Sury
+  apt install -y php8.5-{ast,excimer,pcov,xdebug}
+
+  # Configure PHP
+  grackle reset-php
+
+  # Close installer
+;;
+
 ###
 ###
 ###>>>>> TODO
