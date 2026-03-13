@@ -249,6 +249,7 @@ EOF
     grapp fix-perms-deep gopher
 
     # Grab and compile geomyidae
+    ufw allow out 9418
     cd /usr/local/src
     git clone git://git.codemadness.org/geomyidae
     cd geomyidae
