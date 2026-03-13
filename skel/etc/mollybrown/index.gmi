@@ -1,0 +1,5 @@
+# example.com
+
+This capsule is running on Molly Brown behind nginx stream.
+
+=> / about

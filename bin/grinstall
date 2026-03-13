@@ -47,6 +47,7 @@ base)
   ufw allow out 80/tcp
   ufw allow out 123/udp
   ufw allow out 443/tcp
+  ufw allow out 9418/tcp
   ufw enable
   cp -v /opt/grackle/skel/etc/fail2ban/jail.local /etc/fail2ban/jail.local
   touch /var/log/auth.log
@@ -191,6 +192,93 @@ ftp)
   # Close installer
 ;;
 
+### Gemini install with 'grinstall gemini'
+gemini)
+
+  # Fill in domain to skip interactive mode
+  if [[ $2 != '' ]]; then
+    # Filter input
+    domain=${2// /_} # Remove spaces
+    domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
+    domain=${domain#[-.]}  # Remove leading - or .
+    domain=${domain%[-.]}  # Remove trailing - or l
+  fi
+
+  # Otherwise, go to interactive mode
+  if [[ $2 = '' ]]; then
+    # Ask for user input and filter
+    echo " $(tput setaf 6 bold)Please enter the address of your Gemini server:$(tput sgr0)"
+    echo -n "  (ie: domain.com or subdomain.domain.com) "
+    read -r domain
+    domain=${domain// /_} # Remove spaces
+    domain=${domain//[^a-zA-Z0-9._-]/} # Remove anything not alphanumeric, -, _ or .
+    domain=${domain#[-.]}  # Remove leading - or .
+    domain=${domain%[-.]}  # Remove trailing - or l
+  fi
+
+  # Create new app with sanitized inputs, but only if we have both
+  if [[ $domain != '' ]]; then
+
+    # Install dependencies & generate runtime account
+    apt install -y molly-brown
+    useradd --system --home /nonexistent --shell /usr/sbin/nologin geminid
+    usermod -c "gemini server" geminid
+    
+    # Generate app account for serving gemini web root
+    useradd gemini -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
+    usermod -aG app gemini
+    usermod -aG gemini geminid
+    usermod -c "gemini web root" gemini
+    sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bash_aliases
+    sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bash_logout
+    sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bashrc
+    sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.profile
+    rm -rf /home/gemini/app/public/*
+    cp /opt/grackle/skel/etc/mollybrown/index.gmi /home/gemini/app/public/index.gmi
+    
+    # Create ~/.gracklevar files with initial metadata
+    tee "/home/gemini/.gracklevar" >/dev/null <<EOF
+{
+	"type": "app",
+	"user": "gemini",
+	"url": "$domain",
+	"docker": "no",
+	"php": 0
+}
+EOF
+
+    # Tidy up permissions
+    grapp fix-perms-deep gemini
+
+    # Configure environment & launch daemon
+    cp /opt/grackle/skel/etc/mollybrown/molly.conf /etc/molly-brown/$domain.conf
+    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/molly-brown/$domain.conf
+    cp /opt/grackle/skel/etc/mollybrown/geminid-stream.conf /etc/nginx/stream.d/geminid.conf
+    chgrp nginx /etc/nginx/stream.d/geminid.conf
+    chmod 640 /etc/nginx/stream.d/geminid.conf
+    tee "/etc/systemd/system/molly-brown.service" >/dev/null <<EOF
+{
+[Service]
+DynamicUser=no
+User=geminid
+Group=geminid
+SupplementaryGroups=gemini ssl-cert
+}
+EOF
+    sudo systemctl daemon-reload
+    systemctl enable --now molly-brown
+    systemctl restart molly-brown
+    grackle reset-web
+    ufw allow 1965/tcp
+    ufw allow out 1965/tcp
+    ufw reload
+
+  # Fail and quit if inputs are still empty
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you put an address!$(tput sgr0)"
+  fi
+;;
+
 ### Gopher install with 'grinstall gopher'
 gopher)
 
@@ -235,7 +323,7 @@ gopher)
     rm -rf /home/gopher/app/public/*
     cp /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
 
-    # Create ~/.gracklevar with initial metadata
+    # Create ~/.gracklevar files with initial metadata
     tee "/home/gopher/.gracklevar" >/dev/null <<EOF
 {
 	"type": "app",
@@ -249,7 +337,6 @@ EOF
     grapp fix-perms-deep gopher
 
     # Grab and compile geomyidae
-    ufw allow out 9418
     cd /usr/local/src
     git clone git://git.codemadness.org/geomyidae
     cd geomyidae
@@ -276,11 +363,12 @@ EOF
     systemctl enable --now geomyidae
     grackle reset-web
     ufw allow 70/tcp
+    ufw allow out 70/tcp
     ufw reload
 
   # Fail and quit if inputs are still empty
   else
-    exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you an address!$(tput sgr0)"
+    exec echo " $(tput setaf 1 bold)ERROR: You cannot skip interactive mode unless you put an address!$(tput sgr0)"
   fi
 ;;
 
