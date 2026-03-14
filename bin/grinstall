@@ -253,6 +253,8 @@ EOF
     # Configure environment & launch daemon
     cp /opt/grackle/skel/etc/mollybrown/molly.conf /etc/molly-brown/$domain.conf
     sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/molly-brown/$domain.conf
+    chgrp geminid /etc/molly-brown/$domain.conf
+    chmod g+r /etc/molly-brown/$domain.conf
     cp /opt/grackle/skel/etc/mollybrown/geminid-stream.conf /etc/nginx/stream.d/geminid.conf
     chgrp nginx /etc/nginx/stream.d/geminid.conf
     chmod 640 /etc/nginx/stream.d/geminid.conf
