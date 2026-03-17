@@ -1,5 +1,5 @@
 # Welcome to {{DOMAIN}}'s new Gemini server!
 
-If you can see this, it means your new Gemini server is serving the contents of /home/gemini/app/public/ via /var/run/geminid/{{DOMAIN}}/.
+If you can see this, it means Grackle is serving the contents of /home/gemini/app/public/ with the Unsinkable Molly Brown.
 
 Use the "gemini" account to manage your Gemini files with SFTP. If you need to do this with the shell, run "grapp shell-on gemini" to enable shell access.

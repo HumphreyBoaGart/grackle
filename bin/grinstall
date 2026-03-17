@@ -271,6 +271,7 @@ EOF
     rm -rfv /home/gemini/app/public/*
     rm -rfv /home/gemini/logs/nginx/
     cp -v /opt/grackle/skel/etc/mollybrown/index.gmi /home/gemini/app/public/index.gmi
+    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /home/gemini/app/public/index.gmi
     install -d -o root -g root -m 755 /var/run/geminid/'$domain'
     bindfs -r --perms=u=rwX:g=rX:o=rX /home/gemini/app/public /var/run/geminid/'$domain'
     tee "/home/gemini/.gracklevar" >/dev/null <<EOF
