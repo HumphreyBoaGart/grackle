@@ -33,7 +33,11 @@ exec cat <<EOF
 EOF
 ;;
 
+
+
+###
 ### Base install with 'grinstall base'
+###
 base)
   # Set up secure base environment
   apt install -y ufw fail2ban
@@ -131,7 +135,11 @@ base)
   # Close installer
 ;;
 
+
+
+###
 ### Homebrew package manager with 'grinstall brew'
+###
 brew)
   # Set up install environment
   gruser new linuxbrew
@@ -159,17 +167,29 @@ brew)
   # Close installer
 ;;
 
+
+
+###
 ### Codex install with 'grinstall codex'
+###
 codex)
   # Close installer
 ;;
 
+
+
+###
 ### Rootless Docker install with 'grinstall docker'
+###
 docker)
   # Close installer
 ;;
 
+
+
+###
 ### FTP server install with 'grinstall ftp'
+###
 ftp)
   # Install vsftp
   apt install -y vsftpd
@@ -192,7 +212,11 @@ ftp)
   # Close installer
 ;;
 
+
+
+###
 ### Gemini install with 'grinstall gemini'
+###
 gemini)
 
   # Fill in domain to skip interactive mode
@@ -285,7 +309,11 @@ EOF
   fi
 ;;
 
+
+
+###
 ### Gopher install with 'grinstall gopher'
+###
 gopher)
 
   # Fill in domain to skip interactive mode
@@ -378,7 +406,11 @@ EOF
   fi
 ;;
 
+
+
+###
 ### IRC client & monitoring utils with 'grinstall irc'
+###
 irc)
   # Install base packages
   apt install -y -t bookworm-backports weechat
@@ -394,7 +426,11 @@ irc)
   # Close installer
 ;;
 
+
+
+###
 ### Local mail server with 'grinstall mail'
+###
 mail)
   # Pull hostname from server for sed to use
   HOSTNAME=$(hostname)
@@ -479,7 +515,11 @@ mail)
   # Close installer
 ;;
 
+
+
+###
 ### Nginx server with 'grinstall nginx'
+###
 nginx)
   # Configure official Nginx repo
   curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
@@ -530,7 +570,11 @@ nginx)
   # Close installer
 ;;
 
+
+
+###
 ### PHP-FPM daemon for Nginx with 'grinstall php'
+###
 php)
   # Configure Sury repo for newer PHP releases
   curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
@@ -556,7 +600,12 @@ php)
   # Close installer
 ;;
 
+
+
+
+###
 ### PHP development stack extras with 'grinstall php-extra'
+###
 php-extra)
   # Install extra PHP 8.5 development packages from Sury
   apt install -y php8.5-{ast,excimer,pcov,xdebug}
@@ -666,7 +715,11 @@ reinstall)
   # Close updater
 ;;
 
+
+
+###
 ### Output error for any input not explicitly defined
+###
 *)
 exec cat <<EOF
 
