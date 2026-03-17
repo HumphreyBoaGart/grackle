@@ -248,8 +248,8 @@ gemini)
     useradd --system --home /nonexistent --shell /sbin/nologin geminid
     usermod -c "gemini server" geminid
     usermod -aG sslring geminid
-    cp -v /opt/grackle/skel/etc/mollybrown/molly.conf /etc/molly-brown/$domain.conf
-    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/molly-brown/$domain.conf
+    cp -v /opt/grackle/skel/etc/mollybrown/molly.conf /etc/molly-brown/'$domain'.conf
+    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/molly-brown/'$domain'.conf
     cp -v /opt/grackle/skel/etc/mollybrown/geminid-stream.conf /etc/nginx/stream.d/geminid.conf
     mkdir -pv /etc/systemd/system/molly-brown@.service.d
     tee /etc/systemd/system/molly-brown@.service.d/override.conf >/dev/null <<EOF
@@ -264,10 +264,10 @@ EOF
     useradd gemini -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
     usermod -aG app gemini
     usermod -c "gemini web root" gemini
-    sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bash_aliases
-    sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bash_logout
-    sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bashrc
-    sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.profile
+    sed -i -e 's/{{USERNAME}}/gemini/g' /home/gemini/.bash_aliases
+    sed -i -e 's/{{USERNAME}}/gemini/g' /home/gemini/.bash_logout
+    sed -i -e 's/{{USERNAME}}/gemini/g' /home/gemini/.bashrc
+    sed -i -e 's/{{USERNAME}}/gemini/g' /home/gemini/.profile
     rm -rfv /home/gemini/app/public/*
     rm -rfv /home/gemini/logs/nginx/
     cp -v /opt/grackle/skel/etc/mollybrown/index.gmi /home/gemini/app/public/index.gmi
@@ -351,10 +351,10 @@ gopher)
     usermod -aG app gopher
     usermod -aG gopher gopherd
     usermod -c "gopher web root" gopher
-    sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_aliases
-    sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_logout
-    sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bashrc
-    sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.profile
+    sed -i -e 's/{{USERNAME}}/gopher/g' /home/gopher/.bash_aliases
+    sed -i -e 's/{{USERNAME}}/gopher/g' /home/gopher/.bash_logout
+    sed -i -e 's/{{USERNAME}}/gopher/g' /home/gopher/.bashrc
+    sed -i -e 's/{{USERNAME}}/gopher/g' /home/gopher/.profile
     rm -rfv /home/gopher/app/public/*
     cp -v /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
 
@@ -434,7 +434,7 @@ irc)
 ###
 mail)
   # Pull hostname from server for sed to use
-  HOSTNAME=$(hostname)
+  hostname=$(hostname)
 
   # Install base packages
   apt install -y postfix dovecot-lmtpd postfix-policyd-spf-python mutt
@@ -451,13 +451,13 @@ mail)
   cp -v /opt/grackle/skel/etc/postfix/main.cf /etc/postfix/main.cf
   cp -v /opt/grackle/skel/etc/postfix/header_checks /etc/postfix/header_checks
   chmod -v a+r /etc/postfix/header_checks
-  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/postfix/main.cf
+  sed -i -e 's/{HOSTNAME}/'$hostname'/g' /etc/postfix/main.cf
   cp -v /opt/grackle/skel/etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-mail.conf /etc/dovecot/conf.d/10-mail.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-master.conf /etc/dovecot/conf.d/10-master.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-auth.conf /etc/dovecot/conf.d/10-auth.conf
   cp -v /opt/grackle/skel/etc/dovecot/conf.d/10-ssl.conf /etc/dovecot/conf.d/10-ssl.conf
-  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/dovecot/conf.d/10-ssl.conf
+  sed -i -e 's/{HOSTNAME}/'$hostname'/g' /etc/dovecot/conf.d/10-ssl.conf
   systemctl enable postfix dovecot
   systemctl restart postfix dovecot
 
@@ -470,15 +470,15 @@ mail)
   cp -v /opt/grackle/skel/etc/opendkim/signing.table /etc/opendkim/signing.table
   cp -v /opt/grackle/skel/etc/opendkim/key.table /etc/opendkim/key.table
   cp -v /opt/grackle/skel/etc/opendkim/trusted.hosts /etc/opendkim/trusted.hosts
-  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/signing.table
-  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/key.table
-  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendkim/trusted.hosts
-  mkdir -v /etc/opendkim/keys/$HOSTNAME
-  opendkim-genkey -b 2048 -d $HOSTNAME -D /etc/opendkim/keys/$HOSTNAME -s default -v
+  sed -i -e 's/{HOSTNAME}/'$hostname'/g' /etc/opendkim/signing.table
+  sed -i -e 's/{HOSTNAME}/'$hostname'/g' /etc/opendkim/key.table
+  sed -i -e 's/{HOSTNAME}/'$hostname'/g' /etc/opendkim/trusted.hosts
+  mkdir -v /etc/opendkim/keys/'$hostname'
+  opendkim-genkey -b 2048 -d '$hostname' -D /etc/opendkim/keys/'$hostname' -s default -v
   chown -Rv opendkim:opendkim /etc/opendkim/keys
   chmod -v g+rx,o-rwx /etc/opendkim/keys
-  chmod 600 /etc/opendkim/keys/$HOSTNAME/default.private
-  chmod 640 /etc/opendkim/keys/$HOSTNAME/default.txt
+  chmod 600 /etc/opendkim/keys/'$hostname'/default.private
+  chmod 640 /etc/opendkim/keys/'$hostname'/default.txt
   mkdir -v /var/spool/postfix/opendkim
   chown -v opendkim:postfix /var/spool/postfix/opendkim
   chmod -v g+rx /var/spool/postfix/opendkim
@@ -490,7 +490,7 @@ mail)
   apt install -y opendmarc
   adduser postfix opendmarc
   cp -v /opt/grackle/skel/etc/opendmarc.conf /etc/opendmarc.conf
-  sed -i -e 's/{HOSTNAME}/'$HOSTNAME'/g' /etc/opendmarc.conf
+  sed -i -e 's/{HOSTNAME}/'$hostname'/g' /etc/opendmarc.conf
   mkdir -pv /var/spool/postfix/opendmarc
   chown -v opendmarc:opendmarc /var/spool/postfix/opendmarc -R
   chmod -v 750 /var/spool/postfix/opendmarc/ -R
