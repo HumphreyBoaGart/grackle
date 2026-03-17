@@ -136,9 +136,9 @@ brew)
   # Set up install environment
   gruser new linuxbrew
   gruser shell-on linuxbrew
-  chmod 750 /home/linuxbrew
+  chmod -v 750 /home/linuxbrew
   cd /home/linuxbrew
-  rm -rf /home/linuxbrew/.linuxbrew
+  rm -rfv /home/linuxbrew/.linuxbrew
   sudo -u linuxbrew mkdir -p /home/linuxbrew/.linuxbrew/bin/
 
   # Grab Homebrew package
@@ -150,11 +150,11 @@ brew)
   # Make accessible & set permissions
   sudo -u linuxbrew ln -sf /home/linuxbrew/.linuxbrew/Homebrew/bin/brew /home/linuxbrew/.local/bin/brew
   cp -v /opt/grackle/skel/etc/profile.d/brew.sh /etc/profile.d/brew.sh
-  chmod 640 /etc/profile.d/brew.sh
-  chown root:linuxbrew /etc/profile.d/brew.sh
-  chown -R linuxbrew:linuxbrew /home/linuxbrew/.linuxbrew /home/linuxbrew/.local
-  chmod -R g-w,o-rwx /home/linuxbrew
-  chmod -R g+rX /home/linuxbrew/.linuxbrew /home/linuxbrew/.local
+  chmod -v 640 /etc/profile.d/brew.sh
+  chown -v root:linuxbrew /etc/profile.d/brew.sh
+  chown -Rv linuxbrew:linuxbrew /home/linuxbrew/.linuxbrew /home/linuxbrew/.local
+  chmod -Rv g-w,o-rwx /home/linuxbrew
+  chmod -Rv g+rX /home/linuxbrew/.linuxbrew /home/linuxbrew/.local
 
   # Close installer
 ;;
