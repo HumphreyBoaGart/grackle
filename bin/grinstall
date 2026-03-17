@@ -124,7 +124,7 @@ base)
     | head -n1
   )"
   rm -rfv /opt/dart-sass
-  curl -fL "$url" | sudo tar -xz -C /opt
+  curl -fL "$url" | tar -xz -C /opt
   chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
   ln -sf /opt/dart-sass/sass /usr/local/bin/sass
 
@@ -219,24 +219,36 @@ gemini)
   # Create new app with sanitized inputs, but only if we have both
   if [[ $domain != '' ]]; then
 
-    # Install dependencies & generate runtime account
-    apt install -y molly-brown
-    useradd --system --home /nonexistent --shell /usr/sbin/nologin geminid
+    # Install dependencies & generate runtime environment
+    apt install -y molly-brown bindfs
+    useradd --system --home /nonexistent --shell /sbin/nologin geminid
     usermod -c "gemini server" geminid
+    usermod -aG sslring geminid
+    cp -v /opt/grackle/skel/etc/mollybrown/molly.conf /etc/molly-brown/$domain.conf
+    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/molly-brown/$domain.conf
+    cp -v /opt/grackle/skel/etc/mollybrown/geminid-stream.conf /etc/nginx/stream.d/geminid.conf
+    mkdir -pv /etc/systemd/system/molly-brown@.service.d
+    tee /etc/systemd/system/molly-brown@.service.d/override.conf >/dev/null <<EOF
+[Service]
+DynamicUser=no
+User=geminid
+Group=geminid
+SupplementaryGroups=gemini ssl-cert
+EOF
     
     # Generate app account for serving gemini web root
     useradd gemini -Um --skel /opt/grackle/skel/home/app --shell /sbin/nologin
     usermod -aG app gemini
-    usermod -aG gemini geminid
     usermod -c "gemini web root" gemini
     sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bash_aliases
     sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bash_logout
     sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.bashrc
     sed -i -e 's/{{USERNAME}}/'gemini'/g' /home/gemini/.profile
-    rm -rf /home/gemini/app/public/*
-    cp /opt/grackle/skel/etc/mollybrown/index.gmi /home/gemini/app/public/index.gmi
-    
-    # Create ~/.gracklevar files with initial metadata
+    rm -rfv /home/gemini/app/public/*
+    rm -rfv /home/gemini/logs/nginx/
+    cp -v /opt/grackle/skel/etc/mollybrown/index.gmi /home/gemini/app/public/index.gmi
+    install -d -o root -g root -m 755 /var/run/geminid/'$domain'
+    bindfs -r --perms=u=rwX:g=rX:o=rX /home/gemini/app/public /var/run/geminid/'$domain'
     tee "/home/gemini/.gracklevar" >/dev/null <<EOF
 {
 	"type": "app",
@@ -249,31 +261,23 @@ EOF
 
     # Tidy up permissions
     grapp fix-perms-deep gemini
-
-    # Configure environment & launch daemon
-    cp /opt/grackle/skel/etc/mollybrown/molly.conf /etc/molly-brown/$domain.conf
-    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/molly-brown/$domain.conf
-    chgrp geminid /etc/molly-brown/$domain.conf
-    chmod g+r /etc/molly-brown/$domain.conf
-    cp /opt/grackle/skel/etc/mollybrown/geminid-stream.conf /etc/nginx/stream.d/geminid.conf
-    chgrp nginx /etc/nginx/stream.d/geminid.conf
-    chmod 640 /etc/nginx/stream.d/geminid.conf
-    tee "/etc/systemd/system/molly-brown.service" >/dev/null <<EOF
-{
-[Service]
-DynamicUser=no
-User=geminid
-Group=geminid
-SupplementaryGroups=gemini ssl-cert
-}
-EOF
-    sudo systemctl daemon-reload
-    systemctl enable --now molly-brown
-    systemctl restart molly-brown
-    grackle reset-web
+    chown -Rv root:geminid /etc/molly-brown
+    chmod -Rv g-w,o-rwx /etc/molly-brown
+    chmod -Rv g+rX /etc/molly-brown
+    chgrp -v nginx /etc/nginx/stream.d/geminid.conf
+    chmod -v 640 /etc/nginx/stream.d/geminid.conf
+    chgrp -Rv sslring archive/ live/
+    chmod -Rv g-w,o-rwx /etc/letsencrypt/archive/ /etc/letsencrypt/live/ 
+    chmod -Rv g+rX /etc/letsencrypt/archive/ /etc/letsencrypt/live/ 
     ufw allow 1965/tcp
     ufw allow out 1965/tcp
     ufw reload
+    
+    # Launch daemon
+    systemctl daemon-reload
+    systemctl enable --now molly-brown@'$domain'.service
+    systemctl restart molly-brown
+    grackle reset-web
 
   # Fail and quit if inputs are still empty
   else
@@ -310,7 +314,7 @@ gopher)
 
     # Install dependencies & generate runtime account
     apt install -y build-essential git
-    useradd --system --home /nonexistent --shell /usr/sbin/nologin gopherd
+    useradd --system --home /nonexistent --shell /sbin/nologin gopherd
     usermod -c "gopher server" gopherd
     
     # Generate app account for serving gopher web root
@@ -322,8 +326,8 @@ gopher)
     sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bash_logout
     sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.bashrc
     sed -i -e 's/{{USERNAME}}/'gopher'/g' /home/gopher/.profile
-    rm -rf /home/gopher/app/public/*
-    cp /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
+    rm -rfv /home/gopher/app/public/*
+    cp -v /opt/grackle/skel/etc/geomyidae/index.gph /home/gopher/app/public/index.gph
 
     # Create ~/.gracklevar files with initial metadata
     tee "/home/gopher/.gracklevar" >/dev/null <<EOF
@@ -348,19 +352,19 @@ EOF
     make install
 
     # Set up logging
-    mkdir -p /var/log/geomyidae
-    chown gopherd:gopherd /var/log/geomyidae
-    chmod 750 /var/log/geomyidae
+    mkdir -pv /var/log/geomyidae
+    chown -v gopherd:gopherd /var/log/geomyidae
+    chmod -v 750 /var/log/geomyidae
 
     # Configure environment & launch daemon
-    chown root:gopherd /usr/local/sbin/geomyidae
-    chmod 750 /usr/local/sbin/geomyidae
-    cp /opt/grackle/skel/etc/geomyidae/gopherd-stream.conf /etc/nginx/stream.d/gopherd.conf
-    chgrp nginx /etc/nginx/stream.d/gopherd.conf
-    chmod 640 /etc/nginx/stream.d/gopherd.conf
-    cp /opt/grackle/skel/etc/geomyidae/geomyidae.service /etc/systemd/system/geomyidae.service
-    chown root:gopherd /etc/systemd/system/geomyidae.service
-    chmod 640 /etc/systemd/system/geomyidae.service
+    chown -v root:gopherd /usr/local/sbin/geomyidae
+    chmod -v 750 /usr/local/sbin/geomyidae
+    cp -v /opt/grackle/skel/etc/geomyidae/gopherd-stream.conf /etc/nginx/stream.d/gopherd.conf
+    chgrp -v nginx /etc/nginx/stream.d/gopherd.conf
+    chmod -v 640 /etc/nginx/stream.d/gopherd.conf
+    cp -v /opt/grackle/skel/etc/geomyidae/geomyidae.service /etc/systemd/system/geomyidae.service
+    chown -v root:gopherd /etc/systemd/system/geomyidae.service
+    chmod -v 640 /etc/systemd/system/geomyidae.service
     systemctl daemon-reload
     systemctl enable --now geomyidae
     grackle reset-web
@@ -511,6 +515,11 @@ nginx)
 
   # Install Certbot
   apt install -y certbot python3-certbot-nginx
+  groupadd sslring
+  usermod -aG sslring nginx
+  chgrp -Rv sslring archive/ live/
+  chmod -Rv g-w,o-rwx /etc/letsencrypt/archive/ /etc/letsencrypt/live/ 
+  chmod -Rv g+rX /etc/letsencrypt/archive/ /etc/letsencrypt/live/ 
 
   # Update firewall rules and reload Nginx
   ufw allow 80/tcp
@@ -591,7 +600,7 @@ update)
     | head -n1
   )"
   rm -rfv /opt/dart-sass
-  curl -fL "$url" | sudo tar -xz -C /opt
+  curl -fL "$url" | tar -xz -C /opt
   chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
   ln -sf /opt/dart-sass/sass /usr/local/bin/sass
 
@@ -650,7 +659,7 @@ reinstall)
     | head -n1
   )"
   rm -rfv /opt/dart-sass
-  curl -fL "$url" | sudo tar -xz -C /opt
+  curl -fL "$url" | tar -xz -C /opt
   chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
   ln -sf /opt/dart-sass/sass /usr/local/bin/sass
 
