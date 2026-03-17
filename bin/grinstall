@@ -174,7 +174,7 @@ ftp)
   # Install vsftp
   apt install -y vsftpd
   systemctl enable vsftpd
-  rm /etc/vsftpd.conf
+  rm -v /etc/vsftpd.conf
   cp -v /opt/grackle/skel/etc/vsftpd.conf /etc/vsftpd.conf
   service vsftpd restart
 
