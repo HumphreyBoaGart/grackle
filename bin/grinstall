@@ -121,16 +121,16 @@ base)
   # Grab latest dart-sass
   set -euo pipefail
   url="$(
-    curl -fsSL https://api.github.com/repos/sass/dart-sass/releases/latest \
+    curl -fsSLv https://api.github.com/repos/sass/dart-sass/releases/latest \
     | jq -r '.assets[]
            | select(.name | endswith("linux-x64.tar.gz"))
            | .browser_download_url' \
     | head -n1
   )"
   rm -rfv /opt/dart-sass
-  curl -fL "$url" | tar -xz -C /opt
+  curl -fLv "$url" | tar -xzv -C /opt
   chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
-  ln -sf /opt/dart-sass/sass /usr/local/bin/sass
+  ln -sfv /opt/dart-sass/sass /usr/local/bin/sass
 
   # Close installer
 ;;
@@ -147,7 +147,7 @@ brew)
   chmod -v 750 /home/linuxbrew
   cd /home/linuxbrew
   rm -rfv /home/linuxbrew/.linuxbrew
-  sudo -u linuxbrew mkdir -p /home/linuxbrew/.linuxbrew/bin/
+  sudo -u linuxbrew mkdir -pv /home/linuxbrew/.linuxbrew/bin/
 
   # Grab Homebrew package
   sudo -u linuxbrew git clone https://github.com/Homebrew/brew /home/linuxbrew/.linuxbrew/Homebrew
@@ -464,7 +464,7 @@ mail)
   apt install -y opendkim opendkim-tools
   gpasswd -a postfix opendkim
   cp -v /opt/grackle/skel/etc/opendkim/opendkim.conf /etc/opendkim.conf
-  mkdir -vp /etc/opendkim/keys
+  mkdir -pv /etc/opendkim/keys
   chown -Rv opendkim:opendkim /etc/opendkim
   cp -v /opt/grackle/skel/etc/opendkim/signing.table /etc/opendkim/signing.table
   cp -v /opt/grackle/skel/etc/opendkim/key.table /etc/opendkim/key.table
@@ -522,7 +522,7 @@ mail)
 ###
 nginx)
   # Configure official Nginx repo
-  curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+  curl -v https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
     | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
   chmod a+r /usr/share/keyrings/nginx-archive-keyring.gpg
   echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
@@ -542,7 +542,7 @@ nginx)
   # Configure Nginx
   mkdir -pv /etc/nginx/active /etc/nginx/available /etc/nginx/gates /etc/nginx/includes /etc/nginx/stream.d
   touch /etc/nginx/gates/void
-  rm -rf /etc/nginx/conf.d/ /etc/nginx/nginx.conf
+  rm -rfv /etc/nginx/conf.d/ /etc/nginx/nginx.conf
   cp -v /opt/grackle/skel/etc/nginx/nginx.conf /etc/nginx/nginx.conf
   cp -v /opt/grackle/skel/etc/nginx/includes/headers.conf /etc/nginx/includes/headers.conf
   cp -v /opt/grackle/skel/etc/nginx/includes/ssl.conf /etc/nginx/includes/ssl.conf
@@ -577,7 +577,7 @@ nginx)
 ###
 php)
   # Configure Sury repo for newer PHP releases
-  curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+  curl -sSLov /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
   dpkg -i /tmp/debsuryorg-archive-keyring.deb
   echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] \
      https://packages.sury.org/php/ $(lsb_release -sc) main" \
@@ -591,7 +591,7 @@ php)
 
   # Configure PHP-FPM
   mkdir -pv /etc/php/8.5/fpm/pool.available
-  rm /etc/php/8.5/fpm/pool.d/www.conf
+  rm -v /etc/php/8.5/fpm/pool.d/www.conf
   cp -v /opt/grackle/skel/etc/php/php-fpm.conf /etc/php/8.5/fpm/php-fpm.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
   systemctl restart rsyslog
@@ -642,16 +642,16 @@ update)
   # Grab latest dart-sass
   set -euo pipefail
   url="$(
-    curl -fsSL https://api.github.com/repos/sass/dart-sass/releases/latest \
+    curl -fsSLv https://api.github.com/repos/sass/dart-sass/releases/latest \
     | jq -r '.assets[]
            | select(.name | endswith("linux-x64.tar.gz"))
            | .browser_download_url' \
     | head -n1
   )"
   rm -rfv /opt/dart-sass
-  curl -fL "$url" | tar -xz -C /opt
+  curl -fLv "$url" | tar -xzv -C /opt
   chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
-  ln -sf /opt/dart-sass/sass /usr/local/bin/sass
+  ln -sfv /opt/dart-sass/sass /usr/local/bin/sass
 
   # Close updater
 ;;
@@ -701,16 +701,16 @@ reinstall)
   # Grab latest dart-sass
   set -euo pipefail
   url="$(
-    curl -fsSL https://api.github.com/repos/sass/dart-sass/releases/latest \
+    curl -fsSLv https://api.github.com/repos/sass/dart-sass/releases/latest \
     | jq -r '.assets[]
            | select(.name | endswith("linux-x64.tar.gz"))
            | .browser_download_url' \
     | head -n1
   )"
   rm -rfv /opt/dart-sass
-  curl -fL "$url" | tar -xz -C /opt
+  curl -fLv "$url" | tar -xzv -C /opt
   chmod -Rv u+rwX,g+rX,o+rX /opt/dart-sass
-  ln -sf /opt/dart-sass/sass /usr/local/bin/sass
+  ln -sfv /opt/dart-sass/sass /usr/local/bin/sass
 
   # Close updater
 ;;
