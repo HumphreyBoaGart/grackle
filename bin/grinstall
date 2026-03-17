@@ -151,12 +151,12 @@ brew)
 
   # Grab Homebrew package
   sudo -u linuxbrew git clone https://github.com/Homebrew/brew /home/linuxbrew/.linuxbrew/Homebrew
-  sudo -u linuxbrew ln -sf /home/linuxbrew/.linuxbrew/Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/brew
+  sudo -u linuxbrew ln -sfv /home/linuxbrew/.linuxbrew/Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/brew
   sudo -u linuxbrew /home/linuxbrew/.linuxbrew/Homebrew/bin/brew update --force
   sudo -u linuxbrew /home/linuxbrew/.linuxbrew/Homebrew/bin/brew doctor
 
   # Make accessible & set permissions
-  sudo -u linuxbrew ln -sf /home/linuxbrew/.linuxbrew/Homebrew/bin/brew /home/linuxbrew/.local/bin/brew
+  sudo -u linuxbrew ln -sfv /home/linuxbrew/.linuxbrew/Homebrew/bin/brew /home/linuxbrew/.local/bin/brew
   cp -v /opt/grackle/skel/etc/profile.d/brew.sh /etc/profile.d/brew.sh
   chmod -v 640 /etc/profile.d/brew.sh
   chown -v root:linuxbrew /etc/profile.d/brew.sh
