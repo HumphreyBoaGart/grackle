@@ -1,7 +1,24 @@
+```
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⠀ 
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⡟⠋⢻⣷⣄⡀⠀⠀⠀⠀     ▄▄ • ▄▄▄   ▄▄▄·  ▄▄· ▄ •▄ ▄▄▌  ▄▄▄ .
+⠀⠀⠀⠀⣤⣾⣿⣷⣿⣿⣿⣿⣿⣶⣾⣿⣿⠿⠿⠿⠶⠄    ▐█ ▀ ▪▀▄ █·▐█ ▀█ ▐█ ▌▪█▌▄▌▪██•  ▀▄.▀·
+⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠉⠀         ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
+⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀         ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
+⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀          ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
+⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀
+⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀
+⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⡟⠁⠀⠀
+⠀⠀⠈⣿⣿⣿⣿⣿⣿⠟⠻⣧⠀⠀⠀
+⠀⠀⣼⣿⣿⣿⣿⣿⣿⣆ ⣿⣦⡀⠀⠀       ⠀A sane, extensible and modular web stack.
+==⣿⣿⣿⣿⣿⣿⣿⣿=⢿=======================================================>
+⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀      ⠀  Developer friendly & production ready.
+⠸⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⠀⠀⠀⠉⠉⠙⠛⠋⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+```
 # Grackle
 Simple terminal-based webserver management with minimal dependencies.
 
-Currently only tested to work in Debian.
+Currently only tested to work in Debian 12.
 
 ***This software is still in very early stages, and will probably not be useful to anyone but myself for a little bit. Check back later, or look at the [current checklist](bin/grinstall.md) for more info.***
 
