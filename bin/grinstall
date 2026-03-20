@@ -228,6 +228,9 @@ finger)
   sed -i -e 's/{{USERNAME}}/finger/g' /home/finger/.bash_logout
   sed -i -e 's/{{USERNAME}}/finger/g' /home/finger/.bashrc
   sed -i -e 's/{{USERNAME}}/finger/g' /home/finger/.profile
+  cp -v /opt/grackle/skel/etc/fingered/index.txt /home/finger/app/finger/index.txt
+  cp -v /opt/grackle/skel/etc/fingered/.header.txt /home/finger/app/finger/.header.txt
+  cp -v /opt/grackle/skel/etc/fingered/.footer.txt /home/finger/app/finger/.footer.txt
     tee "/home/finger/.gracklevar" >/dev/null <<EOF
 {
 	"type": "app",
@@ -237,6 +240,17 @@ finger)
 	"php": 0
 }
 EOF
+
+  # Tidy up permissions
+  grapp fix-perms-deep finger
+  ufw allow 79/tcp
+  ufw allow out 79/tcp
+  ufw reload
+    
+  # Launch daemon
+  systemctl daemon-reload
+  systemctl restart fingered
+  grackle reset-web
     
   # Close installer
 ;;
