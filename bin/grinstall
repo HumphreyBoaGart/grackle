@@ -231,6 +231,7 @@ finger)
   cp -v /opt/grackle/skel/etc/fingered/index.txt /home/finger/app/finger/index.txt
   cp -v /opt/grackle/skel/etc/fingered/.header.txt /home/finger/app/finger/.header.txt
   cp -v /opt/grackle/skel/etc/fingered/.footer.txt /home/finger/app/finger/.footer.txt
+  cp -v /opt/grackle/skel/etc/fingered/fingered-nginx.conf /etc/nginx/stream.d/fingered.conf
     tee "/home/finger/.gracklevar" >/dev/null <<EOF
 {
 	"type": "app",
@@ -245,6 +246,8 @@ EOF
   grapp fix-perms-deep finger
   chmod -R g+rwX /home/finger/logs
   chgrp -R fingered /home/finger/logs/fingered
+  chgrp -R nginx /etc/nginx/stream.d
+  chmod 640 /etc/nginx/stream.d/fingered.conf
   ufw allow 79/tcp
   ufw allow out 79/tcp
   ufw reload
