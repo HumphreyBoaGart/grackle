@@ -243,7 +243,7 @@ EOF
 
   # Tidy up permissions
   grapp fix-perms-deep finger
-  chmod -R g+rxW /home/finger/logs/fingered
+  chmod -R g+rwX /home/finger/logs/fingered
   chgrp -R fingered /home/finger/logs/fingered
   ufw allow 79/tcp
   ufw allow out 79/tcp
