@@ -142,6 +142,7 @@ base)
 ###
 brew)
   # Set up install environment
+  apt install bubblewrap
   gruser new linuxbrew
   gruser shell-on linuxbrew
   chmod -v 750 /home/linuxbrew
@@ -200,6 +201,43 @@ ftp)
   ufw allow out 40000:50000/tcp
   ufw reload
 
+  # Close installer
+;;
+
+
+
+###
+### Finger install with 'grinstall finger'
+###
+finger)
+
+  # Install dependencies
+  git clone https://github.com/noveltylanterns/fingered /opt/fingered
+  /opt/fingered/bin/install_fingered.sh
+
+  # Configure runtime environment
+  usermod -aG app finger
+  usermod -c "gemini web root" finger
+  rm -fv /home/finger/.profile /home/finger/.bash_logout /home/finger/.bashrc
+  cp -v /opt/grackle/skel/home/app/.bash_aliases /home/finger/.bash_aliases
+  cp -v /opt/grackle/skel/home/app/.bash_logout /home/finger/.bash_logout
+  cp -v /opt/grackle/skel/home/app/.bashrc /home/finger/.bashrc
+  cp -v /opt/grackle/skel/home/app/.nanorc /home/finger/.nanorc
+  cp -v /opt/grackle/skel/home/app/.profile /home/finger/.profile
+  sed -i -e 's/{{USERNAME}}/finger/g' /home/finger/.bash_aliases
+  sed -i -e 's/{{USERNAME}}/finger/g' /home/finger/.bash_logout
+  sed -i -e 's/{{USERNAME}}/finger/g' /home/finger/.bashrc
+  sed -i -e 's/{{USERNAME}}/finger/g' /home/finger/.profile
+    tee "/home/finger/.gracklevar" >/dev/null <<EOF
+{
+	"type": "app",
+	"user": "finger",
+	"url": "localhost",
+	"docker": "no",
+	"php": 0
+}
+EOF
+    
   # Close installer
 ;;
 

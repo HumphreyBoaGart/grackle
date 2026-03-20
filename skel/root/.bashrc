@@ -28,7 +28,7 @@ alias ip='ip --color=auto'
 alias ls='ls -lhaF --color=auto'
 alias sysrl='systemctl reload'
 alias sysrs='systemctl restart'
-alias sysst='systemctl status'
+alias sysst='systemctl status --no-pager'
 alias vdir='vdir --color=auto'
 
 # Extra Alias Definitions.
