@@ -1,1 +1,5 @@
-Congratulations! Your finger:// service is now operational.
+Welcome to your new finger:// server!
+
+If you can see this, it means Grackle is serving the contents of /home/finger/app/finger/ with the Fingered.
+
+Use the "finger" account to manage your Finger responses with SFTP. If you need to do this with the shell, run "grapp shell-on finger" to enable shell access.
