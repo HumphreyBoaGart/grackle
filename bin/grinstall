@@ -673,10 +673,11 @@ php-extra)
 pgsql)
   # Set up official repo & base packages
   install -d /usr/share/postgresql-common/pgdg
-  curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+  curl -o /etc/apt/trusted.gpg.d/postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
   . /etc/os-release
-  sh -c "echo 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $VERSION_CODENAME-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
+  sh -c "echo 'deb [signed-by=/etc/apt/trusted.gpg.d/postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $VERSION_CODENAME-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
   chmod a+r /etc/apt/sources.list.d/pgdg.list
+  chmod a+r /etc/apt/trusted.gpg.d/postgresql.org.asc
   apt update
   apt install -y postgresql-18
   systemctl enable postgresql
