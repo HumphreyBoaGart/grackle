@@ -75,6 +75,8 @@ PHP is why we are here, and the ecosystem has only gotten infinitely better in t
 
 Our mailserver stack is powered by [Postfix](https://www.postfix.org) and [Dovecot](https://dovecot.org), with validation services performed by [OpenDKIM](http://www.opendkim.org) and [OpenDMARC](http://www.trusteddomain.org/opendmarc/).
 
+[OpenSMTPD](https://www.opensmtpd.org/) support in the pipeline! Working on a test machine already.
+
 
 ## rsyslog & logrotate
 
