@@ -19,6 +19,9 @@ exec cat <<EOF
   $(tput setaf 3 bold)Configure for Codex CLI:$(tput sgr0)
     $(tput setaf 6)grbuild codex APPNAME$(tput sgr0)
 
+  $(tput setaf 3 bold)Configure for Gemini:$(tput sgr0)
+    $(tput setaf 6)grbuild gemini APPNAME$(tput sgr0)
+
   $(tput setaf 3 bold)Generate basic HTML skeleton:$(tput sgr0)
     $(tput setaf 6)grbuild html APPNAME$(tput sgr0)
 
@@ -51,6 +54,52 @@ codex)
     chown -R $name:$name /home/$name/.codex
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Relocate Gemini docroot to app with 'grbuild gemini'
+###
+gemini)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter the name of the app to move Gemini to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    # Read domain from ~/.gracklevar
+    domain="$(jq -er '.url | select(type=="string" and length>0)' "/home/'$name'/.gracklevar")" || {
+      echo "ERROR: .gracklevar missing or .url empty for '$name'" >&2; exit 2;
+    }
+    esc_domain="$(printf '%s' "$domain" | sed 's/[&/\]/\\&/g')"
+
+    # Create new docroot
+    mkdir -pv /home/$name/app/gemini
+    chown $name:geminid /home/$name/app/gemini
+    chmod 750 /home/$name/app/gemini
+
+    # Grant geminid user access to new docroot
+    usermod -aG '$name' geminid
+    sed -i -e 's/SupplementaryGroups=gemini/SupplementaryGroups='$name'/g' /etc/systemd/system/molly-brown@.service.d/override.conf
+    umount /var/run/geminid/'$domain'
+    bindfs -r --perms=u=rwX:g=rX:o=rX /home/'$name'/app/gemini /var/run/geminid/'$domain'
+    systemctl daemon-reload
+    systemctl restart molly-brown@'$domain'.service
+
+    # Purge old stock Gemini docroot
+    grapp purge gemini
+    grapp purge gemini
+    groupdel gemini
+
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
 ;;
 

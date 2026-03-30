@@ -12,6 +12,15 @@ Append an optional **USER** or **APPNAME** to skip interactive mode.
 **Note:** Requires Homebrew. Run `grinstall brew` to install Grackle's Homebrew component. You will also have to run `brew install codex` as your `linuxbrew` user account. Working on a simpler solution.
 
 
+## grbuild gemini APPNAME
+
+Relocates the gemini:// webroot to the specified application.
+
+Append an optional **APPNAME** to skip interactive mode.
+
+**Note:** Requires Gemini. Run `grinstall gemini` to install Grackle's Gemini component.
+
+
 ## grbuild html APPNAME
 
 Generates a basic HTML skeleton for the specified application.
