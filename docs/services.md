@@ -14,7 +14,7 @@ For more information on how to use SSH, check this [cheat sheet](https://bestpoi
 
 ## byobu
 
-Bash over SSH is great, until your connection drops, or until you need to have multiple terminal panes open. To solve this, we bundle the modern terminal multiplexer [Byobu](https://www.byobu.org). Byobu not only keeps your session alive, but streamlines the use of multiple concurrant Bash terminals.
+Bash over SSH is great, until your connection drops, or until you need to have multiple terminal panes open. To solve this, we bundle the modern terminal multiplexer [Byobu](https://www.byobu.org). Byobu not only keeps your session alive, but streamlines the use of multiple concurrent Bash terminals.
 
 Every user & application account can be configured to launch Byobu upon login. Just uncomment **line 18** in `~/.profile` to vastly improve your terminal experience!
 
@@ -23,7 +23,7 @@ Every user & application account can be configured to launch Byobu upon login. J
 
 It's not in the production build yet, but we have a proper [Rootless Docker](https://docs.docker.com/engine/security/rootless) component in the works.
 
-While we aren't a huge fan of the Docker ecosystem, many modern servers need a way to safely run isolated Docker containers. We've got you.
+While we aren't huge fans of the Docker ecosystem, many modern servers need a way to safely run isolated Docker containers. We've got you.
 
 
 ## fingered
