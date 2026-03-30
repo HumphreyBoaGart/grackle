@@ -14,7 +14,7 @@ Append an optional **USER** or **APPNAME** to skip interactive mode.
 
 ## grbuild gemini APPNAME
 
-Relocates the gemini:// webroot to the specified application.
+Relocates the gemini:// webroot to the specified application's `~/app/gemini/` directory.
 
 Append an optional **APPNAME** to skip interactive mode.
 
