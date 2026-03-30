@@ -15,7 +15,7 @@ exec cat <<EOF
  ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
  $(tput setaf 4 bold)UTILITY COMMANDS:$(tput sgr0)
 
-  $(tput setaf 3 bold)Flush & reset all services:$(tput sgr0)
+  $(tput setaf 3 bold)Flush & reset web services:$(tput sgr0)
     $(tput setaf 6)grackle reset$(tput sgr0)
 
     $(tput bold)Or, to reset individual components:$(tput sgr0)
@@ -49,6 +49,18 @@ reset)
 reset-php)
   systemctl reload php8.5-fpm
   systemctl restart php8.5-fpm
+;;
+reset-php85)
+  systemctl reload php8.5-fpm
+  systemctl restart php8.5-fpm
+;;
+reset-php84)
+  systemctl reload php8.4-fpm
+  systemctl restart php8.4-fpm
+;;
+reset-php83)
+  systemctl reload php8.3-fpm
+  systemctl restart php8.3-fpm
 ;;
 reset-web | reset-nginx)
   systemctl reload nginx

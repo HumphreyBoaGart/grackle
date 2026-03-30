@@ -14,26 +14,78 @@ exec cat <<EOF
  ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
  ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
  $(tput setaf 4 bold)APP ACCOUNT MANAGEMENT:$(tput sgr0)
-  Omit USERNAME et al, to trigger interactive mode.
+  Omit APPNAME et al, to trigger interactive mode.
 
   $(tput setaf 3 bold)Create new app account:$(tput sgr0)
-    $(tput setaf 6)grapp new USERNAME$(tput sgr0)
+    $(tput setaf 6)grapp new APPNAME DOMAIN.COM$(tput sgr0)
 
   $(tput setaf 3 bold)Delete app account:$(tput sgr0)
-    $(tput bold)Only Account:$(tput sgr0) $(tput setaf 6)grapp delete USERNAME$(tput sgr0)
-    $(tput bold)Account & All Data:$(tput sgr0) $(tput setaf 6)grapp purge USERNAME$(tput sgr0)
+    $(tput bold)Only Account:$(tput sgr0) $(tput setaf 6)grapp delete APPNAME$(tput sgr0)
+    $(tput bold)Account & All Data:$(tput sgr0) $(tput setaf 6)grapp purge APPNAME$(tput sgr0)
+
+ $(tput setaf 4 bold)UTILITY COMMANDS:$(tput sgr0)
+
+  $(tput setaf 3 bold)Backup app account data:$(tput sgr0)
+    $(tput setaf 6)grapp new APPNAME$(tput sgr0)
 
   $(tput setaf 3 bold)Fix app's homedir permissions:$(tput sgr0)
-    $(tput bold)General Fix:$(tput sgr0) $(tput setaf 6)grapp fix-perms USERNAME$(tput sgr0)
-    $(tput bold)Deep Fix (Careful!):$(tput sgr0) $(tput setaf 6)grapp fix-perms-deep USERNAME$(tput sgr0)
+    $(tput bold)General Fix:$(tput sgr0) $(tput setaf 6)grapp fix-perms APPNAME$(tput sgr0)
+    $(tput bold)Deep Fix (Careful!):$(tput sgr0) $(tput setaf 6)grapp fix-perms-deep APPNAME$(tput sgr0)
 
-  $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
-    $(tput setaf 6)grackle help$(tput sgr0)
+ $(tput setaf 4 bold)SERVICE CONFIGURATION:$(tput sgr0)
+
+  $(tput setaf 3 bold)Enable/disable Homebrew access:$(tput sgr0)
+    $(tput setaf 6)grapp (brew-on|brew-off) APPNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Enable/disable PHP pool:$(tput sgr0)
+    $(tput setaf 6)grapp (php-on|php-off) APPNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Enable/disable shell access:$(tput sgr0)
+    $(tput setaf 6)grapp (shell-on|shell-off) APPNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Enable/disable Nginx pool:$(tput sgr0)
+    $(tput setaf 6)grapp (web-on|web-off) APPNAME$(tput sgr0)
 
 EOF
 ;;
 
+
+
+###
+### ACCOUNT MANAGEMENT COMMANDS
+###
+
+
+
+###
+### Delete application account, preserving data with 'grapp delete'
+###
+delete)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
+    echo -n "  (WARNING: OBNOXIOUS TO UNDO!) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -rG $name nginx
+    userdel -f $name
+    rm -rf /etc/nginx/active/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
 ### Generate new application account with 'grapp new'
+###
 new)
 
   # Fill in name & domain to skip interactive mode
@@ -108,275 +160,12 @@ EOF
   fi
 ;;
 
-### Grant app Server Homebrew access with 'grapp brew-on'
-brew-on)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -aG linuxbrew $name
- ###TO-DO> Doublecheck group-read permissions for linuxbrew-owned resources
- ###TO-DO> Add '/home/linuxbrew/.local/bin' to $name's PATH
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Revoke Server Homebrew access from app with 'grapp brew-off'
-brew-off)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -rG linuxbrew $name
- ###TO-DO> Remove '/home/linuxbrew/.local/bin' to $name's PATH
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Local Codex setup with 'grapp codex-setup'
-codex-setup)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    # Set up Environment
- ###TO-DO> Check that Homebrew & Codex are installed
-    mkdir /home/$name/.codex
-    chown -R $name:$name /home/$name/.codex
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Enable PHP access for app with 'grapp php-on'
-php-on)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter an app name to enable PHP access for:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
-    grackle reset-web
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
-  fi
-;;
-
-### Disable PHP access for app with 'grapp php-off'
-php-off)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter an app name to revoke PHP access from:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    rm /etc/php/8.5/fpm/pool.d/$name.conf
-    grackle reset-php
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
-  fi
-;;
-
-### Set up PHP access for app with 'grapp php-setup'
-php-setup)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter an app name to grant PHP access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    # Check for existing PHP config & failsafe
-   ### TO DO
-
-    # Read domain from ~/.gracklevar
-    domain="$(jq -er '.url | select(type=="string" and length>0)' "/home/$name/.gracklevar")" || {
-      echo "ERROR: .gracklevar missing or .url empty for $name" >&2; exit 2;
-    }
-    esc_domain="$(printf '%s' "$domain" | sed 's/[&/\]/\\&/g')"
-
-    # Copy skeleton files and insert appdata
-    cp -v /opt/grackle/skel/etc/php/pool.d/pool.conf /etc/php/8.5/fpm/pool.available/$name.conf
-    ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
-    sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.5/fpm/pool.available/$name.conf
-    sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.5/fpm/pool.available/$name.conf"
-    t="$(mktemp)"; jq --argjson v 8.5 '.php=$v' "/home/$name/.gracklevar" >"$t" && mv "$t" "/home/$name/.gracklevar"
-    cp -v /opt/grackle/skel/etc/php/composer.json /home/$name/app/composer.json
-    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/app/composer.json
-    mkdir -pv /home/$name/.local/share/php/opcache/file
-    mkdir -pv /home/$name/.local/share/php/opcache/lock
-    mkdir -pv /home/$name/.local/share/php/sessions
-    mkdir -pv /home/$name/.local/share/php/soap
-    mkdir -pv /home/$name/.local/share/php/tmp_upload
-    mkdir -pv /home/$name/logs/php-fpm
-    cp -v /opt/grackle/skel/etc/php/logdir-readme.md /home/$name/logs/php-fpm/README.md
-    grapp fix-perms $name
-    grackle reset-php
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
-  fi
-;;
 
 
-### Grant app shell access with 'grapp shell-on'
-shell-on)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -s /bin/bash $name
-    usermod -aG cliapp $name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
 
-### Grant app shell access with 'grapp shell-off'
-shell-off)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -s /sbin/nologin $name
-    usermod -rG cliapp $name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Enable web access to app with 'grapp web-on'
-web-on)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter an app name to restore web access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
-    grackle reset-web
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
-  fi
-;;
-
-### Revoke web access to app with 'grapp web-off'
-web-off)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter an app name to revoke web access from:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    rm /etc/nginx/active/$name.conf
-    grackle reset-web
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
-  fi
-;;
-
-### Backup application account, preserving data with 'grapp backup'
-backup)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Which application shall we backup?$(tput sgr0)"
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" "/home/$name/.gracklevar" "/home/$name/app" "/home/$name/logs"
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
-  fi
-;;
-
-### Delete application account, preserving data with 'grapp delete'
-delete)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Which application shall we delete?$(tput sgr0)"
-    echo -n "  (WARNING: OBNOXIOUS TO UNDO!) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -rG $name nginx
-    userdel -f $name
-    rm -rf /etc/nginx/active/$name.conf
-    grackle reset-web
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
-  fi
-;;
-
+###
 ### Nuke application account and all data with 'grapp purge'
+###
 purge)
   if [[ $2 != '' ]]; then
     name=${2// /_}
@@ -398,7 +187,39 @@ purge)
   fi
 ;;
 
-### Permissions-Fixing Utilities with 'grapp fix-perms'
+
+
+###
+### UTILITY COMMANDS
+###
+
+
+
+###
+### Backup application account, preserving data with 'grapp backup'
+###
+backup)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which application shall we backup?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" "/home/$name/.gracklevar" "/home/$name/app" "/home/$name/logs"
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Emergency permissions patch with 'grapp fix-perms'
+###
 fix-perms)
   if [[ $2 != '' ]]; then
     name=${2// /_}
@@ -478,7 +299,210 @@ fix-perms-deep)
   fi
 ;;
 
+
+
+###
+### SERVICE CONFIGURATION COMMANDS
+###
+
+
+
+###
+### Grant app Homebrew access with 'grapp brew-on'
+###
+brew-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -aG linuxbrew $name
+ ###TO-DO> Doublecheck group-read permissions for linuxbrew-owned resources
+ ###TO-DO> Add '/home/linuxbrew/.local/bin' to $name's PATH
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Revoke Homebrew access from app with 'grapp brew-off'
+###
+brew-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -rG linuxbrew $name
+ ###TO-DO> Remove '/home/linuxbrew/.local/bin' to $name's PATH
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Enable PHP access for app with 'grapp php-on'
+###
+php-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to enable PHP access for:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Disable PHP access for app with 'grapp php-off'
+###
+php-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to revoke PHP access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    rm /etc/php/8.5/fpm/pool.d/$name.conf
+    grackle reset-php
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Grant app shell access with 'grapp shell-on'
+###
+shell-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -s /bin/bash $name
+    usermod -aG cliapp $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Grant app shell access with 'grapp shell-off'
+###
+shell-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -s /sbin/nologin $name
+    usermod -rG cliapp $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Enable web access to app with 'grapp web-on'
+###
+web-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to restore web access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    ln -s /etc/nginx/available/$name.conf /etc/nginx/active/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Revoke web access to app with 'grapp web-off'
+###
+web-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter an app name to revoke web access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    rm /etc/nginx/active/$name.conf
+    grackle reset-web
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
 ### Output error for any input not explicitly defined
+###
 *)
 exec cat <<EOF
 

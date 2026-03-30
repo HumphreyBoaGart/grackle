@@ -13,13 +13,52 @@ exec cat <<EOF
  ▄█ ▀█▄▐▀▀▄ ▄█▀▀█ ██ ▄▄▐▀▀▄·██▪  ▐▀▀▪▄
  ▐█▄▪▐█▐█•█▌▐█ ▪▐▌▐███▌▐█.█▌▐█▌▐▌▐█▄▄▌
  ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
-  $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
-    $(tput setaf 6)grackle help$(tput sgr0)
+ $(tput setaf 4 bold)INTEGRATED BUILD UTILITIES:$(tput sgr0)
+  Omit APPNAME et al, to trigger interactive mode.
+
+  $(tput setaf 3 bold)Configure for Codex CLI:$(tput sgr0)
+    $(tput setaf 6)grbuild codex APPNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Generate basic HTML skeleton:$(tput sgr0)
+    $(tput setaf 6)grbuild html APPNAME$(tput sgr0)
+
+  $(tput setaf 3 bold)Generate PHP pool & skeleton:$(tput sgr0)
+    $(tput setaf 6)grbuild php APPNAME$(tput sgr0)
 
 EOF
 ;;
 
+
+
+###
+### Local Codex CLI setup with 'grbuild codex'
+###
+codex)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter the name of the user or application account to configure Codex CLI for:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    # Set up Environment
+ ###TO-DO> Check that Homebrew & Codex are installed
+    mkdir /home/$name/.codex
+    chown -R $name:$name /home/$name/.codex
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an account name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
 ### Build basic HTML skeleton with 'grbuild html'
+###
 html)
   if [[ $2 != '' ]]; then
     name=${2// /_}
@@ -43,19 +82,49 @@ html)
   fi
 ;;
 
-### Build basic PHP skeleton with 'grbuild php'
+
+
+###
+### Set up PHP access for app with 'grbuild php'
+###
 php)
   if [[ $2 != '' ]]; then
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    sudo echo " $(tput setaf 6 bold)Please enter the name of the app you are building this on:$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Please enter the name of the app to grant PHP access to:$(tput sgr0)"
     echo -n "  (alphanumeric only) "
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
+    # Check for existing PHP config & failsafe
+   ### TO DO
+
+    # Read domain from ~/.gracklevar
+    domain="$(jq -er '.url | select(type=="string" and length>0)' "/home/$name/.gracklevar")" || {
+      echo "ERROR: .gracklevar missing or .url empty for $name" >&2; exit 2;
+    }
+    esc_domain="$(printf '%s' "$domain" | sed 's/[&/\]/\\&/g')"
+
+    # Configure new PHP-FPM pool
+    cp -v /opt/grackle/skel/etc/php/pool.d/pool.conf /etc/php/8.5/fpm/pool.available/$name.conf
+    ln -s /etc/php/8.5/fpm/pool.available/$name.conf /etc/php/8.5/fpm/pool.d/$name.conf
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /etc/php/8.5/fpm/pool.available/$name.conf
+    sed -i -e "s/{{DOMAIN}}/$esc_domain/g" "/etc/php/8.5/fpm/pool.available/$name.conf"
+
+    # Copy skeleton files and insert appdata
+    t="$(mktemp)"; jq --argjson v 8.5 '.php=$v' "/home/$name/.gracklevar" >"$t" && mv "$t" "/home/$name/.gracklevar"
+    cp -v /opt/grackle/skel/etc/php/composer.json /home/$name/app/composer.json
+    sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/app/composer.json
+    mkdir -pv /home/$name/.local/share/php/opcache/file
+    mkdir -pv /home/$name/.local/share/php/opcache/lock
+    mkdir -pv /home/$name/.local/share/php/sessions
+    mkdir -pv /home/$name/.local/share/php/soap
+    mkdir -pv /home/$name/.local/share/php/tmp_upload
+    mkdir -pv /home/$name/logs/php-fpm
+    cp -v /opt/grackle/skel/etc/php/logdir-readme.md /home/$name/logs/php-fpm/README.md
     mkdir -pv /home/$name/app/public/theme/css /home/$name/app/public/theme/fonts
     mkdir -pv /home/$name/app/public/theme/img /home/$name/app/public/theme/scss
     mkdir -pv /home/$name/app/public/theme/php
@@ -65,13 +134,20 @@ php)
     cp /opt/grackle/skel/builds/php/theme/php/meta.php /home/$name/app/public/theme/php/meta.php
     cp /opt/grackle/skel/builds/php/theme/php/header.php /home/$name/app/public/theme/php/header.php
     cp /opt/grackle/skel/builds/php/theme/php/footer.php /home/$name/app/public/theme/php/footer.php
+
+    # Send it
     grapp fix-perms-deep $name
+    grackle reset-php
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
 ;;
 
+
+
+###
 ### Output error for any input not explicitly defined
+###
 *)
 exec cat <<EOF
 

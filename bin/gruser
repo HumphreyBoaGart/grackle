@@ -23,28 +23,62 @@ exec cat <<EOF
     $(tput bold)Only Account:$(tput sgr0) $(tput setaf 6)gruser delete USERNAME$(tput sgr0)
     $(tput bold)Account & All Data:$(tput sgr0) $(tput setaf 6)gruser purge USERNAME$(tput sgr0)
 
+ $(tput setaf 4 bold)UTILITY COMMANDS:$(tput sgr0)
+
+  $(tput setaf 3 bold)Backup user account data:$(tput sgr0)
+    $(tput setaf 6)gruser new USERNAME$(tput sgr0)
+
   $(tput setaf 3 bold)Reset user's homedir permissions:$(tput sgr0)
     $(tput setaf 6)gruser fix-perms USERNAME$(tput sgr0)
 
-  $(tput setaf 3 bold)Grant user shell access:$(tput sgr0)
-    $(tput setaf 6)gruser shell-on USERNAME$(tput sgr0)
+ $(tput setaf 4 bold)SERVICE CONFIGURATION:$(tput sgr0)
 
-  $(tput setaf 3 bold)Revoke user's shell access:$(tput sgr0)
-    $(tput setaf 6)gruser shell-off USERNAME$(tput sgr0)
+  $(tput setaf 3 bold)Enable/disable admin access:$(tput sgr0)
+    $(tput setaf 6)gruser (admin-on|admin-off) USERNAME$(tput sgr0)
 
-  $(tput setaf 3 bold)Upgrade user to administrator:$(tput sgr0)
-    $(tput setaf 6)gruser admin-on USERNAME$(tput sgr0)
+  $(tput setaf 3 bold)Enable/disable Homebrew access:$(tput sgr0)
+    $(tput setaf 6)gruser (brew-on|brew-off) USERNAME$(tput sgr0)
 
-  $(tput setaf 3 bold)Downgrade user from administrator:$(tput sgr0)
-    $(tput setaf 6)gruser admin-off USERNAME$(tput sgr0)
-
-  $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
-    $(tput setaf 6)grackle help$(tput sgr0)
+  $(tput setaf 3 bold)Enable/disable shell access:$(tput sgr0)
+    $(tput setaf 6)gruser (shell-on|shell-off) USERNAME$(tput sgr0)
 
 EOF
 ;;
 
+
+
+###
+### ACCOUNT MANAGEMENT COMMANDS
+###
+
+
+
+###
+### Delete local user account and keep homedir with 'gruser delete'
+###
+delete)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which account shall we delete?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -rG $name nginx
+    userdel -f $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
 ### Generate new local user account with 'gruser new'
+###
 new)
   # Fill in name to skip interactive mode
   if [[ $2 != '' ]]; then
@@ -89,165 +123,11 @@ EOF
   fi
 ;;
 
-### Upgrade user to administrator with 'gruser admin-on'
-admin-on)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to grant admin access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -aG adm $name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
 
-### Downgrade user from administrator with 'gruser admin-off'
-admin-off)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to revoke admin access from:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -rG adm $name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
 
-### Grant user server Homebrew access with 'gruser brew-on'
-brew-on)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -aG linuxbrew $name
- ###TO-DO> Doublecheck group-read permissions for linuxbrew-owned resources
- ###TO-DO> Add '/home/linuxbrew/.local/bin' to $name's PATH
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Revoke user's server Homebrew access with 'gruser brew-off'
-brew-off)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -rG linuxbrew $name
- ###TO-DO> Remove '/home/linuxbrew/.local/bin' to $name's PATH
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Local Codex setup with 'gruser codex-setup'
-codex-setup)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    # Set up Environment
- ###TO-DO> Check that Homebrew & Codex are installed
-    mkdir /home/$name/.codex
-    chown -R $name:$name /home/$name/.codex
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Grant user shell access with 'gruser shell-on'
-shell-on)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -s /bin/bash $name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Grant user shell access with 'gruser shell-off'
-shell-off)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
-    echo -n "  (alphanumeric only) "
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -s /sbin/nologin $name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
-### Delete local user account and keep homedir with 'gruser delete'
-delete)
-  if [[ $2 != '' ]]; then
-    name=${2// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  else
-    echo " $(tput setaf 6 bold)Which account shall we delete?$(tput sgr0)"
-    read -r name
-    name=${name// /_}
-    name=${name//[^a-zA-Z0-9_]/}
-  fi
-  if [[ $name != '' ]]; then
-    usermod -rG $name nginx
-    userdel -f $name
-  else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
-  fi
-;;
-
+###
 ### Nuke local user account and all data with 'gruser purge'
+###
 purge)
   if [[ $2 != '' ]]; then
     name=${2// /_}
@@ -267,7 +147,39 @@ purge)
   fi
 ;;
 
-### Permissions-Fixing Utilities with 'gruser fix-perms'
+
+
+###
+### UTILITY COMMANDS
+###
+
+
+
+###
+### Backup user account with 'gruser backup'
+###
+backup)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which application shall we backup?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" "/home/$name/.gracklevar" "/home/$name/app" "/home/$name/logs"
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Emergency permissions patch with 'gruser fix-perms'
+###
 fix-perms)
   if [[ $2 != '' ]]; then
     name=${2// /_}
@@ -293,7 +205,158 @@ fix-perms)
   fi
 ;;
 
+
+
+###
+### SERVICE CONFIGURATION COMMANDS
+###
+
+
+
+###
+### Upgrade user to administrator with 'gruser admin-on'
+###
+admin-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to grant admin access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -aG adm $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Downgrade user from administrator with 'gruser admin-off'
+###
+admin-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to revoke admin access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -rG adm $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Grant user Homebrew access with 'gruser brew-on'
+###
+brew-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to grant Homebrew access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -aG linuxbrew $name
+ ###TO-DO> Doublecheck group-read permissions for linuxbrew-owned resources
+ ###TO-DO> Add '/home/linuxbrew/.local/bin' to $name's PATH
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Revoke user's Homebrew access with 'gruser brew-off'
+###
+brew-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to revoke Homebrew access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -rG linuxbrew $name
+ ###TO-DO> Remove '/home/linuxbrew/.local/bin' to $name's PATH
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Grant user shell access with 'gruser shell-on'
+###
+shell-on)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to grant shell access to:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -s /bin/bash $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Grant user shell access with 'gruser shell-off'
+###
+shell-off)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Please enter a username to revoke shell access from:$(tput sgr0)"
+    echo -n "  (alphanumeric only) "
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    usermod -s /sbin/nologin $name
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
 ### Output error for any input not explicitly defined
+###
 *)
 exec cat <<EOF
 

@@ -180,33 +180,6 @@ docker)
 
 
 ###
-### FTP server install with 'grinstall ftp'
-###
-ftp)
-  # Install vsftp
-  apt install -y vsftpd
-  systemctl enable vsftpd
-  rm -v /etc/vsftpd.conf
-  cp -v /opt/grackle/skel/etc/vsftpd.conf /etc/vsftpd.conf
-  service vsftpd restart
-
-  # Update firewall rules
-  ufw allow out 20/tcp
-  ufw allow 21/tcp
-  ufw allow out 21/tcp
-  ufw allow out 989/tcp
-  ufw allow 990/tcp
-  ufw allow out 990/tcp
-  ufw allow 40000:50000/tcp
-  ufw allow out 40000:50000/tcp
-  ufw reload
-
-  # Close installer
-;;
-
-
-
-###
 ### Finger install with 'grinstall finger'
 ###
 finger)
@@ -257,6 +230,33 @@ EOF
   systemctl restart fingered
   grackle reset-web
     
+  # Close installer
+;;
+
+
+
+###
+### FTP server install with 'grinstall ftp'
+###
+ftp)
+  # Install vsftp
+  apt install -y vsftpd
+  systemctl enable vsftpd
+  rm -v /etc/vsftpd.conf
+  cp -v /opt/grackle/skel/etc/vsftpd.conf /etc/vsftpd.conf
+  service vsftpd restart
+
+  # Update firewall rules
+  ufw allow out 20/tcp
+  ufw allow 21/tcp
+  ufw allow out 21/tcp
+  ufw allow out 989/tcp
+  ufw allow 990/tcp
+  ufw allow out 990/tcp
+  ufw allow 40000:50000/tcp
+  ufw allow out 40000:50000/tcp
+  ufw reload
+
   # Close installer
 ;;
 
@@ -622,6 +622,26 @@ nginx)
 
 
 ###
+###
+### PostgreSQL server with 'grinstall pgsql'
+###
+pgsql)
+  # Set up official repo & base packages
+  install -d /usr/share/postgresql-common/pgdg
+  curl -o /etc/apt/trusted.gpg.d/postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+  . /etc/os-release
+  sh -c "echo 'deb [signed-by=/etc/apt/trusted.gpg.d/postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $VERSION_CODENAME-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
+  chmod a+r /etc/apt/sources.list.d/pgdg.list
+  chmod a+r /etc/apt/trusted.gpg.d/postgresql.org.asc
+  apt update
+  apt install -y postgresql-18
+  systemctl enable postgresql
+
+  # Close installer
+;;
+
+
+
 ### PHP-FPM daemon for Nginx with 'grinstall php'
 ###
 php)
@@ -661,26 +681,6 @@ php-extra)
 
   # Configure PHP
   grackle reset-php
-
-  # Close installer
-;;
-
-
-
-###
-### PostgreSQL server with 'grinstall pgsql'
-###
-pgsql)
-  # Set up official repo & base packages
-  install -d /usr/share/postgresql-common/pgdg
-  curl -o /etc/apt/trusted.gpg.d/postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
-  . /etc/os-release
-  sh -c "echo 'deb [signed-by=/etc/apt/trusted.gpg.d/postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $VERSION_CODENAME-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
-  chmod a+r /etc/apt/sources.list.d/pgdg.list
-  chmod a+r /etc/apt/trusted.gpg.d/postgresql.org.asc
-  apt update
-  apt install -y postgresql-18
-  systemctl enable postgresql
 
   # Close installer
 ;;
