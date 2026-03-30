@@ -29,7 +29,8 @@ Where "MODE" is any one of the following install types:
   * **nginx** - Nginx component
   * **pgsql** - PostgreSQL server
   * **php** - PHP component
-  * **php-extra** - PHP development utilities (partial)
+  * **php-extra** - PHP development extras (partial)
+  * **smtp** - OpenSMTPD component (scaffold stub)
 
 Run the **base** installer first. If you plan on hosting websites, run the **nginx** installer second.
 

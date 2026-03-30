@@ -15,17 +15,25 @@ exec cat <<EOF
  ·▀▀▀▀ .▀  ▀ ▀  ▀ ·▀▀▀ ·▀  ▀.▀▀▀  ▀▀▀ 
  $(tput setaf 4 bold)INSTALLER UTILITY:$(tput sgr0)
 
-  $(tput setaf 3 bold)To install Grackle base components w/ Nginx:$(tput sgr0)
-    $(tput setaf 6)grinstall web$(tput sgr0)
+  $(tput setaf 3 bold)To install Grackle:$(tput sgr0)
+    $(tput setaf 6)grinstall base$(tput sgr0)
 
-  $(tput setaf 3 bold)To install Grackle and all optional components:$(tput sgr0)
-    $(tput setaf 6)grinstall full$(tput sgr0)
+  $(tput setaf 3 bold)To install web server:$(tput sgr0)
+    $(tput setaf 6)grinstall nginx$(tput sgr0)
 
-  $(tput setaf 3 bold)To install Grackle components a la carte:$(tput sgr0)
-    $(tput bold)Base:$(tput sgr0) $(tput setaf 6)grinstall base$(tput sgr0)
+  $(tput setaf 3 bold)To install additional components:$(tput sgr0)
     $(tput bold)Docker:$(tput sgr0) $(tput setaf 6)grinstall docker$(tput sgr0)
-    $(tput bold)Nginx:$(tput sgr0) $(tput setaf 6)grinstall nginx$(tput sgr0)
+    $(tput bold)Finger:$(tput sgr0) $(tput setaf 6)grinstall finger$(tput sgr0)
+    $(tput bold)FTP:$(tput sgr0) $(tput setaf 6)grinstall ftp$(tput sgr0)
+    $(tput bold)Gemini:$(tput sgr0) $(tput setaf 6)grinstall gemini$(tput sgr0)
+    $(tput bold)Gopher:$(tput sgr0) $(tput setaf 6)grinstall gopher$(tput sgr0)
+    $(tput bold)Homebrew:$(tput sgr0) $(tput setaf 6)grinstall brew$(tput sgr0)
+    $(tput bold)IRC:$(tput sgr0) $(tput setaf 6)grinstall irc$(tput sgr0)
+    $(tput bold)Mail (Light):$(tput sgr0) $(tput setaf 6)grinstall smtp$(tput sgr0)
+    $(tput bold)Mail (Full):$(tput sgr0) $(tput setaf 6)grinstall mail$(tput sgr0)
     $(tput bold)PHP:$(tput sgr0) $(tput setaf 6)grinstall php$(tput sgr0)
+    $(tput bold)PHP Extra:$(tput sgr0) $(tput setaf 6)grinstall php-extra$(tput sgr0)
+    $(tput bold)PostgreSQL:$(tput sgr0) $(tput setaf 6)grinstall pgsql$(tput sgr0)
 
   $(tput setaf 3 bold)Full documentation index:$(tput sgr0)
     $(tput setaf 6)grackle help$(tput sgr0)
@@ -174,6 +182,7 @@ brew)
 ### Rootless Docker install with 'grinstall docker'
 ###
 docker)
+  echo "coming soon!"
   # Close installer
 ;;
 
@@ -671,7 +680,6 @@ php)
 
 
 
-
 ###
 ### PHP development stack extras with 'grinstall php-extra'
 ###
@@ -682,6 +690,16 @@ php-extra)
   # Configure PHP
   grackle reset-php
 
+  # Close installer
+;;
+
+
+
+###
+### OpenSMTPD install with 'grinstall smtp'
+###
+smtp)
+  echo "coming soon!"
   # Close installer
 ;;
 
