@@ -64,7 +64,7 @@ Our `http://` and `https://` services are powered by [Nginx](https://nginx.org).
 
 ## php & composer
 
-Many moons ago, this stack began as a makeshift [PHP](https://www.php.net) development platform for supporting a pair of gaming blogs that had upwards of a million visitors a month. While the sites no longer exist, the technology that powered them has become the server management stack you see before you today.
+Many moons ago, this stack began as a makeshift [PHP](https://www.php.net) development platform for supporting a pair of gaming blogs that had upwards of a million visitors a month. While the sites no longer exist, the technology that powered them has become the server management suite you see before you today.
 
 PHP is why we are here, and the ecosystem has only gotten infinitely better in the years since.
 
