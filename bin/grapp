@@ -210,6 +210,29 @@ backup)
   fi
   if [[ $name != '' ]]; then
     tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" "/home/$name/.gracklevar" "/home/$name/app" "/home/$name/logs"
+    chmod -Rv $name:$name /home/$name/backups/
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Bulk prune backups
+###
+backup-prune)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which application shall we backup?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    rm -rfv /home/$name/backups/*
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
