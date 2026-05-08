@@ -210,7 +210,7 @@ backup)
   fi
   if [[ $name != '' ]]; then
     tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" "/home/$name/.gracklevar" "/home/$name/app" "/home/$name/logs"
-    chmod -Rv $name:$name /home/$name/backups/
+    chown -Rv $name:$name /home/$name/backups/
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
