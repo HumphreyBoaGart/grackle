@@ -8,7 +8,7 @@ server {
   server_name {{DOMAIN}};
   include /etc/nginx/includes/headers.conf;
   include /etc/nginx/includes/util.conf;
-  root /home/{{USERNAME}}/public_html;
+  root /home/{{USERNAME}}/app/public;
   error_log /home/{{USERNAME}}/logs/nginx/error.log warn;
   access_log off;
   #access_log /home/{{USERNAME}}/logs/nginx/access.log main;
