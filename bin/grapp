@@ -210,6 +210,7 @@ backup)
   fi
   if [[ $name != '' ]]; then
     tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" "/home/$name/.gracklevar" "/home/$name/app" "/home/$name/logs"
+    tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N-etc | cut -c1-16).tar.gz" "/etc/nginx/available/$name.conf" "/etc/php/8.5/fpm/pool.available/$name.conf"
     chown -Rv $name:$name /home/$name/backups/
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
