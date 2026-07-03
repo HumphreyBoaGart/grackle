@@ -213,10 +213,15 @@ backup)
     rm -vf /home/$name/backups/backup-$name-temp.tar.gz
 
     # Generate backup file
-    tar -czf "/home/$name/backups/backup-$name-temp.tar.gz" "/home/$name/.gracklevar" "/home/$name/app" "/home/$name/logs"
+    tar -czf "/home/$name/backups/backup-$name-temp.tar.gz" \
+      "/home/$name/.gracklevar" \
+      "/home/$name/app" \
+      "/home/$name/logs"
     
     # Slap date on backup file & clean up permissions
-    rename "/home/$name/backups/backup-$name-temp.tar.gz" "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz"
+    TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+    mv "/home/$name/backups/backup-$name-temp.tar.gz" \
+   "/home/$name/backups/backup-$name-${TIMESTAMP}.tar.gz"
     chown -Rv $name:$name /home/$name/backups/
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
