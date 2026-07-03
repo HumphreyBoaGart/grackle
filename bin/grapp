@@ -209,8 +209,19 @@ backup)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    # Remove unfinished backup runs, if any
-    rm -vf /home/$name/backups/backup-$name-temp.tar.gz
+    # Declare paths & vars
+    TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+    BACKUP_DIR="/home/$name/backups"
+    STAGING_DIR=$(mktemp -d /tmp/backup-staging.XXXXXX)
+    TEMP_FILE="$BACKUP_DIR/backup-$name-temp.tar.gz"
+    FINAL_FILE="$BACKUP_DIR/backup-$name-${TIMESTAMP}.tar.gz"
+
+    # Remove unfinished backup runs, if any, and proceed
+    rm -vf "$TEMP_FILE"
+    echo "Creating backup..."
+    
+    # Create temporary staging directory for extra config files
+
 
     # Generate backup file
     tar -czf "/home/$name/backups/backup-$name-temp.tar.gz" \
