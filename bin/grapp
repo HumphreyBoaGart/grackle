@@ -228,12 +228,12 @@ backup)
 
     # Generate backup file
     tar -czf "$TEMP_FILE" \
-      "$TEMP_ETC" \
+      "/home/$name/app" \
+      "/home/$name/logs" \
       "/home/$name/.config" \
       "/home/$name/.gracklevar" \
-      "/home/$name/app" \
-      "/home/$name/logs"
-      # Keep .local/ out of backup runs until PHP is moved to .tmp/: "/home/$name/.local" \
+      "$TEMP_ETC" \
+      # Keep .local/ out of backup runs until PHP is moved to .tmp/: "/home/$name/.local"
       
     # Slap date on backup file & move to /backups/
     mv "$TEMP_FILE" "$FINAL_FILE"
