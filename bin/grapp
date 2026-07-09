@@ -213,8 +213,8 @@ backup)
     TIMESTAMP=$(date +%Y%m%d-%H%M%S)
     BACKUP_DIR="/home/$name/backups"
     TEMP_BACKUP_DIR="/home/$name/.tmp/grackle/backup"
-    TEMP_ETC="/home/$name/.tmp/grackle/backup/etc"
-    TEMP_FILE="/home/$name/.tmp/grackle/backup/temp.tar.gz"
+    TEMP_ETC="$TEMP_BACKUP_DIR/etc"
+    TEMP_FILE="$TEMP_BACKUP_DIR/temp.tar.gz"
     FINAL_FILE="$BACKUP_DIR/backup-$name-${TIMESTAMP}.tar.gz"
 
     # Remove unfinished backup runs, if any, and proceed
@@ -225,6 +225,8 @@ backup)
     mkdir -pv "$TEMP_ETC"
     cp "/etc/nginx/available/$name.conf" "$TEMP_ETC/$name.nginx.conf"
     cp "/etc/php/8.5/fpm/pool.available/$name.conf" "$TEMP_ETC/$name.php.conf"
+    chown -Rv "$name":"$name" "$TEMP_BACKUP_DIR"
+    chmod -Rv g-rwx,o-rwx "$TEMP_BACKUP_DIR"
 
     # Generate backup file
     tar -czf "$TEMP_FILE" \
@@ -239,7 +241,7 @@ backup)
     mv "$TEMP_FILE" "$FINAL_FILE"
     
     # Delete temp files & clean up permissions
-    chown -Rv $name:$name /home/$name/backups/
+    chown -Rv $name:$name "$BACKUP_DIR"
     rm -rvf "$TEMP_BACKUP_DIR"
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
