@@ -163,7 +163,7 @@ backup)
     name=${2// /_}
     name=${name//[^a-zA-Z0-9_]/}
   else
-    echo " $(tput setaf 6 bold)Which application shall we backup?$(tput sgr0)"
+    echo " $(tput setaf 6 bold)Which user shall we backup?$(tput sgr0)"
     read -r name
     name=${name// /_}
     name=${name//[^a-zA-Z0-9_]/}
@@ -174,7 +174,29 @@ backup)
       --exclude="backups" \
       "/home/$name"
   else
-    exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
+  fi
+;;
+
+
+
+###
+### Prune backups with 'gruser backup-prune'
+###
+backup-prune)
+  if [[ $2 != '' ]]; then
+    name=${2// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  else
+    echo " $(tput setaf 6 bold)Which user shall we trim backups?$(tput sgr0)"
+    read -r name
+    name=${name// /_}
+    name=${name//[^a-zA-Z0-9_]/}
+  fi
+  if [[ $name != '' ]]; then
+    rm -rfv /home/$name/backups/*
+  else
+    exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
 ;;
 
