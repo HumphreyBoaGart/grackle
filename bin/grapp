@@ -212,7 +212,7 @@ backup)
     # Declare paths & vars
     TIMESTAMP=$(date +%Y%m%d-%H%M%S)
     BACKUP_DIR="/home/$name/backups"
-    TEMP_ETC_DIR="/home/$name/.tmp/backup-$name-temp-etc"
+    TEMP_ETC_DIR="/home/$name/.tmp/etc"
     TEMP_FILE="/home/$name/.tmp/backup-$name-temp.tar.gz"
     FINAL_FILE="$BACKUP_DIR/backup-$name-${TIMESTAMP}.tar.gz"
 
@@ -222,13 +222,8 @@ backup)
     
     # Create temporary staging directory for pool confs
     mkdir -pv "$TEMP_ETC_DIR"
-    cp "/etc/nginx/sites-available/$name.conf" \
-      "$TEMP_ETC_DIR/etc/$name.nginx.conf" \
-      2>/dev/null || echo "Warning: nginx config not found"
-    cp "/etc/php/8.5/fpm/pool.available/$name.conf" \
-      "$TEMP_ETC_DIR/etc/$name.php.conf" \
-      2>/dev/null || echo "Warning: php-fpm config not found"
-
+    cp "/etc/nginx/sites-available/$name.conf" "$TEMP_ETC_DIR/etc/$name.nginx.conf"
+    cp "/etc/php/8.5/fpm/pool.available/$name.conf" "$TEMP_ETC_DIR/etc/$name.php.conf"
 
     # Generate backup file
     tar -czf "$TEMP_FILE" \
