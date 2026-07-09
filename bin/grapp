@@ -212,28 +212,39 @@ backup)
     # Declare paths & vars
     TIMESTAMP=$(date +%Y%m%d-%H%M%S)
     BACKUP_DIR="/home/$name/backups"
-    STAGING_DIR=$(mktemp -d /tmp/backup-staging.XXXXXX)
-    TEMP_FILE="$BACKUP_DIR/backup-$name-temp.tar.gz"
+    TEMP_ETC_DIR="/home/$name/.tmp/backup-$name-temp-etc"
+    TEMP_FILE="/home/$name/.tmp/backup-$name-temp.tar.gz"
     FINAL_FILE="$BACKUP_DIR/backup-$name-${TIMESTAMP}.tar.gz"
 
     # Remove unfinished backup runs, if any, and proceed
-    rm -vf "$TEMP_FILE"
+    rm -vf "$TEMP_FILE" "$TEMP_ETC_DIR"
     echo "Creating backup..."
     
-    # Create temporary staging directory for extra config files
+    # Create temporary staging directory for pool confs
+    mkdir -pv "$TEMP_ETC_DIR"
+    cp "/etc/nginx/sites-available/$name.conf" \
+      "$TEMP_ETC_DIR/etc/$name.nginx.conf" \
+      2>/dev/null || echo "Warning: nginx config not found"
+    cp "/etc/php/8.5/fpm/pool.available/$name.conf" \
+      "$TEMP_ETC_DIR/etc/$name.php.conf" \
+      2>/dev/null || echo "Warning: php-fpm config not found"
 
 
     # Generate backup file
-    tar -czf "/home/$name/backups/backup-$name-temp.tar.gz" \
+    tar -czf "$TEMP_FILE" \
+      "$TEMP_ETC_DIR" \
+      "/home/$name/.config" \
       "/home/$name/.gracklevar" \
+      "/home/$name/.local" \
       "/home/$name/app" \
       "/home/$name/logs"
     
-    # Slap date on backup file & clean up permissions
-    TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-    mv "/home/$name/backups/backup-$name-temp.tar.gz" \
-   "/home/$name/backups/backup-$name-${TIMESTAMP}.tar.gz"
+    # Slap date on backup file & move to /backups/
+    mv "$TEMP_FILE" "$FINAL_FILE"
+    
+    # Delete temp files & clean up permissions
     chown -Rv $name:$name /home/$name/backups/
+    rm -rvf "$TEMP_FILE" "$TEMP_ETC_DIR"
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
@@ -242,7 +253,7 @@ backup)
 
 
 ###
-### Bulk prune backups
+### Prune backups
 ###
 backup-prune)
   if [[ $2 != '' ]]; then
@@ -290,6 +301,7 @@ fix-perms)
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/app/private
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/.tmp
     chmod -R g+rX /home/$name/.local/share/php
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/backups
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
@@ -329,6 +341,7 @@ fix-perms-deep)
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/app/private
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
+    chmod -R u+rwX,g-rwx,o-rwx /home/$name/.tmp
     chmod -R g+rX /home/$name/.local/share/php
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/backups
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
