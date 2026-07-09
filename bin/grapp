@@ -222,8 +222,8 @@ backup)
     
     # Create temporary staging directory for pool confs
     mkdir -pv "$TEMP_ETC_DIR"
-    cp "/etc/nginx/available/$name.conf" "$TEMP_ETC_DIR/etc/$name.nginx.conf"
-    cp "/etc/php/8.5/fpm/pool.available/$name.conf" "$TEMP_ETC_DIR/etc/$name.php.conf"
+    cp "/etc/nginx/available/$name.conf" "$TEMP_ETC_DIR/$name.nginx.conf"
+    cp "/etc/php/8.5/fpm/pool.available/$name.conf" "$TEMP_ETC_DIR/$name.php.conf"
 
     # Generate backup file
     tar -czf "$TEMP_FILE" \
