@@ -169,7 +169,7 @@ backup)
     name=${name//[^a-zA-Z0-9_]/}
   fi
   if [[ $name != '' ]]; then
-    tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" "/home/$name/.config" "/home/$name/.gracklevar" "/home/$name/.local" "/home/$name/app" "/home/$name/logs"
+    tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" "/home/$name" --exclude="./backups"
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
