@@ -212,22 +212,23 @@ backup)
     # Declare paths & vars
     TIMESTAMP=$(date +%Y%m%d-%H%M%S)
     BACKUP_DIR="/home/$name/backups"
-    TEMP_ETC_DIR="/home/$name/.tmp/etc"
-    TEMP_FILE="/home/$name/.tmp/backup-$name-temp.tar.gz"
+    TEMP_BACKUP_DIR="/home/$name/.tmp/grackle/backup"
+    TEMP_ETC="/home/$name/.tmp/grackle/backup/etc"
+    TEMP_FILE="/home/$name/.tmp/grackle/backup/temp.tar.gz"
     FINAL_FILE="$BACKUP_DIR/backup-$name-${TIMESTAMP}.tar.gz"
 
     # Remove unfinished backup runs, if any, and proceed
-    rm -vf "$TEMP_FILE" "$TEMP_ETC_DIR"
+    rm -rvf "$TEMP_BACKUP_DIR"
     echo "Creating backup..."
     
-    # Create temporary staging directory for pool confs
-    mkdir -pv "$TEMP_ETC_DIR"
-    cp "/etc/nginx/available/$name.conf" "$TEMP_ETC_DIR/$name.nginx.conf"
-    cp "/etc/php/8.5/fpm/pool.available/$name.conf" "$TEMP_ETC_DIR/$name.php.conf"
+    # Create temporary staging directory
+    mkdir -pv "$TEMP_ETC"
+    cp "/etc/nginx/available/$name.conf" "$TEMP_ETC/$name.nginx.conf"
+    cp "/etc/php/8.5/fpm/pool.available/$name.conf" "$TEMP_ETC/$name.php.conf"
 
     # Generate backup file
     tar -czf "$TEMP_FILE" \
-      "$TEMP_ETC_DIR" \
+      "$TEMP_ETC" \
       "/home/$name/.config" \
       "/home/$name/.gracklevar" \
       "/home/$name/.local" \
@@ -239,7 +240,7 @@ backup)
     
     # Delete temp files & clean up permissions
     chown -Rv $name:$name /home/$name/backups/
-    rm -rvf "$TEMP_FILE" "$TEMP_ETC_DIR"
+    rm -rvf "$TEMP_BACKUP_DIR"
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter an application name!$(tput sgr0)"
   fi
