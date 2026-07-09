@@ -231,11 +231,10 @@ backup)
       "$TEMP_ETC" \
       "/home/$name/.config" \
       "/home/$name/.gracklevar" \
-      # Keep .local/ out of backup runs until PHP is moved to .tmp/
-      #"/home/$name/.local" \
       "/home/$name/app" \
       "/home/$name/logs"
-    
+      # Keep .local/ out of backup runs until PHP is moved to .tmp/: "/home/$name/.local" \
+      
     # Slap date on backup file & move to /backups/
     mv "$TEMP_FILE" "$FINAL_FILE"
     
