@@ -1,4 +1,4 @@
-/var/log/ufw.log {
+/var/log/firewall/ufw.log {
 	rotate 28
 	daily
 	compress

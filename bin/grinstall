@@ -104,6 +104,7 @@ base)
   systemctl enable ufw
 
   # Configure syslog
+  mkdir -pv /var/log/firewall
   cp -v /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
   rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
@@ -685,6 +686,7 @@ php)
 
   # Configure PHP-FPM
   mkdir -pv /etc/php/8.5/fpm/pool.available
+  mkdir -pv /var/log/php
   rm -v /etc/php/8.5/fpm/pool.d/www.conf
   cp -v /opt/grackle/skel/etc/php/php-fpm.conf /etc/php/8.5/fpm/php-fpm.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf

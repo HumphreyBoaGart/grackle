@@ -1,4 +1,4 @@
-/var/log/fail2ban.log {
+/var/log/firewall/fail2ban.log {
 	rotate 28
 	daily
 	compress
