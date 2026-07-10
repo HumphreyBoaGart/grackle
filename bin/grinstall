@@ -692,7 +692,7 @@ php)
   grackle reset-php
 
   # Configure logrotate
-  cp -v /opt/grackle/skel/etc/logrotate/php8.5 /etc/logrotate.d/php8.5
+  cp -v /opt/grackle/skel/etc/logrotate/php8.5-fpm /etc/logrotate.d/php8.5-fpm
   systemctl restart logrotate
 
   # Close installer
