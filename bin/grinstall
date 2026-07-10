@@ -120,13 +120,13 @@ base)
   systemd-tmpfiles --create /etc/tmpfiles.d/local-logs.conf
   
   # Configure logrotate
-  cp -v /opt/grackle/skel/etc/logrotate/logrotate.conf /etc/logrotate/logrotate.conf
-  cp -v /opt/grackle/skel/etc/logrotate/alternatives /etc/logrotate/logrotate.d/alternatives
-  cp -v /opt/grackle/skel/etc/logrotate/apt /etc/logrotate/logrotate.d/apt
-  cp -v /opt/grackle/skel/etc/logrotate/dpkg /etc/logrotate/logrotate.d/dpkg
-  cp -v /opt/grackle/skel/etc/logrotate/fail2ban /etc/logrotate/logrotate.d/fail2ban
-  cp -v /opt/grackle/skel/etc/logrotate/rsyslog /etc/logrotate/logrotate.d/rsyslog
-  cp -v /opt/grackle/skel/etc/logrotate/ufw /etc/logrotate/logrotate.d/ufw
+  cp -v /opt/grackle/skel/etc/logrotate/logrotate.conf /etc/logrotate.conf
+  cp -v /opt/grackle/skel/etc/logrotate/alternatives /etc/logrotate.d/alternatives
+  cp -v /opt/grackle/skel/etc/logrotate/apt /etc/logrotate.d/apt
+  cp -v /opt/grackle/skel/etc/logrotate/dpkg /etc/logrotate.d/dpkg
+  cp -v /opt/grackle/skel/etc/logrotate/fail2ban /etc/logrotate.d/fail2ban
+  cp -v /opt/grackle/skel/etc/logrotate/rsyslog /etc/logrotate.d/rsyslog
+  cp -v /opt/grackle/skel/etc/logrotate/ufw /etc/logrotate.d/ufw
   systemctl restart logrotate
   
   # Additional configuration
@@ -632,7 +632,7 @@ nginx)
   chmod -Rv g+rX /etc/letsencrypt/archive/ /etc/letsencrypt/live/ 
   
   # Configure logrotate
-  cp -v /opt/grackle/skel/etc/logrotate/nginx /etc/logrotate/logrotate.d/nginx
+  cp -v /opt/grackle/skel/etc/logrotate/nginx /etc/logrotate.d/nginx
   systemctl restart logrotate
 
   # Update firewall rules and reload Nginx
@@ -692,7 +692,7 @@ php)
   grackle reset-php
 
   # Configure logrotate
-  cp -v /opt/grackle/skel/etc/logrotate/php8.5 /etc/logrotate/logrotate.d/php8.5
+  cp -v /opt/grackle/skel/etc/logrotate/php8.5 /etc/logrotate.d/php8.5
   systemctl restart logrotate
 
   # Close installer
