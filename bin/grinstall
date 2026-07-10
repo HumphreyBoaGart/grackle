@@ -105,6 +105,8 @@ base)
 
   # Configure syslog
   mkdir -pv /var/log/firewall
+  chown root:adm /var/log/firewall
+  chmod g+rX,o-rwx /var/log/firewall
   cp -v /opt/grackle/skel/etc/syslog/boycottjournald.conf /etc/systemd/journald.conf.d/boycottjournald.conf
   rm -v /etc/rsyslog.conf /etc/rsyslog.d/20-ufw.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.conf /etc/rsyslog.conf
