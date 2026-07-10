@@ -1,0 +1,9 @@
+/var/log/alternatives.log {
+	rotate 12
+	monthly
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 640 root adm
+}

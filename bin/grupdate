@@ -103,6 +103,13 @@ reinstall)
   cp -bv /opt/grackle/skel/etc/fail2ban/10-syslog.conf /etc/fail2ban/fail2ban.d/10-syslog.conf
   cp -bv /opt/grackle/skel/etc/syslog/rsyslog.d/94-journald.conf /etc/rsyslog.d/94-journald.conf
   cp -bv /opt/grackle/skel/etc/syslog/local-logs.conf /etc/tmpfiles.d/local-logs.conf
+  cp -bv /opt/grackle/skel/etc/logrotate/logrotate.conf /etc/logrotate/logrotate.conf
+  cp -bv /opt/grackle/skel/etc/logrotate/alternatives /etc/logrotate/logrotate.d/alternatives
+  cp -bv /opt/grackle/skel/etc/logrotate/apt /etc/logrotate/logrotate.d/apt
+  cp -bv /opt/grackle/skel/etc/logrotate/dpkg /etc/logrotate/logrotate.d/dpkg
+  cp -bv /opt/grackle/skel/etc/logrotate/fail2ban /etc/logrotate/logrotate.d/fail2ban
+  cp -bv /opt/grackle/skel/etc/logrotate/rsyslog /etc/logrotate/logrotate.d/rsyslog
+  cp -bv /opt/grackle/skel/etc/logrotate/ufw /etc/logrotate/logrotate.d/ufw
   systemd-tmpfiles --create /etc/tmpfiles.d/local-logs.conf
   cp -bv /opt/grackle/skel/etc/adduser.conf /etc/adduser.conf
   cp -bv /opt/grackle/skel/etc/motd /etc/motd
@@ -110,6 +117,7 @@ reinstall)
   # Re-enable and restart base services
   systemctl restart fail2ban
   systemctl restart rsyslog
+  systemctl restart logrotate
   
   # Grab latest dart-sass
   set -euo pipefail

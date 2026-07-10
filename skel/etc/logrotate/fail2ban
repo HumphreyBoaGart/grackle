@@ -1,0 +1,13 @@
+/var/log/fail2ban.log {
+	rotate 28
+	daily
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 640 fail2ban adm
+	postrotate
+		fail2ban-client flushlogs 1>/dev/null
+	endscript
+}
+
