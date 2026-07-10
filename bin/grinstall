@@ -691,6 +691,10 @@ php)
   systemctl restart rsyslog
   grackle reset-php
 
+  # Configure logrotate
+  cp -v /opt/grackle/skel/etc/logrotate/php8.5 /etc/logrotate/logrotate.d/php8.5
+  systemctl restart logrotate
+
   # Close installer
 ;;
 
