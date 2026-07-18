@@ -149,6 +149,7 @@ base)
   rm -v /etc/motd /etc/issue /etc/issue.net
   touch /etc/issue /etc/issue/net
   cp -bv /opt/grackle/skel/etc/motd /etc/motd
+  chmod -Rv g-rwx,o-rwx /root
 
   # Grab latest dart-sass
   set -euo pipefail
