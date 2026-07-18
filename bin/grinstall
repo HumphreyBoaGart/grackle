@@ -698,6 +698,7 @@ php)
   cp -v /opt/grackle/skel/etc/php/php-fpm.conf /etc/php/8.5/fpm/php-fpm.conf
   cp -v /opt/grackle/skel/etc/syslog/rsyslog.d/30-phpfpm.conf /etc/rsyslog.d/30-phpfpm.conf
   systemctl restart rsyslog
+  chmod 755 /etc/php /etc/php/8.5 /etc/php/8.5/cli
   grackle reset-php
 
   # Configure logrotate
@@ -705,11 +706,7 @@ php)
   systemctl restart logrotate
   
   # Configure Composer
-  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer.phar
-  tee /usr/local/bin/composer > /dev/null <<'EOF'
-#!/bin/bash
-exec /usr/bin/php -d extension=phar /usr/local/bin/composer.phar "$@"
-EOF
+  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
   chmod a+rx /usr/local/bin/composer
 
   # Close installer

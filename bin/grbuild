@@ -167,6 +167,7 @@ php)
     t="$(mktemp)"; jq --argjson v 8.5 '.php=$v' "/home/$name/.gracklevar" >"$t" && mv "$t" "/home/$name/.gracklevar"
     cp -v /opt/grackle/skel/etc/php/composer.json /home/$name/app/composer.json
     sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/app/composer.json
+    mkdir -pv /home/$name/.cache/composer
     mkdir -pv /home/$name/.tmp/php/opcache/file
     mkdir -pv /home/$name/.tmp/php/opcache/lock
     mkdir -pv /home/$name/.tmp/php/sessions
