@@ -167,11 +167,11 @@ php)
     t="$(mktemp)"; jq --argjson v 8.5 '.php=$v' "/home/$name/.gracklevar" >"$t" && mv "$t" "/home/$name/.gracklevar"
     cp -v /opt/grackle/skel/etc/php/composer.json /home/$name/app/composer.json
     sed -i -e 's/{{USERNAME}}/'$name'/g' /home/$name/app/composer.json
-    mkdir -pv /home/$name/.local/share/php/opcache/file
-    mkdir -pv /home/$name/.local/share/php/opcache/lock
-    mkdir -pv /home/$name/.local/share/php/sessions
-    mkdir -pv /home/$name/.local/share/php/soap
-    mkdir -pv /home/$name/.local/share/php/tmp_upload
+    mkdir -pv /home/$name/.tmp/php/opcache/file
+    mkdir -pv /home/$name/.tmp/php/opcache/lock
+    mkdir -pv /home/$name/.tmp/php/sessions
+    mkdir -pv /home/$name/.tmp/php/soap
+    mkdir -pv /home/$name/.tmp/php/tmp_upload
     mkdir -pv /home/$name/logs/php-fpm
     cp -v /opt/grackle/skel/etc/php/logdir-readme.md /home/$name/logs/php-fpm/README.md
     mkdir -pv /home/$name/app/public/theme/css /home/$name/app/public/theme/fonts
