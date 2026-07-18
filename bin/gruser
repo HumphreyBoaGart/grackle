@@ -300,8 +300,8 @@ brew-on)
   fi
   if [[ $name != '' ]]; then
     usermod -aG linuxbrew $name
+    sed -i -e 's/:\/usr\/bin/:\/usr\/bin:\/home\/linuxbrew\/.local\/bin/g' /home/$name/.bash_aliases
  ###TO-DO> Doublecheck group-read permissions for linuxbrew-owned resources
- ###TO-DO> Add '/home/linuxbrew/.local/bin' to $name's PATH
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
@@ -325,7 +325,7 @@ brew-off)
   fi
   if [[ $name != '' ]]; then
     usermod -rG linuxbrew $name
- ###TO-DO> Remove '/home/linuxbrew/.local/bin' to $name's PATH
+    sed -i -e 's/:\/usr\/bin:\/home\/linuxbrew\/.local\/bin/:\/usr\/bin/g' /home/$name/.bash_aliases
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
