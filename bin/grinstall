@@ -688,7 +688,7 @@ php)
   apt update
 
   # Install PHP 8.5 & PHP-FPM from Sury
-  apt install -y php8.5 php8.5-fpm php8.5-{bz2,cli,curl,gd,imagick,intl,mbstring,phpdbg,readline,sqlite3,xml,zip} composer
+  apt install -y php8.5 php8.5-fpm php8.5-{bz2,cli,curl,gd,imagick,intl,mbstring,phpdbg,readline,sqlite3,xml,zip}
   systemctl enable php8.5-fpm
 
   # Configure PHP-FPM
@@ -703,6 +703,10 @@ php)
   # Configure logrotate
   cp -v /opt/grackle/skel/etc/logrotate/php8.5-fpm /etc/logrotate.d/php8.5-fpm
   systemctl restart logrotate
+  
+  # Configure Composer
+  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  sudo chmod +x /usr/local/bin/composer
 
   # Close installer
 ;;
