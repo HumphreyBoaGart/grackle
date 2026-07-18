@@ -381,7 +381,7 @@ brew-on)
   if [[ $name != '' ]]; then
     usermod -aG linuxbrew $name
     sed -i -e 's/:\/usr\/bin/:\/usr\/bin:\/home\/linuxbrew\/.local\/bin/g' /home/$name/.bash_aliases
- ###TO-DO> Doublecheck group-read permissions for linuxbrew-owned resources
+    chmod -Rv g+rX /home/linuxbrew/.local/Caskroom
   else
     exec echo " $(tput setaf 1 bold)ERROR: You did not enter a username!$(tput sgr0)"
   fi
