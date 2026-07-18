@@ -88,9 +88,18 @@ base)
   chgrp -v adm /opt/grackle/bin/grackle /opt/grackle/bin/grapp /opt/grackle/bin/grbuild /opt/grackle/bin/gruser
   chmod -vR g+rX,o+rX /opt/grackle/errors /opt/grackle/void /opt/grackle/bin/README.md
 
-  # Configure apt
+  # Configure new default apt sources
   cp -bv /opt/grackle/skel/etc/apt/sources.list /etc/apt/sources.list
   cp -bv /opt/grackle/skel/etc/apt/sources.list.d/debian.list /etc/apt/sources.list.d/debian.list
+  
+  # Remove any potential conflicting old apt sources
+  rm -fv /etc/apt/sources.list.d/backports.list /etc/apt/sources.list.d/backports-src.list
+  rm -fv /etc/apt/sources.list.d/base.list /etc/apt/sources.list.d/base-src.list
+  rm -fv /etc/apt/sources.list.d/security.list /etc/apt/sources.list.d/security-src.list
+  rm -fv /etc/apt/sources.list.d/updates.list /etc/apt/sources.list.d/updates-src.list
+  rm -fv /etc/apt/sources.list.d/mirror_*
+  
+  # Finish apt configuration
   chmod -vR u+rwX,g+rX,o+rX /etc/apt/
   apt update
   apt install -y apt-transport-https ca-certificates debian-archive-keyring gnupg2 lsb-release
