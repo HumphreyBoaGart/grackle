@@ -25,6 +25,11 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_DIRS="$HOME/.local/share/applications:/usr/local/share/:/usr/share/"
 export XDG_DATA_HOME="$HOME/.local/share"
 
+# Git Aliases
+alias checkout='git checkout'
+alias commit='git add -A && git commit -m'
+alias showbranch='git branch --show-current'
+
 # Misc Aliases
 alias commit='git add * && git commit -m'
 alias diff='diff --color=auto'
