@@ -300,7 +300,6 @@ fix-perms)
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.tmp
-    chmod -R g+rX /home/$name/.local/share/php
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/backups
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
     chmod -R g+rwX /home/$name/logs/nginx
@@ -340,7 +339,6 @@ fix-perms-deep)
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.config
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.local
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/.tmp
-    chmod -R g+rX /home/$name/.local/share/php
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/backups
     chmod -R u+rwX,g-rwx,o-rwx /home/$name/logs
     chmod -R g+rwX /home/$name/logs/nginx
