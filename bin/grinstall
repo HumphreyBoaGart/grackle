@@ -705,8 +705,12 @@ php)
   systemctl restart logrotate
   
   # Configure Composer
-  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-  sudo chmod +x /usr/local/bin/composer
+  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer.phar
+  tee /usr/local/bin/composer > /dev/null <<'EOF'
+#!/bin/bash
+exec /usr/bin/php -d extension=phar /usr/local/bin/composer.phar "$@"
+EOF
+  chmod a+rx /usr/local/bin/composer
 
   # Close installer
 ;;
