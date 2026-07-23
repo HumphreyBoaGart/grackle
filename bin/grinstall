@@ -224,7 +224,7 @@ finger)
 
   # Configure runtime environment
   usermod -aG app finger
-  usermod -c "gemini web root" finger
+  usermod -c "finger web root" finger
   rm -fv /home/finger/.profile /home/finger/.bash_logout /home/finger/.bashrc
   cp -v /opt/grackle/skel/home/app/.bash_aliases /home/finger/.bash_aliases
   cp -v /opt/grackle/skel/home/app/.bash_logout /home/finger/.bash_logout

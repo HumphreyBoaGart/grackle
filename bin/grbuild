@@ -75,7 +75,7 @@ gemini)
   fi
   if [[ $name != '' ]]; then
     # Read domain from ~/.gracklevar
-    domain="$(jq -er '.url | select(type=="string" and length>0)' "/home/'$name'/.gracklevar")" || {
+    domain="$(jq -er '.url | select(type=="string" and length>0)' "/home/$name/.gracklevar")" || {
       echo "ERROR: .gracklevar missing or .url empty for '$name'" >&2; exit 2;
     }
     esc_domain="$(printf '%s' "$domain" | sed 's/[&/\]/\\&/g')"
