@@ -330,8 +330,8 @@ gemini)
     useradd --system --home /nonexistent --shell /sbin/nologin geminid
     usermod -c "gemini server" geminid
     usermod -aG sslring geminid
-    cp -v /opt/grackle/skel/etc/mollybrown/molly.conf /etc/molly-brown/'$domain'.conf
-    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /etc/molly-brown/'$domain'.conf
+    cp -v /opt/grackle/skel/etc/mollybrown/molly.conf /etc/molly-brown/$domain.conf
+    sed -i -e 's/{{DOMAIN}}/$domain/g' /etc/molly-brown/$domain.conf
     cp -v /opt/grackle/skel/etc/mollybrown/geminid-stream.conf /etc/nginx/stream.d/geminid.conf
     mkdir -pv /etc/systemd/system/molly-brown@.service.d
     tee /etc/systemd/system/molly-brown@.service.d/override.conf >/dev/null <<EOF
@@ -353,9 +353,9 @@ EOF
     rm -rfv /home/gemini/app/public/*
     rm -rfv /home/gemini/logs/nginx/
     cp -v /opt/grackle/skel/etc/mollybrown/index.gmi /home/gemini/app/public/index.gmi
-    sed -i -e 's/{{DOMAIN}}/'$domain'/g' /home/gemini/app/public/index.gmi
-    install -d -o root -g root -m 755 /var/run/geminid/'$domain'
-    bindfs -r --perms=u=rwX:g=rX:o=rX /home/gemini/app/public /var/run/geminid/'$domain'
+    sed -i -e 's/{{DOMAIN}}/$domain/g' /home/gemini/app/public/index.gmi
+    install -d -o root -g root -m 755 /var/run/geminid/$domain
+    bindfs -r --perms=u=rwX:g=rX:o=rX /home/gemini/app/public /var/run/geminid/$domain
     tee "/home/gemini/.gracklevar" >/dev/null <<EOF
 {
 	"type": "app",
@@ -382,7 +382,7 @@ EOF
     
     # Launch daemon
     systemctl daemon-reload
-    systemctl enable --now molly-brown@'$domain'.service
+    systemctl enable --now molly-brown@$domain.service
     systemctl restart molly-brown
     grackle reset-web
 
