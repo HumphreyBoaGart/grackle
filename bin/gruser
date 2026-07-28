@@ -170,7 +170,7 @@ backup)
   fi
   if [[ $name != '' ]]; then
     mkdir -pv "/home/$name/backups"
-    tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d%H%M%S%N | cut -c1-16).tar.gz" \
+    tar -czf "/home/$name/backups/backup-$name-$(date +%Y%m%d_%H%M%S | cut -c1-16).tar.gz" \
       --exclude="backups" \
       "/home/$name"
   else
