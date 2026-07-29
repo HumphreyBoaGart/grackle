@@ -26,16 +26,6 @@ It's not in the production build yet, but we have a proper [Rootless Docker](htt
 While we aren't huge fans of the Docker ecosystem, many modern servers need a way to safely run isolated Docker containers. We've got you.
 
 
-## fingered
-
-Our `finger://` and `fingers://` services are powered by [Fingered](https://github.com/noveltylanterns/fingered).
-
-
-## geomyidae
-
-Our `gopher://` services are powered by [Geomyidae](https://git.codemadness.org/geomyidae/).
-
-
 ## git
 
 If it wasn't for [Git](https://git-scm.com), you would not be able to so conveniently install & update Grackle in the first place!
@@ -48,11 +38,6 @@ Our application environments were also designed in a way to enable easy integrat
 We didn't want to burden this down with too many extra package managers, but [Homebrew](https://brew.sh) was too good to pass up.
 
 We provision a dedicated user to hold Homebrew packages, so you can grant your users & applications safe read-only access to the binaries as need be.
-
-
-## molly brown
-
-Our `gemini://` services are powered by [The Unsinkable Molly Brown](https://github.com/LukeEmmet/molly-brown).
 
 
 ## nginx & certbot

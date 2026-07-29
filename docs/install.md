@@ -20,10 +20,7 @@ Where "MODE" is any one of the following install types:
   * **base** - Bare minimum Grackle components
   * **brew** - Homebrew package manager (partial)
   * **docker** - Docker component (scaffold stub)
-  * **finger** - finger:// daemon
   * **ftp** - FTP daemon (partial)
-  * **gemini** - gemini:// daemon
-  * **gopher** - gopher:// daemon
   * **irc** - IRC client utilities
   * **mail** - Mailserver stack
   * **nginx** - Nginx component
