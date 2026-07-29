@@ -373,9 +373,11 @@ EOF
     chmod -Rv g+rX /etc/molly-brown
     chgrp -v nginx /etc/nginx/stream.d/geminid.conf
     chmod -v 640 /etc/nginx/stream.d/geminid.conf
-    chgrp -Rv sslring archive/ live/
-    chmod -Rv g-w,o-rwx /etc/letsencrypt/archive/ /etc/letsencrypt/live/ 
-    chmod -Rv g+rX /etc/letsencrypt/archive/ /etc/letsencrypt/live/ 
+    chgrp -v sslring /etc/letsencrypt/archive/ /etc/letsencrypt/live/
+    chgrp -Rv sslring /etc/letsencrypt/archive/$domain /etc/letsencrypt/live/$domain
+    chmod -v 750 /etc/letsencrypt/archive/ /etc/letsencrypt/live/
+    chmod -Rv g-w,o-rwx /etc/letsencrypt/archive/$domain /etc/letsencrypt/live/$domain 
+    chmod -Rv g+rX /etc/letsencrypt/archive/$domain /etc/letsencrypt/live/$domain 
     ufw allow 1965/tcp
     ufw allow out 1965/tcp
     ufw reload
