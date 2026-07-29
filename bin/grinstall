@@ -339,7 +339,7 @@ gemini)
 DynamicUser=no
 User=geminid
 Group=geminid
-SupplementaryGroups=gemini ssl-cert
+SupplementaryGroups=gemini sslring
 EOF
     
     # Generate app account for serving gemini web root
