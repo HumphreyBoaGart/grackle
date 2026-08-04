@@ -46,13 +46,16 @@ EOF
 
 
 ###
-### Flush & reset web services with 'grackle reset'
+### Flush, reset and/or fix various services with 'grackle reset'
 ###
 reset)
   systemctl reload php8.5-fpm
   systemctl restart php8.5-fpm
   systemctl reload nginx
   systemctl restart nginx
+;;
+reset-brew)
+  chmod -R g+rX /home/linuxbrew/.local/Caskroom
 ;;
 reset-php)
   systemctl reload php8.5-fpm
